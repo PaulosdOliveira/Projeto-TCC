@@ -1,4 +1,4 @@
-package com.github.PaulosdOliveira.TCC.selectAspi.nfra.repository;
+package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,9 +11,9 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
 
     boolean existsByCpf(String cpf);
 
-    @Query("Update c Candidato c set c.foto = :foto where c.id = :id")
+    @Query("Update  Candidato  set foto = :foto where id = :id")
     void salvarFotoCandidato(@Param("id") Long id, @Param("foto") byte[] foto);
 
-    @Query("Update c Candidato c set c.curriculo = :curriculo where c.id = :id")
+    @Query("Update  Candidato  set curriculo = :curriculo where id = :id")
     void salvarCurriculoCandidato(@Param("id") Long id, @Param("curriculo") byte[] curriculo);
 }

@@ -35,5 +35,8 @@ public class CadastroCandidatoDTO {
     @NotNull(message = "Informe se está trabalho atualmente")
     private boolean trabalhando;
 
+    @NotBlank(message = "Informe um cep de sua cidade")
+    private String cep;
+
 
 }

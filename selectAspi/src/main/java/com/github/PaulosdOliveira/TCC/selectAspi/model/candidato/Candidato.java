@@ -42,6 +42,12 @@ public class Candidato {
     @Column(nullable = false)
     private boolean trabalhando;
 
+    @Column(name = "estado", nullable = false)
+    private String uf;
+
+    @Column(name = "cidade", nullable = false)
+    private String localidade;
+
 
     public Candidato(CadastroCandidatoDTO dadosCadastrais){
         BeanUtils.copyProperties(dadosCadastrais, this);
