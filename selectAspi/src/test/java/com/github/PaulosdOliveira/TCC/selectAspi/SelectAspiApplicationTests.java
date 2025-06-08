@@ -23,12 +23,7 @@ class SelectAspiApplicationTests {
 
     @Test
     void webServiceTest() {
-        try {
-            System.out.println(service.buscarLocalizacaoPorCep("4409418"));
-        } catch (WebClientResponseException.BadRequest e) {
-            throw new CepInvalidoException();
-        }
-
+        System.out.println(service.buscarLocalizacaoPorCep("4409419"));
     }
 
 }

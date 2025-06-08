@@ -15,12 +15,12 @@ public class CandidatoServiceTest {
     private CandidatoService service;
 
     @Test
-    void cadastrarCandidatoTest() {
+    void cadastrarCandidatoTest() throws Exception {
         CadastroCandidatoDTO cadastro = new CadastroCandidatoDTO();
-        cadastro.setNome("Chelsea Hillary");
-        cadastro.setCpf("098777777");
-        cadastro.setCep("01552000");
-        cadastro.setEmail("chelsea@oliveira");
+        cadastro.setNome("Chelsea Hi");
+        cadastro.setCpf("0987222222");
+        cadastro.setCep("44094019");
+        cadastro.setEmail("chelsea@oei");
         cadastro.setTel("11 998-1286");
         cadastro.setSenha("123");
         cadastro.setTrabalhando(false);

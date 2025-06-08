@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.br.CPF;
 @Data
 public class CadastroCandidatoDTO {
 
-    @CPF(message = "Digite um CPF válida")
+    //@CPF(message = "Digite um CPF válida")
     @NotBlank( message = "Informe o seu CPF")
     private String cpf;
 
