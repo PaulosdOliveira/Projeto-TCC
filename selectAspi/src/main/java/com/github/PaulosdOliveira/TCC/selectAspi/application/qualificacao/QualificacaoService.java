@@ -7,6 +7,8 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.Qualificacao
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class QualificacaoService {
@@ -20,6 +22,10 @@ public class QualificacaoService {
     }
 
     public void cadastrarQualificacaoUsuario(QualificacaoUsuarioDTO dto) {
-        qualificacaoUsuarioRepository.insert(dto.getIdCandidato(), dto.getIdQualificacao(), dto.getNivel());
+        qualificacaoUsuarioRepository.insert(dto.getIdCandidato(), dto.getIdQualificacao(), dto.getNivel().name());
+    }
+
+    public List<String> getQualificacaoByIdCandidatos(Long id){
+        return qualificacaoUsuarioRepository.getQualifcacoesById(id);
     }
 }

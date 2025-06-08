@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 @NoArgsConstructor
 @Data
 @Entity
+@Table(name = "candidatos")
 public class Candidato {
 
     @Id
