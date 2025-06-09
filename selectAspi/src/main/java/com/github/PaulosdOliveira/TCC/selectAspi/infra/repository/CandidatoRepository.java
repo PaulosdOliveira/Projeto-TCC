@@ -1,6 +1,7 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +32,9 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
 
     @Query("Select c.curriculo from Candidato c where c.id = :id")
     byte[] buscarCurriculoCandidato(@Param("id") Long id);
+
+
+    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO(c.id, c.nome, c.email, c.senha)" +
+            " from Candidato c where c.email = :cpfOuEmail  or c.cpf = :cpfOuEmail ")
+    LoginCandidatoDTO buscarCandidatoLogin(@Param("cpfOuEmail") String cpfOuEmail);
 }

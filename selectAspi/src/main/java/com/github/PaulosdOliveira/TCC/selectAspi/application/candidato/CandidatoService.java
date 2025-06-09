@@ -1,13 +1,15 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.candidato;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.exception.CepInvalidoException;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.CadastroCandidatoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.jwt.JwtService;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.CandidatoRepository;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Localizacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.validation.CandidatoValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @RequiredArgsConstructor
@@ -17,14 +19,15 @@ public class CandidatoService {
     private final CandidatoRepository repository;
     private final CandidatoValidator validator;
     private final LocalizacaoService localizacaoService;
+    private final PasswordEncoder encoder;
+    private final JwtService jwtService;
 
     public void cadastrarUsuario(CadastroCandidatoDTO dadosCadastrais) throws Exception {
         validator.validar(dadosCadastrais.getEmail(), dadosCadastrais.getCpf());
         Localizacao localizacao;
         localizacao = localizacaoService.buscarLocalizacaoPorCep(dadosCadastrais.getCep());
         if (localizacao.getLocalidade() == null) throw new CepInvalidoException();
-        System.out.println(localizacao.getLocalidade());
-        Candidato candidato = new Candidato(dadosCadastrais);
+        Candidato candidato = new Candidato(dadosCadastrais, encoder.encode(dadosCadastrais.getSenha()));
         candidato.setUf(localizacao.getUf());
         candidato.setLocalidade(localizacao.getLocalidade());
         repository.save(candidato);
@@ -48,5 +51,15 @@ public class CandidatoService {
     public byte[] buscarCurriculoCandidato() {
         Long idCandidatoLogado = 1L; // Id da pessoa logada
         return repository.buscarCurriculoCandidato(idCandidatoLogado);
+    }
+
+
+    public String getAccessToken(DadosLoginCandidatoDTO dadosLogin){
+        LoginCandidatoDTO candidatoEnontrado = repository.buscarCandidatoLogin(dadosLogin.getCpfOuEmail());
+        if(candidatoEnontrado != null){
+            if(encoder.matches(dadosLogin.getSenha(), candidatoEnontrado.getSenha()))
+                return jwtService.getAccessToken(candidatoEnontrado);
+        }
+        throw new UsernameNotFoundException("Usuário e/ou senha incorretos");
     }
 }

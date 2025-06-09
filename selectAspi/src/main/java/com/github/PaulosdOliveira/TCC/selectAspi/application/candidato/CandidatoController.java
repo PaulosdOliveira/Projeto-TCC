@@ -1,12 +1,14 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.candidato;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.CadastroCandidatoDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosLoginCandidatoDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -54,6 +56,14 @@ public class CandidatoController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         return new ResponseEntity<>(curriculo, headers, HttpStatus.OK);
+    }
+
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/login")
+    public String login(@RequestBody @Valid DadosLoginCandidatoDTO dadosLogin){
+        return service.getAccessToken(dadosLogin);
     }
 
 }

@@ -50,8 +50,9 @@ public class Candidato {
     private String localidade;
 
 
-    public Candidato(CadastroCandidatoDTO dadosCadastrais){
+    public Candidato(CadastroCandidatoDTO dadosCadastrais, String senhaCriptografada){
         BeanUtils.copyProperties(dadosCadastrais, this);
+        this.senha = senhaCriptografada;
     }
 
 }

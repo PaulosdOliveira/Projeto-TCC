@@ -1,0 +1,55 @@
+create database plataforma;
+
+use plataforma;
+
+create table candidatos(
+id bigint primary key auto_increment,
+cpf varchar(14) not null unique,
+senha varchar(300) not null,
+foto longblob ,
+nome varchar(120) not null,
+descricao text not null,
+tel varchar(18),
+email varchar(254) not null unique,
+curriculo longblob ,
+trabalhando boolean not null,
+estado varchar(2) not null,
+cidade varchar(55) not null
+);
+
+
+create table qualificacao(
+id bigint primary key auto_increment,
+nome_qualificacao varchar(30) not null unique
+);
+
+
+
+create table qualificacao_usuario(
+candidato_id bigint not null ,
+qualificacao_id bigint not null ,
+nivel enum('BASICO', 'INTERMEDIARIO', 'AVANCADO'),
+primary key(candidato_id, qualificacao_id),
+foreign key(candidato_id) references candidatos(id),
+foreign key(qualificacao_id) references qualificacao(id)
+);
+
+
+
+create table chave_secreta(
+id bigint primary key auto_increment,
+encoded longblob not null,
+algoritimo varchar(20) not null,
+data_criacao datetime not null
+);
+
+
+
+
+
+
+
+
+
+
+
