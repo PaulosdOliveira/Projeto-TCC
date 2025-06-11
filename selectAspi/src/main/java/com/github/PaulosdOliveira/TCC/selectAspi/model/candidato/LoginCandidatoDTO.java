@@ -10,5 +10,4 @@ public class LoginCandidatoDTO {
     private final String nome;
     private final String email;
     private final String senha;
-    private String perfil = "candidato";
 }

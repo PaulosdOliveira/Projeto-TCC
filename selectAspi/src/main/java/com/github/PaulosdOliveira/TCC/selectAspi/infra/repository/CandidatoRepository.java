@@ -1,17 +1,18 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.Optional;
 
 public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
 
     boolean existsByEmail(String email);
-
     boolean existsByCpf(String cpf);
 
     @Transactional
@@ -36,5 +37,5 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
 
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO(c.id, c.nome, c.email, c.senha)" +
             " from Candidato c where c.email = :cpfOuEmail  or c.cpf = :cpfOuEmail ")
-    LoginCandidatoDTO buscarCandidatoLogin(@Param("cpfOuEmail") String cpfOuEmail);
+    Optional<LoginCandidatoDTO> buscarCandidatoLogin(@Param("cpfOuEmail") String cpfOuEmail);
 }

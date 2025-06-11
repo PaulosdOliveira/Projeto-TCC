@@ -45,11 +45,41 @@ data_criacao datetime not null
 
 
 
+create table empresa(
+id bigint primary key auto_increment,
+cnpj varchar(20) not null unique,
+nome text not null,
+email varchar(180) not null unique,
+senha varchar(300) not null,
+descricao text,
+foto longblob,
+capa longblob
+);
 
 
+create table vaga_emprego (
+id bigint primary key auto_increment,
+titulo varchar(255) not null,
+descricao text not null,
+data_hora_publicacao datetime not null,
+data_hora_encerramento datetime,
+empresa_id bigint,
+salario decimal(10,2) not null,
+salario_a_combinar boolean default false,
+nivel enum('JUNIOR', 'PLENO', 'SENIOR', 'ESPECIALISTA', 'GERENTE', 	'INDEFINIDO'),
+cidade varchar(40) not null,
+modelo enum('PRESENCIAL', 'HIBRIDO', 'REMOTO'),
+status_vaga enum('ATIVA', 'ENCERRADA'),
+tipo_contrato enum('CLT', 'PJ', 'ESTAGIO', 'TEMPORARIO'),
+experiencia_previa boolean,
+foreign key (empresa_id) references empresa(id)
+);
 
-
-
-
-
-
+create table candidato_a_vaga(
+id bigint primary key auto_increment,
+candidato_id bigint ,
+vaga_emprego_id bigint,
+data_candidatura datetime not null,
+foreign key (candidato_id) references candidatos(id),
+foreign key (vaga_emprego_id) references vaga_emprego(id)
+);

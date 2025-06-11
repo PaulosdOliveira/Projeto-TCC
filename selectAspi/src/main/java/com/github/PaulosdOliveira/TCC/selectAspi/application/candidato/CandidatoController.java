@@ -2,13 +2,12 @@ package com.github.PaulosdOliveira.TCC.selectAspi.application.candidato;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.CadastroCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosLoginCandidatoDTO;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -26,17 +25,15 @@ public class CandidatoController {
         service.cadastrarUsuario(dadosCadastrais);
     }
 
-
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/foto")
     public void salvarFotoCandidato(@RequestParam MultipartFile foto) throws IOException {
         service.salvarFotoCandidato(foto.getBytes());
     }
 
-
-    @GetMapping("/foto")
-    public ResponseEntity<byte[]> buscarFotoCandidato() {
-        byte[] foto = service.buscarFotoCandidato();
+    @GetMapping("/foto/{idCandidato}")
+    public ResponseEntity<byte[]> buscarFotoCandidato(@PathVariable Long idCandidato) {
+        byte[] foto = service.buscarFotoCandidato(idCandidato);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
         headers.setContentLength(foto.length);
@@ -50,20 +47,18 @@ public class CandidatoController {
     }
 
 
-    @GetMapping("/curriculo")
-    public ResponseEntity<byte[]> buscarCurriculoCandidato() {
-        byte[] curriculo = service.buscarCurriculoCandidato();
+    @GetMapping("/curriculo/{idCandidato}")
+    public ResponseEntity<byte[]> buscarCurriculoCandidato(@PathVariable Long idCandidato) {
+        byte[] curriculo = service.buscarCurriculoCandidato(idCandidato);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         return new ResponseEntity<>(curriculo, headers, HttpStatus.OK);
     }
 
-
-
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
     public String login(@RequestBody @Valid DadosLoginCandidatoDTO dadosLogin){
-        return service.getAccessToken(dadosLogin);
+        return service.getCandidatoAccessToken(dadosLogin);
     }
 
 }

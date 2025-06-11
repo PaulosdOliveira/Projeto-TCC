@@ -6,10 +6,13 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.CandidatoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.validation.CandidatoValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @RequiredArgsConstructor
@@ -34,32 +37,49 @@ public class CandidatoService {
     }
 
     public void salvarFotoCandidato(byte[] foto) {
-        Long idCandidatoLogado = 1L; // Pegar o id no contexto de segurança
-        repository.salvarFotoCandidato(idCandidatoLogado, foto);
+        repository.salvarFotoCandidato(getIdCandidatoLogado(), foto);
     }
 
-    public byte[] buscarFotoCandidato() {
-        Long idCandidatoLogado = 1L; // Pegar id usuário logado
-        return repository.buscarFotoCandidato(idCandidatoLogado);
+    public byte[] buscarFotoCandidato(Long idCandidato) {
+        return repository.buscarFotoCandidato(idCandidato);
     }
 
     public void salvarCurriculo(byte[] curriculo) {
-        Long idCandidatoLogado = 1L; // Pegar o id no contexto de segurança
-        repository.salvarCurriculoCandidato(idCandidatoLogado, curriculo);
+        repository.salvarCurriculoCandidato(getIdCandidatoLogado(), curriculo);
     }
 
-    public byte[] buscarCurriculoCandidato() {
-        Long idCandidatoLogado = 1L; // Id da pessoa logada
-        return repository.buscarCurriculoCandidato(idCandidatoLogado);
+    public byte[] buscarCurriculoCandidato(Long idCandidato) {
+        return repository.buscarCurriculoCandidato(idCandidato);
     }
 
 
-    public String getAccessToken(DadosLoginCandidatoDTO dadosLogin){
-        LoginCandidatoDTO candidatoEnontrado = repository.buscarCandidatoLogin(dadosLogin.getCpfOuEmail());
-        if(candidatoEnontrado != null){
-            if(encoder.matches(dadosLogin.getSenha(), candidatoEnontrado.getSenha()))
-                return jwtService.getAccessToken(candidatoEnontrado);
+    public String getCandidatoAccessToken(DadosLoginCandidatoDTO dadosLogin) {
+        LoginCandidatoDTO candidatoEnontrado = buscarPorEmailOuCpf(dadosLogin.getCpfOuEmail());
+        if (candidatoEnontrado != null) {
+            if (encoder.matches(dadosLogin.getSenha(), candidatoEnontrado.getSenha()))
+                return jwtService.getAccessToken(candidatoEnontrado.getId(),
+                        candidatoEnontrado.getEmail(), candidatoEnontrado.getNome(), "candidato");
         }
         throw new UsernameNotFoundException("Usuário e/ou senha incorretos");
+    }
+
+    public LoginCandidatoDTO buscarPorEmailOuCpf(String emailOrCpf) {
+        return repository.buscarCandidatoLogin(emailOrCpf).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+    }
+
+    private Long getIdCandidatoLogado() {
+        return Long.parseLong(
+                SecurityContextHolder.getContext().getAuthentication().getCredentials().toString()
+        );
+    }
+
+    public void logarCandidato(String email) {
+        LoginCandidatoDTO loginDTO = buscarPorEmailOuCpf(email);
+        UserDetails userDetails = User.withUsername(loginDTO.getEmail())
+                .authorities("candidato")
+                .password(loginDTO.getSenha())
+                .build();
+        SecurityContextHolder.getContext()
+                .setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, loginDTO.getId(), userDetails.getAuthorities()));
     }
 }

@@ -1,14 +1,15 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.jwt;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO;
-import io.jsonwebtoken.Jwts;
+
+import com.github.PaulosdOliveira.TCC.selectAspi.model.token.DadosToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.Instant;
 import java.time.LocalDateTime;
+import io.jsonwebtoken.Jwts;
+import java.util.HashMap;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -18,12 +19,11 @@ public class JwtService {
     @Autowired
     private SecretKeyService secretKeyService;
 
-    public String getAccessToken(LoginCandidatoDTO candidatoEnontrado) {
+    public String getAccessToken(Long id, String email, String nome, String perfil) {
         return Jwts.builder()
-                .subject(candidatoEnontrado.getEmail())
+                .subject(email)
                 .signWith(secretKeyService.getSecret())
-                .claims(getClaims(candidatoEnontrado.getId(), candidatoEnontrado.getNome(),
-                        candidatoEnontrado.getPerfil()))
+                .claims(getClaims(id, nome, perfil))
                 .expiration(getExpiration())
                 .compact();
     }
@@ -39,5 +39,24 @@ public class JwtService {
         map.put("nome", nome);
         map.put("perfil", perfil);
         return map;
+    }
+
+    public DadosToken getEmailByToken(String token) {
+        String perfil = Jwts.parser()
+                .verifyWith(secretKeyService.getSecret())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("perfil").toString();
+
+        String email = Jwts.parser()
+                .verifyWith(secretKeyService.getSecret())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+
+        return new DadosToken(email, perfil);
+
     }
 }

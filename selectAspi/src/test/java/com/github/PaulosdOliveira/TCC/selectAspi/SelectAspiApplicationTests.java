@@ -36,8 +36,8 @@ class SelectAspiApplicationTests {
         System.out.println(service.buscarLocalizacaoPorCep("4409419"));
     }
 
-
-    void salvarChaveSecreta(){
+    @Test
+    void salvarChaveSecreta() {
         SecretKey secret = Jwts.SIG.HS256.key().build();
         ChaveSecreta chaveSecreta =
                 new ChaveSecreta(null, secret.getEncoded(), secret.getAlgorithm(), LocalDateTime.now());
@@ -45,7 +45,7 @@ class SelectAspiApplicationTests {
     }
 
     @Test
-    void buscarChaveSecretaTeste(){
+    void buscarChaveSecretaTeste() {
         System.out.println(secretKeyRepository.buscarChave());
 
 
