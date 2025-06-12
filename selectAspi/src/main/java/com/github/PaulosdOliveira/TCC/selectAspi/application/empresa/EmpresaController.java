@@ -24,8 +24,8 @@ public class EmpresaController {
     }
 
     @PostMapping("/login")
-    public void getAccessToken(@RequestBody @Valid DadosLoginEmpresaDTO dadosLogin) {
-        service.getAccessToken(dadosLogin);
+    public String getAccessToken(@RequestBody @Valid DadosLoginEmpresaDTO dadosLogin) {
+        return service.getAccessToken(dadosLogin);
     }
 
     @GetMapping("/foto/{id}")

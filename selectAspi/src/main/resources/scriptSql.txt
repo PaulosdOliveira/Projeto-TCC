@@ -76,10 +76,10 @@ foreign key (empresa_id) references empresa(id)
 );
 
 create table candidato_a_vaga(
-id bigint primary key auto_increment,
 candidato_id bigint ,
 vaga_emprego_id bigint,
 data_candidatura datetime not null,
+primary key(candidato_id, vaga_emprego_id),
 foreign key (candidato_id) references candidatos(id),
 foreign key (vaga_emprego_id) references vaga_emprego(id)
 );

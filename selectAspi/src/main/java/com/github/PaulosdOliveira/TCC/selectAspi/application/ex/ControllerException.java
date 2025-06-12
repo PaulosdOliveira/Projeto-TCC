@@ -1,13 +1,9 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.ex;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.exception.CnpjDuplicadoException;
-import com.github.PaulosdOliveira.TCC.selectAspi.exception.EmailDuplicadoException;
-import com.github.PaulosdOliveira.TCC.selectAspi.exception.CPFDuplicadoExcepton;
-import com.github.PaulosdOliveira.TCC.selectAspi.exception.CepInvalidoException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import com.github.PaulosdOliveira.TCC.selectAspi.exception.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,9 +43,27 @@ public class ControllerException {
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(CnpjDuplicadoException.class)
-    public String handlerCnpjDuplicadoException() {
-        return "";
+    public String handlerCnpjDuplicadoException(CnpjDuplicadoException e) {
+        return e.getMessage();
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(VagaNaoEncontradaException.class)
+    public String handlerVagaNaoEncontradaException(VagaNaoEncontradaException e) {
+        return e.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.GONE)
+    @ExceptionHandler(VagaEncerradaException.class)
+    public String handlerVagaEncerradaException(VagaEncerradaException e) {
+        return e.getMessage();
+    }
+
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(CandidaturaJaCadastradaException.class)
+    public String handlerCandidaturaJaCadastradaException(CandidaturaJaCadastradaException e) {
+        return e.getMessage();
+    }
 
 }

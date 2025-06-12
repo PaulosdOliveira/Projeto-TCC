@@ -24,7 +24,6 @@ public class CadastroVagaDTO {
     @NotNull(message = "Campo obrigatório")
     private Float salario;
 
-    private boolean salarioACombinar;
 
     @NotNull(message = "Campo obrigatório")
     private Nivel nivel;

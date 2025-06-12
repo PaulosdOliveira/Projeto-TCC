@@ -67,7 +67,7 @@ public class CandidatoService {
         return repository.buscarCandidatoLogin(emailOrCpf).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
     }
 
-    private Long getIdCandidatoLogado() {
+    public Long getIdCandidatoLogado() {
         return Long.parseLong(
                 SecurityContextHolder.getContext().getAuthentication().getCredentials().toString()
         );
@@ -82,4 +82,6 @@ public class CandidatoService {
         SecurityContextHolder.getContext()
                 .setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, loginDTO.getId(), userDetails.getAuthorities()));
     }
+
+
 }
