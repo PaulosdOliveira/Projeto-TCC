@@ -34,6 +34,15 @@ public class EmpresaService {
     }
 
 
+    public byte[] buscarFotoEmpresa(Long id) {
+        return repository.buscarFotoPorId(id);
+    }
+
+    public byte[] buscarCapaEmpresa(Long id) {
+        return repository.buscarCapaPorId(id);
+    }
+
+
     public String getAccessToken(DadosLoginEmpresaDTO dadosLogin) {
         LoginEmpresaDTO loginDTO = buscarPorEmailOuNnpj(dadosLogin.getEmailOuCpnj());
         if (encoder.matches(dadosLogin.getSenha(), loginDTO.getSenha())) {
@@ -45,6 +54,11 @@ public class EmpresaService {
     public LoginEmpresaDTO buscarPorEmailOuNnpj(String emailOuCpnj) {
         return repository.findByEmailOrCnpjLogin(emailOuCpnj)
                 .orElseThrow(() -> new UsernameNotFoundException("Usário não encontrado"));
+    }
+
+
+    public Empresa findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Algo deu errado"));
     }
 
     public void logarEmpresa(String email) {

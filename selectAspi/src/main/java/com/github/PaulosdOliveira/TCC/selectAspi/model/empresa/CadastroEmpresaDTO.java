@@ -24,7 +24,4 @@ public class CadastroEmpresaDTO {
 
     private String descricao;
 
-    private byte[] foto;
-
-    private byte[] capa;
 }

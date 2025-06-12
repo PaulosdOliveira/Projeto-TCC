@@ -24,6 +24,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/candidato").permitAll();
                     auth.requestMatchers("/candidato/login").permitAll();
+                    auth.requestMatchers("/empresa/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

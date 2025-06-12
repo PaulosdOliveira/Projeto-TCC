@@ -1,6 +1,5 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.jwt;
 
-
 import com.github.PaulosdOliveira.TCC.selectAspi.model.token.DadosToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-
 
     @Autowired
     private SecretKeyService secretKeyService;

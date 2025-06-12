@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.FilterChain;
+
 import java.io.IOException;
 
 @Component
@@ -37,6 +38,13 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    // CORRIGIR LÓGICA
+    @Override
+    public boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.contains("/login") || path.contains("/empresa");
     }
 
 

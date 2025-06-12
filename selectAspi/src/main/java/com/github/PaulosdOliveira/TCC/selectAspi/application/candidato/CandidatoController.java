@@ -1,5 +1,6 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.candidato;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.CadastroCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosLoginCandidatoDTO;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 
 @RequiredArgsConstructor
@@ -18,6 +20,7 @@ import java.io.IOException;
 public class CandidatoController {
 
     private final CandidatoService service;
+    private final UtilsService utils;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -34,10 +37,7 @@ public class CandidatoController {
     @GetMapping("/foto/{idCandidato}")
     public ResponseEntity<byte[]> buscarFotoCandidato(@PathVariable Long idCandidato) {
         byte[] foto = service.buscarFotoCandidato(idCandidato);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
-        headers.setContentLength(foto.length);
-        return new ResponseEntity<>(foto, headers, HttpStatus.OK);
+        return utils.renderizarFoto(foto);
     }
 
     @PostMapping("/curriculo")
@@ -57,7 +57,7 @@ public class CandidatoController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public String login(@RequestBody @Valid DadosLoginCandidatoDTO dadosLogin){
+    public String login(@RequestBody @Valid DadosLoginCandidatoDTO dadosLogin) {
         return service.getCandidatoAccessToken(dadosLogin);
     }
 
