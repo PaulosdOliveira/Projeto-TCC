@@ -2,7 +2,11 @@ package com.github.PaulosdOliveira.TCC.selectAspi.application.candidato;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.CadastroCandidatoDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.ConsultaCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosLoginCandidatoDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuarioDTO;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -59,6 +64,17 @@ public class CandidatoController {
     @PostMapping("/login")
     public String login(@RequestBody @Valid DadosLoginCandidatoDTO dadosLogin) {
         return service.getCandidatoAccessToken(dadosLogin);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/qualificacao-candidato")
+    public void cadastrarQualificacao(@RequestBody @Valid QualificacaoUsuarioDTO qualificacao) {
+        service.cadastarQualificacaoUsuario(qualificacao);
+    }
+
+    @PostMapping("/qualificacao-candidato/consulta")
+    public List<ConsultaCandidatoDTO> findByQ(@RequestBody List<@Valid ConsultaQualificacaoUsuario> qualificacoes) {
+        return service.findByQualificacao(qualificacoes).stream().map(ConsultaCandidatoDTO::new).toList();
     }
 
 }

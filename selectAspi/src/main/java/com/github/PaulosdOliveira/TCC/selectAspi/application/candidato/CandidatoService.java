@@ -1,9 +1,12 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.candidato;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.application.qualificacao.QualificacaoService;
 import com.github.PaulosdOliveira.TCC.selectAspi.exception.CepInvalidoException;
 import com.github.PaulosdOliveira.TCC.selectAspi.jwt.JwtService;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.CandidatoRepository;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuarioDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.validation.CandidatoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -24,6 +29,7 @@ public class CandidatoService {
     private final LocalizacaoService localizacaoService;
     private final PasswordEncoder encoder;
     private final JwtService jwtService;
+    private final QualificacaoService qualificacaoService;
 
     public void cadastrarUsuario(CadastroCandidatoDTO dadosCadastrais) throws Exception {
         validator.validar(dadosCadastrais.getEmail(), dadosCadastrais.getCpf());
@@ -81,6 +87,15 @@ public class CandidatoService {
                 .build();
         SecurityContextHolder.getContext()
                 .setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, loginDTO.getId(), userDetails.getAuthorities()));
+    }
+
+
+    public void cadastarQualificacaoUsuario(QualificacaoUsuarioDTO qualificacao){
+        qualificacaoService.cadastrarQualificacaoUsuario(qualificacao, getIdCandidatoLogado());
+    }
+
+    public List<Candidato> findByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes){
+        return repository.findyCandidatoByQualificacao(qualificacoes);
     }
 
 

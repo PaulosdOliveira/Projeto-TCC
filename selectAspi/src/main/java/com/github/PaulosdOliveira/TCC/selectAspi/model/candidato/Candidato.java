@@ -1,9 +1,13 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.candidato;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuario;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -49,10 +53,29 @@ public class Candidato {
     @Column(name = "cidade", nullable = false)
     private String localidade;
 
+    @OneToMany(mappedBy = "candidato", fetch = FetchType.EAGER)
+    private List<QualificacaoUsuario> qualificacoes;
+
 
     public Candidato(CadastroCandidatoDTO dadosCadastrais, String senhaCriptografada){
         BeanUtils.copyProperties(dadosCadastrais, this);
         this.senha = senhaCriptografada;
     }
 
+
+    @Override
+    public String toString() {
+        return "Candidato{" +
+               "nome='" + nome + '\'' +
+               ", descricao='" + descricao + '\'' +
+               ", tel='" + tel + '\'' +
+               ", email='" + email + '\'' +
+               ", trabalhando=" + trabalhando +
+               ", uf='" + uf + '\'' +
+               ", localidade='" + localidade + '\'' +
+               ", qualificacoes=" + qualificacoes +
+               ", id=" + id +
+               ", cpf='" + cpf + '\'' +
+               '}';
+    }
 }

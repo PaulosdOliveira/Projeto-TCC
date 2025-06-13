@@ -5,10 +5,8 @@ import lombok.Data;
 
 @Data
 public class QualificacaoUsuarioDTO {
-    @NotNull(message = "Algo de errado ocorreu, informe o seu usuário")
-    private Long idCandidato;
 
-    @NotNull(message = "Algo de errado ocorreu, informa a qualificação")
+    @NotNull(message = "Algo de errado ocorreu")
     private Long idQualificacao;
 
     @NotNull(message = "Informe o nivel de hábilidade")

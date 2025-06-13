@@ -17,7 +17,7 @@ public class QualificacaoServiceTest {
     @Test
     void cadastrarQualificacaoTest(){
         Qualificacao qualificacao = new Qualificacao();
-        qualificacao.setNome("Excel");
+        qualificacao.setNome("Python");
         service.cadastrarQualificacao(qualificacao);
     }
 
@@ -25,9 +25,8 @@ public class QualificacaoServiceTest {
     void cadastrarQualificacaoUsuarioTest(){
         QualificacaoUsuarioDTO dto = new QualificacaoUsuarioDTO();
         dto.setIdQualificacao(1L);
-        dto.setIdCandidato(1L);
         dto.setNivel(Nivel.BASICO);
-        service.cadastrarQualificacaoUsuario(dto);
+        service.cadastrarQualificacaoUsuario(dto, 1L);
     }
 
     @Test

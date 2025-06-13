@@ -31,6 +31,4 @@ public class VagaEmpregoController {
     public void cadastarCandidatura(@PathVariable Long idVaga) {
      candidatoVagaService.cadastrarCandidatura(idVaga);
     }
-
-
 }
