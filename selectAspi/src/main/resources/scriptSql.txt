@@ -8,15 +8,16 @@ cpf varchar(14) not null unique,
 senha varchar(300) not null,
 foto longblob ,
 nome varchar(120) not null,
+sexo enum('FEMININO', 'MASCULINO'),
+pcd boolean default false,
 descricao text not null,
 tel varchar(18),
 email varchar(254) not null unique,
-curriculo longblob ,
+curriculo longblob,
 trabalhando boolean not null,
 estado varchar(2) not null,
 cidade varchar(55) not null
 );
-
 
 create table qualificacao(
 id bigint primary key auto_increment,
@@ -72,6 +73,8 @@ modelo enum('PRESENCIAL', 'HIBRIDO', 'REMOTO'),
 vaga_ativa boolean,
 tipo_contrato enum('CLT', 'PJ', 'ESTAGIO', 'TEMPORARIO'),
 experiencia_previa boolean,
+esclusivo_para_pcd boolean default false,
+exclusivo_para_sexo enum('MASCULINO', 'FEMININO', 'TODOS') default 'TODOS',
 foreign key (empresa_id) references empresa(id)
 );
 

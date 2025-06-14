@@ -14,8 +14,15 @@ public class CandidatoSpecification {
         return ((root, query, cb) -> {
             Join<Candidato, QualificacaoUsuario> quJoin = root.join("qualificacoes");
             Predicate idQualificacaoEqual = cb.equal(quJoin.get("id").get("qualificacao").get("id"), id);
-            Predicate nivelEqual = cb.equal(quJoin.get("nivel"), nivel);
-            return cb.and(idQualificacaoEqual, nivelEqual);
+            Predicate nivelIN = nivel.equals(Nivel.AVANCADO) ? quJoin.get("nivel").in(nivel) : null;
+            if (nivel.equals(Nivel.BASICO)) {
+                nivelIN = quJoin.get("nivel").in(nivel, Nivel.INTERMEDIARIO.name(), Nivel.AVANCADO.name());
+            } else if (nivel.equals(Nivel.INTERMEDIARIO)) {
+                nivelIN = quJoin.get("nivel").in(nivel, Nivel.AVANCADO.name());
+            }
+            return cb.and(idQualificacaoEqual, nivelIN);
         });
     }
+
+
 }

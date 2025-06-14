@@ -32,6 +32,11 @@ public class Candidato {
     @Column(nullable = false, length = 120)
     private String nome;
 
+    @Enumerated(EnumType.STRING)
+    private Sexo sexo;
+
+    private Boolean pcd;
+
     @Column(nullable = false)
     private String descricao;
 
@@ -57,7 +62,7 @@ public class Candidato {
     private List<QualificacaoUsuario> qualificacoes;
 
 
-    public Candidato(CadastroCandidatoDTO dadosCadastrais, String senhaCriptografada){
+    public Candidato(CadastroCandidatoDTO dadosCadastrais, String senhaCriptografada) {
         BeanUtils.copyProperties(dadosCadastrais, this);
         this.senha = senhaCriptografada;
     }

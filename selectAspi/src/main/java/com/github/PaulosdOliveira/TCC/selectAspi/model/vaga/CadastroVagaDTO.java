@@ -1,6 +1,7 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.vaga;
 
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Sexo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Modelo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Nivel;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.TipoContrato;
@@ -33,6 +34,10 @@ public class CadastroVagaDTO {
 
     @NotNull(message = "Campo obrigatório")
     private Modelo modelo;
+
+    private Sexo ExclusivaPararSexo;
+
+    private Boolean ExclusivoParaPcd;
 
     @NotNull(message = "Campo obrigatório")
     private TipoContrato tipoContrato;

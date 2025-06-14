@@ -1,5 +1,6 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.vaga;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Sexo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.TipoContrato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Modelo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Nivel;
@@ -9,8 +10,8 @@ import org.springframework.data.annotation.CreatedDate;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import jakarta.persistence.*;
-import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Data;
 
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
@@ -53,6 +54,11 @@ public class VagaEmprego {
     private Modelo modelo;
 
     private boolean vagaAtiva;
+
+    @Enumerated(EnumType.STRING)
+    private Sexo ExclusivaPararSexo;
+
+    private Boolean ExclusivoParaPcd;
 
     @Enumerated(EnumType.STRING)
     private TipoContrato tipoContrato;

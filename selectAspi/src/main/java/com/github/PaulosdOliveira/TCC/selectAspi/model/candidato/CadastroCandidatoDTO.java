@@ -21,6 +21,11 @@ public class CadastroCandidatoDTO {
     @NotBlank(message = "Informe o seu nome")
     private String nome;
 
+    @NotBlank(message = "Informe o seu sexo")
+    private Sexo sexo;
+
+    private Boolean pcd;
+
     @NotBlank(message = "Crie uma descrição para o seu perfil")
     private String descricao;
 
