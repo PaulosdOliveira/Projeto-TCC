@@ -71,8 +71,14 @@ public class CandidatoController {
     }
 
     @PostMapping("/qualificacao-candidato/consulta")
-    public List<ConsultaCandidatoDTO> findByQ(@RequestBody List<@Valid ConsultaQualificacaoUsuario> qualificacoes) {
-        return service.findByQualificacao(qualificacoes).stream().map(ConsultaCandidatoDTO::new).toList();
+    public List<ConsultaCandidatoDTO> findByQ(
+            @RequestParam(name = "estado", required = false) String estado,
+            @RequestParam(name = "cidade", required = false) String cidade,
+            @RequestBody List<@Valid ConsultaQualificacaoUsuario> qualificacoes) {
+        return service.findByQualificacao(qualificacoes, estado, cidade).stream().map(ConsultaCandidatoDTO::new).toList();
     }
 
+
+
 }
+

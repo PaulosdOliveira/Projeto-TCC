@@ -3,7 +3,6 @@ package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,14 +10,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.jpa.repository.Query;
+
 import static com.github.PaulosdOliveira.TCC.selectAspi.infra.specification.CandidatoSpecification.*;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface CandidatoRepository extends JpaRepository<Candidato, Long> , JpaSpecificationExecutor<Candidato> {
+public interface CandidatoRepository extends JpaRepository<Candidato, Long>, JpaSpecificationExecutor<Candidato> {
 
     boolean existsByEmail(String email);
+
     boolean existsByCpf(String cpf);
 
     @Transactional
@@ -42,17 +43,23 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long> , Jp
 
 
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO(c.id, c.nome, c.email, c.senha)" +
-            " from Candidato c where c.email = :cpfOuEmail  or c.cpf = :cpfOuEmail ")
+           " from Candidato c where c.email = :cpfOuEmail  or c.cpf = :cpfOuEmail")
     Optional<LoginCandidatoDTO> buscarCandidatoLogin(@Param("cpfOuEmail") String cpfOuEmail);
 
+    @Query("Select DISTINCT c.uf from Candidato c")
+    List<String> buscarEstados();
 
+    @Query("Select distinct c.localidade from Candidato c where c.uf like %:uf order by c.localidade")
+    public List<String> buscarCidades(String uf);
 
-    default List<Candidato> findyCandidatoByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes){
+    default List<Candidato> findCandidatoByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String estado, String cidade) {
         Specification<Candidato> spec = Specification.where(null);
-        for(ConsultaQualificacaoUsuario q: qualificacoes){
+        for (ConsultaQualificacaoUsuario q : qualificacoes) {
             spec = spec.and(findByQualificacao(q.getIdQualificacao(), q.getNivel()));
         }
-        //Sort ordem = Sort.by(Sort.Order.by("RAND()"));
+        if (estado != null) spec = spec.and(stringEqual("uf", estado));
+        if (cidade != null) spec = spec.and(stringEqual("localidade", cidade.replaceAll("-", " ")));
+        spec = spec.and(orderByRandom());
         return findAll(spec);
     }
 

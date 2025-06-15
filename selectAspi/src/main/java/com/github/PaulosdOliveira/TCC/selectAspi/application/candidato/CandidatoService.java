@@ -94,8 +94,8 @@ public class CandidatoService {
         qualificacaoService.cadastrarQualificacaoUsuario(qualificacao, getIdCandidatoLogado());
     }
 
-    public List<Candidato> findByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes){
-        return repository.findyCandidatoByQualificacao(qualificacoes);
+    public List<Candidato> findByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String estado, String cidade){
+        return repository.findCandidatoByQualificacao(qualificacoes, estado, cidade);
     }
 
 

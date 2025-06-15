@@ -48,11 +48,21 @@ public class CandidatoServiceTest {
     void buscarCandidatosPorQualificacaoTest() {
         List<ConsultaQualificacaoUsuario> qualificacoes = new ArrayList<>();
         qualificacoes.add(new ConsultaQualificacaoUsuario(1L, Nivel.BASICO));
-        service.findByQualificacao(qualificacoes).forEach(System.out::println);
+        service.findByQualificacao(qualificacoes, null, null).forEach(System.out::println);
     }
 
     @Test
     void test(){
         repository.findAll().forEach(System.out::println);
+    }
+
+    @Test
+    void buscarEstadosTest(){
+        System.out.println(repository.buscarEstados());
+    }
+
+    @Test
+    void buscarCidadesTest(){
+        System.out.println(repository.buscarCidades(""));
     }
 }

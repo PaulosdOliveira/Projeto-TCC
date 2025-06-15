@@ -35,7 +35,7 @@ public class CadastroVagaDTO {
     @NotNull(message = "Campo obrigatório")
     private Modelo modelo;
 
-    private Sexo ExclusivaPararSexo;
+    private Sexo ExclusivaParaSexo;
 
     private Boolean ExclusivoParaPcd;
 
