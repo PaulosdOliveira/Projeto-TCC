@@ -98,5 +98,9 @@ public class CandidatoService {
         return repository.findCandidatoByQualificacao(qualificacoes, estado, cidade);
     }
 
+    // Buscando informações relevantes para a consulta de vagas
+    public DadosFitroVaga buscarFiltroVaga(){
+        return  repository.buscarDadosFiltroVaga(getIdCandidatoLogado());
+    }
 
 }

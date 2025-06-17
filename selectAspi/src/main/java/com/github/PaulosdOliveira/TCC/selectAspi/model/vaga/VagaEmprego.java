@@ -47,6 +47,9 @@ public class VagaEmprego {
     @Enumerated(EnumType.STRING)
     private Nivel nivel;
 
+    @Column(nullable = false, length = 2)
+    private String estado;
+
     @Column(nullable = false, length = 40)
     private String cidade;
 
@@ -63,13 +66,16 @@ public class VagaEmprego {
     @Enumerated(EnumType.STRING)
     private TipoContrato tipoContrato;
 
-    public VagaEmprego(CadastroVagaDTO  dadosCadastrais, String cidade, Empresa empresa){
+    public VagaEmprego(CadastroVagaDTO  dadosCadastrais, String estado, String cidade, Empresa empresa){
         Long diasEmAberto = dadosCadastrais.getDiasEmAberto();
         if(dadosCadastrais.getSalario() == 0) this.salarioACombinar = true;
         if(diasEmAberto > 0) this.dataHoraEncerramento = LocalDateTime.now().plusDays(diasEmAberto);
+        this.estado = estado;
         this.cidade = cidade;
         this.empresa = empresa;
         this.vagaAtiva = true;
         BeanUtils.copyProperties(dadosCadastrais, this);
     }
+
+
 }

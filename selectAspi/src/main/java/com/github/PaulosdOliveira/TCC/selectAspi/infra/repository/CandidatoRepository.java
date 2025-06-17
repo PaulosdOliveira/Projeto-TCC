@@ -1,5 +1,6 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosFitroVaga;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
@@ -43,14 +44,17 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
 
 
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO(c.id, c.nome, c.email, c.senha)" +
-           " from Candidato c where c.email = :cpfOuEmail  or c.cpf = :cpfOuEmail")
+            " from Candidato c where c.email = :cpfOuEmail  or c.cpf = :cpfOuEmail")
     Optional<LoginCandidatoDTO> buscarCandidatoLogin(@Param("cpfOuEmail") String cpfOuEmail);
 
     @Query("Select DISTINCT c.uf from Candidato c")
     List<String> buscarEstados();
 
     @Query("Select distinct c.localidade from Candidato c where c.uf like %:uf order by c.localidade")
-    public List<String> buscarCidades(String uf);
+    List<String> buscarCidades(String uf);
+
+    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosFitroVaga(c.sexo, c.pcd) from Candidato c where c.id = :id")
+    DadosFitroVaga buscarDadosFiltroVaga(Long id);
 
     default List<Candidato> findCandidatoByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String estado, String cidade) {
         Specification<Candidato> spec = Specification.where(null);
@@ -62,5 +66,6 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
         spec = spec.and(orderByRandom());
         return findAll(spec);
     }
+
 
 }

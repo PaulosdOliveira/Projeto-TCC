@@ -14,16 +14,16 @@ import java.util.List;
 public class UtilsController {
 
     @Autowired
-    private CandidatoRepository repository;
+    private CandidatoRepository candidatoRepository;
 
     @GetMapping("/estados")
     public List<String> buscarEstados(){
-        return repository.buscarEstados();
+        return candidatoRepository.buscarEstados();
     }
 
     @GetMapping("/cidades/{uf}")
     public List<String> buscarCiiades(@PathVariable String uf){
-        return repository.buscarCidades(uf);
+        return candidatoRepository.buscarCidades(uf);
     }
 
 }

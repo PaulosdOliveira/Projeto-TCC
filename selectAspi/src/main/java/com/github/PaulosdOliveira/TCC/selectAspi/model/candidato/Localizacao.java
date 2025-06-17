@@ -9,8 +9,9 @@ public class Localizacao {
     private String uf;
     private String localidade;
 
+
     @Override
-    public String toString(){
+    public String toString() {
         return " Estado: " + uf + "\n Cidade: " + localidade;
     }
 }
