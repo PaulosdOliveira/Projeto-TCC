@@ -17,7 +17,9 @@ public class JwtService {
     @Autowired
     private SecretKeyService secretKeyService;
 
-    public String getAccessToken(Long id, String email, String nome, String perfil) {
+    public String getAccessToken(String id, String email, String nome, String perfil) {
+
+
         return Jwts.builder()
                 .subject(email)
                 .signWith(secretKeyService.getSecret())
@@ -31,7 +33,7 @@ public class JwtService {
         return Date.from(expiration);
     }
 
-    private Map<String, Object> getClaims(Long id, String nome, String perfil) {
+    private Map<String, Object> getClaims(String id, String nome, String perfil) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
         map.put("nome", nome);

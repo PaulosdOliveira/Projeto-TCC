@@ -63,7 +63,7 @@ public class CandidatoService {
         LoginCandidatoDTO candidatoEnontrado = buscarPorEmailOuCpf(dadosLogin.getCpfOuEmail());
         if (candidatoEnontrado != null) {
             if (encoder.matches(dadosLogin.getSenha(), candidatoEnontrado.getSenha()))
-                return jwtService.getAccessToken(candidatoEnontrado.getId(),
+                return jwtService.getAccessToken(candidatoEnontrado.getId().toString(),
                         candidatoEnontrado.getEmail(), candidatoEnontrado.getNome(), "candidato");
         }
         throw new UsernameNotFoundException("Usuário e/ou senha incorretos");

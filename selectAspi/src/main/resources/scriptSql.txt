@@ -47,7 +47,7 @@ data_criacao datetime not null
 
 
 create table empresa(
-id bigint primary key auto_increment,
+id binary(16) primary key auto_increment,
 cnpj varchar(20) not null unique,
 nome text not null,
 email varchar(180) not null unique,
@@ -64,7 +64,7 @@ titulo varchar(255) not null,
 descricao text not null,
 data_hora_publicacao datetime not null,
 data_hora_encerramento datetime,
-empresa_id bigint,
+empresa_id binary(16),
 salario decimal(10,2) not null,
 salario_a_combinar boolean default false,
 nivel enum('JUNIOR', 'PLENO', 'SENIOR', 'ESPECIALISTA', 'GERENTE', 	'INDEFINIDO'),
@@ -86,4 +86,15 @@ data_candidatura datetime not null,
 primary key(candidato_id, vaga_emprego_id),
 foreign key (candidato_id) references candidatos(id),
 foreign key (vaga_emprego_id) references vaga_emprego(id)
+);
+
+
+create table mensagem(
+id binary(16) primary key,
+texto text not null,
+data_hora_envio datetime not null,
+empresa_id binary(16),
+candidato_id bigint,
+foreign key (empresa_id) references empresa(id),
+foreign key (candidato_id) references candidatos(id)
 );

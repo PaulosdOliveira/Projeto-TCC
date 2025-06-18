@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 
 @RequiredArgsConstructor
@@ -30,8 +31,8 @@ public class VagaEmpregoService {
 
 
     public void cadastrarVaga(CadastroVagaDTO dadosCadastrais) {
-        Long id = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getCredentials().toString());
-        var empresaLogada = empresaService.findById(id);
+        String id = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
+        var empresaLogada = empresaService.findById(UUID.fromString(id));
         var localizacao = localizacaoService.buscarLocalizacaoPorCep(dadosCadastrais.getCep());
         String estado = localizacao.getUf();
         String cidade = localizacao.getLocalidade();

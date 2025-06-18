@@ -35,9 +35,11 @@ public class CadastroVagaDTO {
     @NotNull(message = "Campo obrigatório")
     private Modelo modelo;
 
-    private Sexo ExclusivaParaSexo;
+    @NotNull(message = "MASCULINO, FEMININO OU TODOS")
+    private Sexo exclusivoParaSexo;
 
-    private Boolean ExclusivoParaPcd;
+    @NotNull(message = "Campo obrigatório")
+    private Boolean exclusivoParaPcd;
 
     @NotNull(message = "Campo obrigatório")
     private TipoContrato tipoContrato;

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("empresa")
@@ -32,13 +34,13 @@ public class EmpresaController {
     }
 
     @GetMapping("/foto/{id}")
-    public ResponseEntity<byte[]> renderizarFoto(@PathVariable Long id) {
+    public ResponseEntity<byte[]> renderizarFoto(@PathVariable UUID id) {
         byte[] foto = service.buscarFotoEmpresa(id);
         return utils.renderizarFoto(foto);
     }
 
     @GetMapping("/capa/{id}")
-    public ResponseEntity<byte[]> renderizarCapa(@PathVariable Long id) {
+    public ResponseEntity<byte[]> renderizarCapa(@PathVariable UUID id) {
         byte[] foto = service.buscarCapaEmpresa(id);
         return utils.renderizarFoto(foto);
     }

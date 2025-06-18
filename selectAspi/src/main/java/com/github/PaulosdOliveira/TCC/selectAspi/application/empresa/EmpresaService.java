@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Service
 public class EmpresaService {
@@ -34,11 +36,11 @@ public class EmpresaService {
     }
 
 
-    public byte[] buscarFotoEmpresa(Long id) {
+    public byte[] buscarFotoEmpresa(UUID id) {
         return repository.buscarFotoPorId(id);
     }
 
-    public byte[] buscarCapaEmpresa(Long id) {
+    public byte[] buscarCapaEmpresa(UUID id) {
         return repository.buscarCapaPorId(id);
     }
 
@@ -46,7 +48,7 @@ public class EmpresaService {
     public String getAccessToken(DadosLoginEmpresaDTO dadosLogin) {
         LoginEmpresaDTO loginDTO = buscarPorEmailOuNnpj(dadosLogin.getEmailOuCpnj());
         if (encoder.matches(dadosLogin.getSenha(), loginDTO.getSenha())) {
-            return jwtService.getAccessToken(loginDTO.getId(), loginDTO.getEmail(), loginDTO.getNome(), "empresa");
+            return jwtService.getAccessToken(loginDTO.getId().toString(), loginDTO.getEmail(), loginDTO.getNome(), "empresa");
         }
         throw new UsernameNotFoundException("Usário e/ou senha incorretos");
     }
@@ -57,7 +59,7 @@ public class EmpresaService {
     }
 
 
-    public Empresa findById(Long id) {
+    public Empresa findById(UUID id) {
         return repository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Algo deu errado"));
     }
 

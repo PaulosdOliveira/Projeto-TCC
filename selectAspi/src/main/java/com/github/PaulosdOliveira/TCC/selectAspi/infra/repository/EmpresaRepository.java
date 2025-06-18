@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
+public interface EmpresaRepository extends JpaRepository<Empresa, UUID> {
 
     boolean existsByCnpj(String cnpj);
 
@@ -21,8 +22,8 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
 
 
     @Query("Select e.foto from Empresa e where e.id = : id")
-    byte[] buscarFotoPorId(@Param("id") Long id);
+    byte[] buscarFotoPorId(@Param("id") UUID id);
 
     @Query("Select e.capa from Empresa e where e.id = : id")
-    byte[] buscarCapaPorId(@Param("id") Long id);
+    byte[] buscarCapaPorId(@Param("id") UUID id);
 }
