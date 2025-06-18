@@ -1,6 +1,7 @@
-package com.github.PaulosdOliveira.TCC.selectAspi.model.vaga;
+package com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.VagaEmprego;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;

@@ -59,7 +59,7 @@ public class VagaEmprego {
     private boolean vagaAtiva;
 
     @Enumerated(EnumType.STRING)
-    private Sexo ExclusivaParaSexo;
+    private Sexo ExclusivoParaSexo;
 
     private Boolean ExclusivoParaPcd;
 

@@ -1,21 +1,23 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.vaga;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.application.candidato.CandidatoService;
 import com.github.PaulosdOliveira.TCC.selectAspi.application.candidato.LocalizacaoService;
+import com.github.PaulosdOliveira.TCC.selectAspi.application.candidato.CandidatoService;
+import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.VagaEmpregoRepository;
+import com.github.PaulosdOliveira.TCC.selectAspi.exception.VagaNaoEncontradaException;
 import com.github.PaulosdOliveira.TCC.selectAspi.application.empresa.EmpresaService;
 import com.github.PaulosdOliveira.TCC.selectAspi.exception.VagaEncerradaException;
-import com.github.PaulosdOliveira.TCC.selectAspi.exception.VagaNaoEncontradaException;
-import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.VagaEmpregoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.CadastroVagaDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.ConsultaVagaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.VagaEmprego;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Modelo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Nivel;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
@@ -38,9 +40,15 @@ public class VagaEmpregoService {
     }
 
 
-    public List<VagaEmprego> buscarVaga(String titulo, String estado, String cidade, Nivel senioridade) {
+    public List<ConsultaVagaDTO> buscarVagas(String titulo, String estado, String cidade, Nivel senioridade, Modelo modelo) {
         var filtro = candidatoService.buscarFiltroVaga();
-        return repository.buscarVagas(titulo, estado, cidade, senioridade, filtro.sexo(), filtro.pcd());
+        return repository.buscarVagas(titulo, estado, cidade, senioridade, filtro.sexo(), filtro.pcd(), modelo);
+    }
+
+
+    public List<ConsultaVagaDTO> buscarVagasAlinhadas() {
+        List<String> qualificacoes = candidatoService.buscarQualificacoes();
+        return repository.buscarVagasAlinhadas(qualificacoes);
     }
 
 

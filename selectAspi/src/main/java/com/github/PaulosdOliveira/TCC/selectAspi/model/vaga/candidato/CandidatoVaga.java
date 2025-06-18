@@ -1,6 +1,5 @@
-package com.github.PaulosdOliveira.TCC.selectAspi.model.vaga;
+package com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

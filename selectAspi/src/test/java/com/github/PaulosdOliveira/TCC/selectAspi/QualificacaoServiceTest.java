@@ -29,8 +29,4 @@ public class QualificacaoServiceTest {
         service.cadastrarQualificacaoUsuario(dto, 1L);
     }
 
-    @Test
-    void getQualificacaoByIdCandidatoTeste(){
-        service.getQualificacaoByIdCandidatos(1L).forEach(System.out::println);
-    }
 }

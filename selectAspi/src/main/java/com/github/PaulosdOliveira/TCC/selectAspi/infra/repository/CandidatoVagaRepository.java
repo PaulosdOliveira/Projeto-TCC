@@ -1,7 +1,7 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.CandidatoVaga;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.CandidaturaPK;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidatoVaga;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -2,32 +2,21 @@ package com.github.PaulosdOliveira.TCC.selectAspi.infra.specification;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Sexo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.VagaEmprego;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Modelo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Nivel;
 import org.springframework.data.jpa.domain.Specification;
 
 public class VagaEmpregoSpecification {
 
-
-    public static Specification<VagaEmprego> tituloLike(String titulo) {
+    public static Specification<VagaEmprego> stringLike(String campo, String valor) {
         return ((root, query, cb) ->
-                cb.like(root.get("titulo"), "%" + titulo + "%"));
-    }
-
-    public static Specification<VagaEmprego> estadoEqual(String estado) {
-        return ((root, query, cb) ->
-                cb.equal(root.get("estado"), estado));
+                cb.like(root.get(campo), "%" + valor + "%"));
     }
 
 
-    public static Specification<VagaEmprego> nivelEqual(Nivel senioridade) {
+    public static Specification<VagaEmprego> stringEqual(String campo, String valor) {
         return ((root, query, cb) ->
-                cb.equal(root.get("nivel"), senioridade));
-    }
-
-
-    public static Specification<VagaEmprego> cidadeEqual(String cidade) {
-        return ((root, query, cb) ->
-                cb.equal(root.get("cidade"), cidade));
+                cb.equal(root.get(campo),  valor));
     }
 
     public static Specification<VagaEmprego> exclusivaPcd(boolean isPcd) {
@@ -37,7 +26,7 @@ public class VagaEmpregoSpecification {
 
     public static Specification<VagaEmprego> notSexoExclusivo(Sexo sexo) {
         return ((root, query, cb) ->
-                cb.notEqual(root.get("ExclusivaParaSexo"), sexo.name()));
+                cb.notEqual(root.get("ExclusivoParaSexo"), sexo.equals(Sexo.MASCULINO) ? Sexo.FEMININO : Sexo.MASCULINO));
 
     }
 
@@ -45,4 +34,9 @@ public class VagaEmpregoSpecification {
         return (root, query, cb) ->
                 cb.equal(root.get("vagaAtiva"), true);
     }
+
+
+
+
+
 }

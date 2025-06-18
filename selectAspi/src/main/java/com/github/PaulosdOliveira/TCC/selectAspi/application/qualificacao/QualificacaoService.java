@@ -1,5 +1,6 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.qualificacao;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.application.candidato.CandidatoService;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.QualificacaoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.QualificacaoUsuarioRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ChaveCompostaQualificacao;
@@ -28,7 +29,7 @@ public class QualificacaoService {
         qualificacaoUsuarioRepository.insert( idCandidatoLogado , dto.getIdQualificacao(), dto.getNivel().name());
     }
 
-    public List<String> getQualificacaoByIdCandidatos(Long id) {
+    public List<String> getQualificacaoByIdCandidato(Long id) {
         return qualificacaoUsuarioRepository.getQualifcacoesById(id);
     }
 
