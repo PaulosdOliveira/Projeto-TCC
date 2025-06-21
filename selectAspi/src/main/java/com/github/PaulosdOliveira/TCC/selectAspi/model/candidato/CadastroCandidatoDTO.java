@@ -21,7 +21,7 @@ public class CadastroCandidatoDTO {
     @NotBlank(message = "Informe o seu nome")
     private String nome;
 
-    @NotBlank(message = "Informe o seu sexo")
+    @NotNull(message = "Informe o seu sexo")
     private Sexo sexo;
 
     private Boolean pcd;
@@ -34,8 +34,6 @@ public class CadastroCandidatoDTO {
     @Email(message = "Digite um email válido")
     @NotBlank(message = "Informe o seu email")
     private String email;
-
-    private byte[] curriculo;
 
     @NotNull(message = "Informe se está trabalho atualmente")
     private boolean trabalhando;

@@ -5,7 +5,6 @@ import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.CandidatoVagaR
 import com.github.PaulosdOliveira.TCC.selectAspi.validation.CandidaturaValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor

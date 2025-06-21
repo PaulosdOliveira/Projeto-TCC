@@ -44,6 +44,8 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     public boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
+        System.out.println(path + "----------------------------------");
+        System.out.println(request.getRequestURL() + "@@@@@@@@@@@@@@");
         return path.contains("/login") || path.contains("/empresa");
     }
 

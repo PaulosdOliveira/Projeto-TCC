@@ -23,47 +23,55 @@ public class ControllerException {
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(CPFDuplicadoExcepton.class)
-    public String handlerCPFDuplicadoExcepton(CPFDuplicadoExcepton e) {
-        return e.getMessage();
+    public Map<String, Object> handlerCPFDuplicadoExcepton(CPFDuplicadoExcepton e) {
+        return getMap(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CepInvalidoException.class)
-    public String handlerCepInvalidoException(CepInvalidoException e) {
-        return e.getMessage();
+    public Map<String, Object> handlerCepInvalidoException(CepInvalidoException e) {
+        return getMap(e.getMessage());
     }
 
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(EmailDuplicadoException.class)
-    public String handlerEmailDuplicadoException(EmailDuplicadoException e) {
-        return e.getMessage();
+    public Map<String, Object> handlerEmailDuplicadoException(EmailDuplicadoException e) {
+        return getMap(e.getMessage());
     }
 
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(CnpjDuplicadoException.class)
-    public String handlerCnpjDuplicadoException(CnpjDuplicadoException e) {
-        return e.getMessage();
+    public Map<String, Object> handlerCnpjDuplicadoException(CnpjDuplicadoException e) {
+        return getMap(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(VagaNaoEncontradaException.class)
-    public String handlerVagaNaoEncontradaException(VagaNaoEncontradaException e) {
-        return e.getMessage();
+    public Map<String, Object> handlerVagaNaoEncontradaException(VagaNaoEncontradaException e) {
+        return getMap(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.GONE)
     @ExceptionHandler(VagaEncerradaException.class)
-    public String handlerVagaEncerradaException(VagaEncerradaException e) {
-        return e.getMessage();
+    public Map<String, Object> handlerVagaEncerradaException(VagaEncerradaException e) {
+        return getMap(e.getMessage());
     }
 
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(CandidaturaJaCadastradaException.class)
-    public String handlerCandidaturaJaCadastradaException(CandidaturaJaCadastradaException e) {
-        return e.getMessage();
+    public Map<String, Object> handlerCandidaturaJaCadastradaException(CandidaturaJaCadastradaException e) {
+        return getMap(e.getMessage());
+    }
+
+
+    // Padroniizando erros
+    private Map<String, Object> getMap(String erro){
+        Map<String, Object> map = new HashMap<>();
+        map.put("erro", erro);
+        return map;
     }
 
 }
