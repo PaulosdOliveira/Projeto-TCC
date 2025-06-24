@@ -6,6 +6,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosLoginCandi
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.CadastroCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.ConsultaCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService;
+import com.github.PaulosdOliveira.TCC.selectAspi.jwt.Token;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,10 @@ public class CandidatoController {
     private final CandidatoService service;
     private final UtilsService utils;
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void cadastrarCandidato(@RequestBody @Valid CadastroCandidatoDTO dadosCadastrais) throws Exception {
+    public ResponseEntity<String> cadastrarCandidato(@RequestBody @Valid CadastroCandidatoDTO dadosCadastrais) throws Exception {
         service.cadastrarUsuario(dadosCadastrais);
+        return new ResponseEntity<>("Cadastro realizado com sucesso", HttpStatus.CREATED);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -43,7 +44,7 @@ public class CandidatoController {
         return utils.renderizarFoto(foto);
     }
 
-    @PostMapping("/curriculo")
+    @PostMapping(value = "/curriculo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void salvarCurriculoCandidato(@RequestParam MultipartFile curriculoPdf) throws IOException {
         service.salvarCurriculo(curriculoPdf.getBytes());
@@ -60,8 +61,10 @@ public class CandidatoController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public String login(@RequestBody @Valid DadosLoginCandidatoDTO dadosLogin) {
-        return service.getCandidatoAccessToken(dadosLogin);
+    public Token login(@RequestBody @Valid DadosLoginCandidatoDTO dadosLogin) {
+        String token = service.getCandidatoAccessToken(dadosLogin);
+        System.out.println(token + ":::::::::::::");
+        return new Token(token);
     }
 
     @ResponseStatus(HttpStatus.OK)

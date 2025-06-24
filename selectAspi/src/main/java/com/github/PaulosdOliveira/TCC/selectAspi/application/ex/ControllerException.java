@@ -1,5 +1,6 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.ex;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import com.github.PaulosdOliveira.TCC.selectAspi.exception.*;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +64,13 @@ public class ControllerException {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(CandidaturaJaCadastradaException.class)
     public Map<String, Object> handlerCandidaturaJaCadastradaException(CandidaturaJaCadastradaException e) {
+        return getMap(e.getMessage());
+    }
+
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public Map<String, Object> handlerUsernameNotFoundException(UsernameNotFoundException e){
         return getMap(e.getMessage());
     }
 

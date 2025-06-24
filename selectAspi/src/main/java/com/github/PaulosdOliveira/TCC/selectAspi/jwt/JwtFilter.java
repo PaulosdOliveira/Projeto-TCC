@@ -32,8 +32,10 @@ public class JwtFilter extends OncePerRequestFilter {
         if (token != null) {
             DadosToken dadosToken = service.getEmailByToken(token);
             if (dadosToken.getPerfil().equals("candidato")) {
+                System.out.println("Candidato ################");
                 candidatoService.logarCandidato(dadosToken.getEmail());
             } else {
+                System.out.println("Empresa ###################################");
                 empresaService.logarEmpresa(dadosToken.getEmail());
             }
         }

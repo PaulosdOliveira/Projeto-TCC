@@ -66,7 +66,7 @@ public class EmpresaService {
     public void logarEmpresa(String email) {
         LoginEmpresaDTO loginDTO = buscarPorEmailOuNnpj(email);
         UserDetails userDetails = User.withUsername(loginDTO.getEmail())
-                .authorities("empresa")
+                .authorities("EMPRESA")
                 .password(loginDTO.getSenha())
                 .build();
         SecurityContextHolder.getContext()

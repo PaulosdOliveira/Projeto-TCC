@@ -18,8 +18,6 @@ public class JwtService {
     private SecretKeyService secretKeyService;
 
     public String getAccessToken(String id, String email, String nome, String perfil) {
-
-
         return Jwts.builder()
                 .subject(email)
                 .signWith(secretKeyService.getSecret())

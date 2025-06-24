@@ -60,6 +60,7 @@ public class CandidatoService {
 
 
     public String getCandidatoAccessToken(DadosLoginCandidatoDTO dadosLogin) {
+        System.out.println(dadosLogin.getCpfOuEmail() + "Erro és aqui");
         LoginCandidatoDTO candidatoEnontrado = buscarPorEmailOuCpf(dadosLogin.getCpfOuEmail());
         if (candidatoEnontrado != null) {
             if (encoder.matches(dadosLogin.getSenha(), candidatoEnontrado.getSenha()))
