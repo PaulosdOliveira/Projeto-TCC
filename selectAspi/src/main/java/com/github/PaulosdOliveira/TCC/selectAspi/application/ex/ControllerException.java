@@ -70,13 +70,19 @@ public class ControllerException {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UsernameNotFoundException.class)
-    public Map<String, Object> handlerUsernameNotFoundException(UsernameNotFoundException e){
+    public Map<String, Object> handlerUsernameNotFoundException(UsernameNotFoundException e) {
+        return getMap(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(RazaoSocialDuplicadoException.class)
+    public Map<String, Object> handlerRazaoSocialDuplicadoException(RazaoSocialDuplicadoException e) {
         return getMap(e.getMessage());
     }
 
 
     // Padroniizando erros
-    private Map<String, Object> getMap(String erro){
+    private Map<String, Object> getMap(String erro) {
         Map<String, Object> map = new HashMap<>();
         map.put("erro", erro);
         return map;

@@ -4,6 +4,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.application.candidato.Candidato
 import com.github.PaulosdOliveira.TCC.selectAspi.application.empresa.EmpresaService;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.token.DadosToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -48,12 +49,16 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         System.out.println(path + "----------------------------------");
         System.out.println(request.getRequestURL() + "@@@@@@@@@@@@@@");
-        return path.contains("/login") || path.contains("/empresa");
+
+        System.out.println(path.contains("/login") || path.contains("/cadastro"));
+               //|| (request.getMethod().equals(HttpMethod.GET.name()) && path.contains("/foto"));
+        return path.contains("/login") || path.contains("/cadastro");
     }
 
 
     private String getRequestToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
+        System.out.println(token + "@@@@@@@@");
         if (token != null) {
             String[] tokenDividido = token.split(" ");
             return tokenDividido[1];

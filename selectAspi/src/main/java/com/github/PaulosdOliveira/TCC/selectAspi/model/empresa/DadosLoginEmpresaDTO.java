@@ -7,7 +7,7 @@ import lombok.Data;
 public class DadosLoginEmpresaDTO {
 
     @NotBlank(message = "Informe o email ou CNPJ")
-    private String emailOuCpnj;
+    private String login;
 
     @NotBlank(message = "Informe sua senha")
     private String senha;

@@ -60,8 +60,8 @@ public class CandidatoService {
 
 
     public String getCandidatoAccessToken(DadosLoginCandidatoDTO dadosLogin) {
-        System.out.println(dadosLogin.getCpfOuEmail() + "Erro és aqui");
-        LoginCandidatoDTO candidatoEnontrado = buscarPorEmailOuCpf(dadosLogin.getCpfOuEmail());
+        System.out.println(dadosLogin.getLogin() + "Erro és aqui");
+        LoginCandidatoDTO candidatoEnontrado = buscarPorEmailOuCpf(dadosLogin.getLogin());
         if (candidatoEnontrado != null) {
             if (encoder.matches(dadosLogin.getSenha(), candidatoEnontrado.getSenha()))
                 return jwtService.getAccessToken(candidatoEnontrado.getId().toString(),

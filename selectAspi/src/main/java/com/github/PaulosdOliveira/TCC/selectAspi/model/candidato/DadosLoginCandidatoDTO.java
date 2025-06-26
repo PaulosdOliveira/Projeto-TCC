@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class DadosLoginCandidatoDTO {
 
     @NotBlank(message = "Informe seu cpf ou email de acesso")
-    private String cpfOuEmail;
+    private String login;
 
     @NotBlank(message = "Informe a sua senha")
     private String senha;

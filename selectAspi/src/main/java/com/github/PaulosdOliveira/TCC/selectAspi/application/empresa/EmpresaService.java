@@ -29,7 +29,7 @@ public class EmpresaService {
 
 
     public void cadastrarEmpresa(CadastroEmpresaDTO dadosCadastrais) {
-        validator.validar(dadosCadastrais.getEmail(), dadosCadastrais.getCnpj());
+        validator.validar(dadosCadastrais.getEmail(), dadosCadastrais.getCnpj(), dadosCadastrais.getNome());
         dadosCadastrais.setSenha(encoder.encode(dadosCadastrais.getSenha()));
         var empresa = new Empresa(dadosCadastrais);
         repository.save(empresa);
@@ -46,11 +46,11 @@ public class EmpresaService {
 
 
     public String getAccessToken(DadosLoginEmpresaDTO dadosLogin) {
-        LoginEmpresaDTO loginDTO = buscarPorEmailOuNnpj(dadosLogin.getEmailOuCpnj());
+        LoginEmpresaDTO loginDTO = buscarPorEmailOuNnpj(dadosLogin.getLogin());
         if (encoder.matches(dadosLogin.getSenha(), loginDTO.getSenha())) {
             return jwtService.getAccessToken(loginDTO.getId().toString(), loginDTO.getEmail(), loginDTO.getNome(), "empresa");
         }
-        throw new UsernameNotFoundException("Usário e/ou senha incorretos");
+        throw new UsernameNotFoundException("Usuário e/ou senha incorretos");
     }
 
     public LoginEmpresaDTO buscarPorEmailOuNnpj(String emailOuCpnj) {
@@ -73,4 +73,11 @@ public class EmpresaService {
                 .setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, loginDTO.getId(), userDetails.getAuthorities()));
     }
 
+    public void salvarFoto(byte[] foto) {
+        System.out.println(SecurityContextHolder
+                .getContext().getAuthentication().getCredentials().toString() + "88888888888888888888");
+        UUID id = UUID.fromString(SecurityContextHolder
+                .getContext().getAuthentication().getCredentials().toString());
+        repository.salvarFoto(foto, id);
+    }
 }

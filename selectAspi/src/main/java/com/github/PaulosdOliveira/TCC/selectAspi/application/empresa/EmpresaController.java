@@ -1,6 +1,7 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.empresa;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.application.qualificacao.QualificacaoService;
+import com.github.PaulosdOliveira.TCC.selectAspi.jwt.Token;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.DadosLoginEmpresaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.CadastroEmpresaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.Qualificacao;
@@ -10,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -28,9 +31,17 @@ public class EmpresaController {
         service.cadastrarEmpresa(dadosCadastrais);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public String getAccessToken(@RequestBody @Valid DadosLoginEmpresaDTO dadosLogin) {
-        return service.getAccessToken(dadosLogin);
+    public Token getAccessToken(@RequestBody @Valid DadosLoginEmpresaDTO dadosLogin) {
+
+        return new Token(service.getAccessToken(dadosLogin));
+    }
+
+    @PostMapping("/foto")
+    public void salvarFoto(@RequestParam MultipartFile foto) throws IOException {
+        System.out.println("OIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+        service.salvarFoto(foto.getBytes());
     }
 
     @GetMapping("/foto/{id}")
