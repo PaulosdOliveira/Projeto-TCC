@@ -3,6 +3,7 @@ package com.github.PaulosdOliveira.TCC.selectAspi.application.qualificacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.application.candidato.CandidatoService;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.QualificacaoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.QualificacaoUsuarioRepository;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ChaveCompostaQualificacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.Qualificacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuario;
@@ -25,12 +26,25 @@ public class QualificacaoService {
         qualificacaoRepository.save(qualificacao);
     }
 
-    public void cadastrarQualificacaoUsuario(QualificacaoUsuarioDTO dto, Long idCandidatoLogado) {
-        qualificacaoUsuarioRepository.insert( idCandidatoLogado , dto.getIdQualificacao(), dto.getNivel().name());
+    public void cadastrarQualificacaoUsuario(List<QualificacaoUsuarioDTO> dto, Long idCandidatoLogado) {
+        var candidato = new Candidato(idCandidatoLogado);
+        dto.forEach(item -> {
+            var qualificacao = new Qualificacao(item.getIdQualificacao());
+            var idQualificacaoUsuario = new ChaveCompostaQualificacao(candidato, qualificacao);
+            boolean jaCadastrado = qualificacaoUsuarioRepository.existsById(idQualificacaoUsuario);
+            if (!jaCadastrado) {
+               qualificacaoUsuarioRepository.insert(idCandidatoLogado, item.getIdQualificacao(), item.getNivel().name());
+            }
+        });
     }
 
     public List<String> getQualificacaoByIdCandidato(Long id) {
         return qualificacaoUsuarioRepository.getQualifcacoesById(id);
+    }
+
+
+    public List<Qualificacao> findAll() {
+        return qualificacaoRepository.buscarTudo();
     }
 
 }

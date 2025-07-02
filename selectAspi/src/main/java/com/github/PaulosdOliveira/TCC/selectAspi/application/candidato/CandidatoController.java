@@ -69,8 +69,8 @@ public class CandidatoController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/qualificacao-candidato")
-    public void cadastrarQualificacao(@RequestBody @Valid QualificacaoUsuarioDTO qualificacao) {
-        service.cadastarQualificacaoUsuario(qualificacao);
+    public void cadastrarQualificacao(@RequestBody  List< @Valid QualificacaoUsuarioDTO> qualificacoes) {
+        service.cadastarQualificacaoUsuario(qualificacoes);
     }
 
     @PostMapping("/qualificacao-candidato/consulta")

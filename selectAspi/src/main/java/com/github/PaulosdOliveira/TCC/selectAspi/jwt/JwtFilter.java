@@ -50,9 +50,9 @@ public class JwtFilter extends OncePerRequestFilter {
         System.out.println(path + "----------------------------------");
         System.out.println(request.getRequestURL() + "@@@@@@@@@@@@@@");
 
-        System.out.println(path.contains("/login") || path.contains("/cadastro"));
-               //|| (request.getMethod().equals(HttpMethod.GET.name()) && path.contains("/foto"));
-        return path.contains("/login") || path.contains("/cadastro");
+        System.out.println(path.contains("/login") || path.contains("/cadastro") || path.contains("/qualificacao"));
+
+        return path.contains("/login") || path.contains("/cadastro") || path.contains("/qualificacao")   && !path.contains("/qualificacao-candidato");
     }
 
 

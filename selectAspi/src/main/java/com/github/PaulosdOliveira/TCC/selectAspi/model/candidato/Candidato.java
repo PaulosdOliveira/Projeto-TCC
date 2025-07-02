@@ -1,11 +1,13 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.candidato;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuario;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +33,9 @@ public class Candidato {
 
     @Column(nullable = false, length = 120)
     private String nome;
+
+    @Column(nullable = false)
+    private LocalDate dataNascimento;
 
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
@@ -58,8 +63,8 @@ public class Candidato {
     @Column(name = "cidade", nullable = false)
     private String localidade;
 
-    @OneToMany(mappedBy = "candidato", fetch = FetchType.EAGER)
-    private List<QualificacaoUsuario> qualificacoes;
+    /*@OneToMany(mappedBy = "candidato", fetch = FetchType.EAGER)
+    private List<QualificacaoUsuario> qualificacoes;*/
 
 
     public Candidato(CadastroCandidatoDTO dadosCadastrais, String senhaCriptografada) {
@@ -67,6 +72,9 @@ public class Candidato {
         this.senha = senhaCriptografada;
     }
 
+    public Candidato(Long id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {
@@ -78,7 +86,7 @@ public class Candidato {
                ", trabalhando=" + trabalhando +
                ", uf='" + uf + '\'' +
                ", localidade='" + localidade + '\'' +
-               ", qualificacoes=" + qualificacoes +
+               ", qualificacoes="  +
                ", id=" + id +
                ", cpf='" + cpf + '\'' +
                '}';

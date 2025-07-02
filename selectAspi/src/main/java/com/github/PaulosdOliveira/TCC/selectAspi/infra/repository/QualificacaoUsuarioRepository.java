@@ -22,4 +22,7 @@ public interface QualificacaoUsuarioRepository extends JpaRepository<Qualificaca
     @Query("Select q.id.qualificacao.nome from QualificacaoUsuario q where q.id.candidato.id = :id")
     List<String> getQualifcacoesById(@Param("id") Long id);
 
+
+
+
 }

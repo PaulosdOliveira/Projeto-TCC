@@ -80,6 +80,12 @@ public class ControllerException {
         return getMap(e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(IdadeBaixaException.class)
+    public Map<String, Object> handlerIdadeBaixaException(IdadeBaixaException e) {
+        return getMap(e.getMessage());
+    }
+
 
     // Padroniizando erros
     private Map<String, Object> getMap(String erro) {

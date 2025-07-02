@@ -3,6 +3,7 @@ package com.github.PaulosdOliveira.TCC.selectAspi.config;
 import com.github.PaulosdOliveira.TCC.selectAspi.jwt.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,6 +32,8 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/candidato").permitAll();
                     auth.requestMatchers("/candidato/login").permitAll();
                     auth.requestMatchers("/empresa/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/qualificacao").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/qualificacao/teste").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

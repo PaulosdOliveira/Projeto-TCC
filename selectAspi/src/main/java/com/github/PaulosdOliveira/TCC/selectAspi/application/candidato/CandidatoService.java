@@ -8,6 +8,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.CandidatoRepos
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuarioDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.validation.CandidatoValidator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,7 +33,7 @@ public class CandidatoService {
     private final QualificacaoService qualificacaoService;
 
     public void cadastrarUsuario(CadastroCandidatoDTO dadosCadastrais) throws Exception {
-        validator.validar(dadosCadastrais.getEmail(), dadosCadastrais.getCpf());
+        validator.validar(dadosCadastrais.getEmail(), dadosCadastrais.getCpf(), dadosCadastrais.getDataNascimento());
         Localizacao localizacao;
         localizacao = localizacaoService.buscarLocalizacaoPorCep(dadosCadastrais.getCep());
         if (localizacao.getLocalidade() == null) throw new CepInvalidoException();
@@ -91,8 +92,8 @@ public class CandidatoService {
     }
 
 
-    public void cadastarQualificacaoUsuario(QualificacaoUsuarioDTO qualificacao){
-        qualificacaoService.cadastrarQualificacaoUsuario(qualificacao, getIdCandidatoLogado());
+    public void cadastarQualificacaoUsuario( List<QualificacaoUsuarioDTO> qualificacoes){
+        qualificacaoService.cadastrarQualificacaoUsuario(qualificacoes, getIdCandidatoLogado());
     }
 
     public List<Candidato> findByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String estado, String cidade){
