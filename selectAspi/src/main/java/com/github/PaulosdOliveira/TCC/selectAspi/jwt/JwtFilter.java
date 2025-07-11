@@ -52,7 +52,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         System.out.println(path.contains("/login") || path.contains("/cadastro") || path.contains("/qualificacao"));
 
-        return path.contains("/login") || path.contains("/cadastro") || path.contains("/qualificacao")   && !path.contains("/qualificacao-candidato");
+        return path.contains("/login") || path.contains("/cidades") || path.contains("/estados") || path.contains("/cadastro")
+               || path.contains("/qualificacao")   && !path.contains("/qualificacao-candidato");
     }
 
 

@@ -44,8 +44,8 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
 
 
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO(c.id, c.nome, c.email, c.senha)" +
-            " from Candidato c where c.email = :cpfOuEmail  or c.cpf = :cpfOuEmail")
-    Optional<LoginCandidatoDTO> buscarCandidatoLogin(@Param("cpfOuEmail") String cpfOuEmail);
+           " from Candidato c where c.email = :login  or c.cpf = :login")
+    Optional<LoginCandidatoDTO> buscarCandidatoLogin(@Param("login") String login);
 
     @Query("Select DISTINCT c.uf from Candidato c")
     List<String> buscarEstados();
@@ -53,6 +53,7 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
     @Query("Select distinct c.localidade from Candidato c where c.uf like %:uf order by c.localidade")
     List<String> buscarCidades(String uf);
 
+    // Deescobrindo se candidato é PCD e qual é o seu sexo
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosFitroVaga(c.sexo, c.pcd) from Candidato c where c.id = :id")
     DadosFitroVaga buscarDadosFiltroVaga(Long id);
 

@@ -1,13 +1,13 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.vaga;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.CadastroVagaDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.ConsultaVagaDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.DadosConsultaVagaDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.CardVagaDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import jakarta.validation.Valid;
+
 import java.util.List;
 
 
@@ -38,15 +38,31 @@ public class VagaEmpregoController {
 
 
     @PreAuthorize("hasRole('candidato')")
-    @PostMapping("/buscar")
-    public List<ConsultaVagaDTO> buscarVagas(@RequestBody DadosConsultaVagaDTO dadosConsulta) {
-        return service.buscarVagas(dadosConsulta.getTitulo(), dadosConsulta.getEstado(),
-                dadosConsulta.getCidade(), dadosConsulta.getSenioridade(), dadosConsulta.getModelo());
+    @GetMapping("/buscar")
+    public List<CardVagaDTO> buscarVagas(
+            @RequestParam(required = false) String titulo,
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String cidade,
+            @RequestParam(required = false) String senioridade,
+            @RequestParam(required = false) String modelo,
+            @RequestParam(required = false) String tipo_contrato
+    ) {
+        return service.buscarVagas(titulo, estado, cidade, senioridade, modelo, tipo_contrato);
     }
 
     @PreAuthorize("hasRole('candidato')")
     @GetMapping("/alinhada")
-    public List<ConsultaVagaDTO> buscarVagasAlinhadas() {
-       return service.buscarVagasAlinhadas();
+    public List<CardVagaDTO> buscarVagasAlinhadas() {
+        return service.buscarVagasAlinhadas();
+    }
+
+    @GetMapping("/estados")
+    public List<String> buscarEstados() {
+        return service.buscarEstadosCadastrados();
+    }
+
+    @GetMapping("/cidades/{uf}")
+    public List<String> buscarCidades(@PathVariable String uf) {
+        return service.buscarCidadesEstado(uf);
     }
 }

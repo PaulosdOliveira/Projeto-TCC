@@ -40,4 +40,8 @@ public class Empresa {
     public Empresa(CadastroEmpresaDTO dadosCadastrais){
         BeanUtils.copyProperties(dadosCadastrais, this);
     }
+
+    public Empresa(String id) {
+        this.id = UUID.fromString(id);
+    }
 }

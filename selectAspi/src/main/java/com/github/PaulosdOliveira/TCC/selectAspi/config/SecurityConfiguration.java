@@ -34,6 +34,8 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/empresa/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/qualificacao").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/qualificacao/teste").permitAll();
+                    auth.requestMatchers("/vaga/estados").permitAll();
+                    auth.requestMatchers("/vaga/cidades/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

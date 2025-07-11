@@ -6,7 +6,9 @@ import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.VagaEmpregoRep
 import com.github.PaulosdOliveira.TCC.selectAspi.exception.VagaNaoEncontradaException;
 import com.github.PaulosdOliveira.TCC.selectAspi.application.empresa.EmpresaService;
 import com.github.PaulosdOliveira.TCC.selectAspi.exception.VagaEncerradaException;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.Empresa;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.CadastroVagaDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.CardVagaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.ConsultaVagaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.VagaEmprego;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Modelo;
@@ -31,8 +33,8 @@ public class VagaEmpregoService {
 
 
     public void cadastrarVaga(CadastroVagaDTO dadosCadastrais) {
-        String id = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
-        var empresaLogada = empresaService.findById(UUID.fromString(id));
+        //String id = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
+        var empresaLogada = new Empresa("0694c939-4a5f-4226-8282-718dc8f25be3");
         var localizacao = localizacaoService.buscarLocalizacaoPorCep(dadosCadastrais.getCep());
         String estado = localizacao.getUf();
         String cidade = localizacao.getLocalidade();
@@ -41,15 +43,17 @@ public class VagaEmpregoService {
     }
 
 
-    public List<ConsultaVagaDTO> buscarVagas(String titulo, String estado, String cidade, Nivel senioridade, Modelo modelo) {
+    public List<CardVagaDTO> buscarVagas(String titulo, String estado, String cidade, String senioridade, String modelo, String tipo_contrato) {
         var filtro = candidatoService.buscarFiltroVaga();
-        return repository.buscarVagas(titulo, estado, cidade, senioridade, filtro.sexo(), filtro.pcd(), modelo);
+        var vagas = repository.buscarVagas(titulo, estado, cidade, senioridade, filtro.sexo(), filtro.pcd(), modelo, tipo_contrato);
+        return convertToCard(vagas);
     }
 
 
-    public List<ConsultaVagaDTO> buscarVagasAlinhadas() {
+    public List<CardVagaDTO> buscarVagasAlinhadas() {
         List<String> qualificacoes = candidatoService.buscarQualificacoes();
-        return repository.buscarVagasAlinhadas(qualificacoes);
+        var vagas = repository.buscarVagasAlinhadas(qualificacoes);
+        return convertToCard(vagas);
     }
 
 
@@ -60,7 +64,7 @@ public class VagaEmpregoService {
         var dataAtual = LocalDateTime.now();
         var dataEncerramento = vaga.getDataHoraEncerramento();
         boolean vagaDisponivel = (dataEncerramento != null && dataAtual.isBefore(dataEncerramento) && vaga.isVagaAtiva())
-                || dataEncerramento == null && vaga.isVagaAtiva();
+                                 || dataEncerramento == null && vaga.isVagaAtiva();
         if (!vagaDisponivel) {
             vaga.setVagaAtiva(false);
             throw new VagaEncerradaException();
@@ -68,5 +72,23 @@ public class VagaEmpregoService {
 
     }
 
+
+    public List<String> buscarEstadosCadastrados() {
+        return repository.buscarEstados();
+    }
+
+    public List<String> buscarCidadesEstado(String estado) {
+        return repository.buscarCidades(estado);
+    }
+
+    // TRANSFORMANDO LISTA DE VAGAS EM CARD
+    private List<CardVagaDTO> convertToCard(List<VagaEmprego> vagas) {
+        return vagas.stream().map(vaga -> new CardVagaDTO(
+                vaga.getEmpresa().getNome(), vaga.getTitulo(),
+                vaga.getCidade(), vaga.getEstado(), vaga.getSalario(),
+                vaga.getModelo().name(), vaga.getTipoContrato().name(), vaga.getNivel().name(),
+                vaga.getExclusivoParaPcd(), vaga.getExclusivoParaSexo(), vaga.getDataHoraPublicacao()
+        )).toList();
+    }
 
 }

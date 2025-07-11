@@ -55,7 +55,7 @@ public class EmpresaService {
 
     public LoginEmpresaDTO buscarPorEmailOuNnpj(String emailOuCpnj) {
         return repository.findByEmailOrCnpjLogin(emailOuCpnj)
-                .orElseThrow(() -> new UsernameNotFoundException("Usário não encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
     }
 
 

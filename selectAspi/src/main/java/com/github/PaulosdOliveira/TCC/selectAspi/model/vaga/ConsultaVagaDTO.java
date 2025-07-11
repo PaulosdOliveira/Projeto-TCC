@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 public class ConsultaVagaDTO {
 
     private Long id;
+    private String nome_empresa;
     private String titulo;
     private String descricao;
     private LocalDateTime dataHoraPublicacao;
     private LocalDateTime dataHoraEncerramento;
     private Float salario;
-    private Boolean salarioACombinar;
     private Nivel nivel;
     private String estado;
     private String cidade;

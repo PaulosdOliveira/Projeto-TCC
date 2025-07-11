@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class CandidatoService {
 
 
     public String getCandidatoAccessToken(DadosLoginCandidatoDTO dadosLogin) {
-        System.out.println(dadosLogin.getLogin() + "Erro és aqui");
+        System.out.println(dadosLogin.getLogin() + "Email informado");
         LoginCandidatoDTO candidatoEnontrado = buscarPorEmailOuCpf(dadosLogin.getLogin());
         if (candidatoEnontrado != null) {
             if (encoder.matches(dadosLogin.getSenha(), candidatoEnontrado.getSenha()))
@@ -71,8 +73,9 @@ public class CandidatoService {
         throw new UsernameNotFoundException("Usuário e/ou senha incorretos");
     }
 
-    public LoginCandidatoDTO buscarPorEmailOuCpf(String emailOrCpf) {
-        return repository.buscarCandidatoLogin(emailOrCpf).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+    public LoginCandidatoDTO buscarPorEmailOuCpf(String login) {
+        System.out.println("O que está acontecendo ??????  " +   login);
+        return repository.buscarCandidatoLogin(login).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
     }
 
     public Long getIdCandidatoLogado() {
@@ -92,22 +95,24 @@ public class CandidatoService {
     }
 
 
-    public void cadastarQualificacaoUsuario( List<QualificacaoUsuarioDTO> qualificacoes){
+    public void cadastarQualificacaoUsuario(List<QualificacaoUsuarioDTO> qualificacoes) {
         qualificacaoService.cadastrarQualificacaoUsuario(qualificacoes, getIdCandidatoLogado());
     }
 
-    public List<Candidato> findByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String estado, String cidade){
+    public List<Candidato> findByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String estado, String cidade) {
         return repository.findCandidatoByQualificacao(qualificacoes, estado, cidade);
     }
 
     // Buscando informações do perfil do candidato para a consulta de vagas
-    public DadosFitroVaga buscarFiltroVaga(){
-        return  repository.buscarDadosFiltroVaga(getIdCandidatoLogado());
+    public DadosFitroVaga buscarFiltroVaga() {
+        return repository.buscarDadosFiltroVaga(getIdCandidatoLogado());
     }
 
     // Buscar qualificações do usuário logado
-    public List<String> buscarQualificacoes(){
+    public List<String> buscarQualificacoes() {
         return qualificacaoService.getQualificacaoByIdCandidato(getIdCandidatoLogado());
     }
+
+
 
 }

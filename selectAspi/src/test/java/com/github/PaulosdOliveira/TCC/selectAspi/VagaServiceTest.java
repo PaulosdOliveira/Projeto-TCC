@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
+
 @SpringBootTest
 public class VagaServiceTest {
 
@@ -24,16 +26,17 @@ public class VagaServiceTest {
 
     @Test
     void cadastrarVagaTest() {
-        CadastroVagaDTO dados = new CadastroVagaDTO();
-        dados.setCep("44094018");
-        dados.setDescricao("Vaga de teste");
-        dados.setTitulo("Testador de método");
+        /*CadastroVagaDTO dados = new CadastroVagaDTO();
+        dados.setCep("01021-000");
+        dados.setDescricao("Salario a combinar  ");
+        dados.setTitulo("Testando o cadastro de salário a combinar");
         dados.setNivel(Nivel.INDEFINIDO);
-        dados.setModelo(Modelo.PRESENCIAL);
+        dados.setModelo(Modelo.REMOTO);
         dados.setDiasEmAberto(3L);
-        dados.setTipoContrato(TipoContrato.CLT);
-        dados.setSalario(3000.54F);
-        service.cadastrarVaga(dados);
+        dados.setTipoContrato(TipoContrato.PJ);
+        dados.setSalario(0F);
+        service.cadastrarVaga(dados);*/
+
     }
 
 

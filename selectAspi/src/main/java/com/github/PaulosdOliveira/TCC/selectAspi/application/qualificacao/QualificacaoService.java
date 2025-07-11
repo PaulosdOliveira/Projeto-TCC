@@ -31,10 +31,8 @@ public class QualificacaoService {
         dto.forEach(item -> {
             var qualificacao = new Qualificacao(item.getIdQualificacao());
             var idQualificacaoUsuario = new ChaveCompostaQualificacao(candidato, qualificacao);
-            boolean jaCadastrado = qualificacaoUsuarioRepository.existsById(idQualificacaoUsuario);
-            if (!jaCadastrado) {
-               qualificacaoUsuarioRepository.insert(idCandidatoLogado, item.getIdQualificacao(), item.getNivel().name());
-            }
+            var qualificacaoUsuario = new QualificacaoUsuario(idQualificacaoUsuario, item.getNivel());
+            qualificacaoUsuarioRepository.save(qualificacaoUsuario);
         });
     }
 

@@ -18,10 +18,8 @@ public class QualificacaoUsuario {
     private Nivel nivel;
 
 
-    public QualificacaoUsuario(QualificacaoUsuarioDTO dto, Long idCandidato) {
-        var candidato = new Candidato(idCandidato);
-        var qualificacao = new Qualificacao(dto.getIdQualificacao());
-        this.id = new ChaveCompostaQualificacao(candidato, qualificacao);
-        this.nivel = dto.getNivel();
+    public QualificacaoUsuario(ChaveCompostaQualificacao id, Nivel nivel) {
+        this.id = id;
+        this.nivel = nivel;
     }
 }
