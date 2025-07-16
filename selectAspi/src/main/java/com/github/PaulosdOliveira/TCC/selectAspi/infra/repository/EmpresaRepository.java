@@ -27,9 +27,9 @@ public interface EmpresaRepository extends JpaRepository<Empresa, UUID> {
     @Query("Update Empresa e set e.foto = :foto where e.id = :id")
     void salvarFoto(@Param("foto") byte[] foto, @Param("id") UUID id);
 
-    @Query("Select e.foto from Empresa e where e.id = : id")
+    @Query("Select e.foto from Empresa e where e.id = :id")
     byte[] buscarFotoPorId(@Param("id") UUID id);
 
-    @Query("Select e.capa from Empresa e where e.id = : id")
+    @Query("Select e.capa from Empresa e where e.id = :id")
     byte[] buscarCapaPorId(@Param("id") UUID id);
 }

@@ -37,6 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 candidatoService.logarCandidato(dadosToken.getEmail());
             } else {
                 System.out.println("Empresa ###################################");
+                System.out.println(dadosToken.getEmail() + " " + dadosToken.getPerfil());
                 empresaService.logarEmpresa(dadosToken.getEmail());
             }
         }

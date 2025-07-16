@@ -17,7 +17,22 @@ public class CadastroVagaDTO {
     private String titulo;
 
     @NotBlank(message = "Campo obrigatório")
-    private String descricao;
+    private String descricao_vaga;
+
+    @NotBlank(message = "Campo obrigatório")
+    private String principais_atividades;
+
+    @NotBlank(message = "Campo obrigatório")
+    private String requisitos;
+
+    @NotBlank(message = "Campo obrigatório")
+    private String diferenciais;
+
+    @NotBlank(message = "Campo obrigatório")
+    private String local_de_trabalho;
+
+    @NotBlank(message = "Campo obrigatório")
+    private String horario;
 
     @NotNull(message = "Campo obrigatório")
     private Long diasEmAberto;

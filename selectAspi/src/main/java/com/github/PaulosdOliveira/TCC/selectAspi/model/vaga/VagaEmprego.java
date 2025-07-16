@@ -8,7 +8,9 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.Empresa;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.Data;
@@ -66,16 +68,25 @@ public class VagaEmprego {
     @Enumerated(EnumType.STRING)
     private TipoContrato tipoContrato;
 
-    public VagaEmprego(CadastroVagaDTO  dadosCadastrais, String estado, String cidade, Empresa empresa){
+    public VagaEmprego(CadastroVagaDTO dadosCadastrais, String estado, String cidade, Empresa empresa) {
         Long diasEmAberto = dadosCadastrais.getDiasEmAberto();
-        if(dadosCadastrais.getSalario() == 0) this.salarioACombinar = true;
-        if(diasEmAberto > 0) this.dataHoraEncerramento = LocalDateTime.now().plusDays(diasEmAberto);
+        if (dadosCadastrais.getSalario() == 0) this.salarioACombinar = true;
+        if (diasEmAberto > 0) this.dataHoraEncerramento = LocalDateTime.now().plusDays(diasEmAberto);
         this.estado = estado;
         this.cidade = cidade;
         this.empresa = empresa;
         this.vagaAtiva = true;
+        this.descricao = dadosCadastrais.getDescricao_vaga() + "###"
+                         + dadosCadastrais.getPrincipais_atividades() + "###"
+                         + dadosCadastrais.getRequisitos() + "###"
+                         + dadosCadastrais.getDiferenciais() + "###"
+                         + dadosCadastrais.getLocal_de_trabalho() + "###"
+                         + dadosCadastrais.getHorario();
         BeanUtils.copyProperties(dadosCadastrais, this);
     }
 
 
+    public VagaEmprego(Long id) {
+        this.id = id;
+    }
 }

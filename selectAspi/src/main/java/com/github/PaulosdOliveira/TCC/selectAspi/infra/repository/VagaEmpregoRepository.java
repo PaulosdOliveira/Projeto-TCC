@@ -11,8 +11,10 @@ import org.springframework.data.jpa.domain.Specification;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface VagaEmpregoRepository extends JpaRepository<VagaEmprego, Long>, JpaSpecificationExecutor<VagaEmprego> {
@@ -29,13 +31,10 @@ public interface VagaEmpregoRepository extends JpaRepository<VagaEmprego, Long>,
         if (StringUtils.isNotBlank(cidade)) spec = spec.and(stringLike("cidade", cidade));
         if (StringUtils.isNotBlank(senioridade)) spec = spec.and(stringEqual("nivel", senioridade));
         if (StringUtils.isNotBlank(modelo)) spec = spec.and(stringEqual("modelo", modelo));
-        if(StringUtils.isNotBlank(tipo_contrato)) spec = spec.and(stringEqual("tipoContrato", tipo_contrato));
-        return findAll(spec, Sort.by("dataHoraPublicacao"));
+        if (StringUtils.isNotBlank(tipo_contrato)) spec = spec.and(stringEqual("tipoContrato", tipo_contrato));
+        return findAll(spec, Sort.by("dataHoraPublicacao").descending());
     }
 
-    default void convertToCard() {
-
-    }
 
     default List<VagaEmprego> buscarVagasAlinhadas(List<String> qualificacoes) {
         Specification<VagaEmprego> spec = isAtiva();
@@ -46,9 +45,16 @@ public interface VagaEmpregoRepository extends JpaRepository<VagaEmprego, Long>,
         return findAll(spec, Sort.by("dataHoraPublicacao").descending());
     }
 
+    default List<VagaEmprego> findAtivas() {
+        return findAll(isAtiva());
+    }
+
     @Query("Select DISTINCT v.estado from VagaEmprego v")
     List<String> buscarEstados();
 
     @Query("Select distinct v.cidade from VagaEmprego v where v.estado like %:estado order by v.cidade")
     List<String> buscarCidades(String estado);
+
+    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.ConsultaVagaDTO(v) from VagaEmprego v where v.id = :id")
+    Optional<ConsultaVagaDTO> carregarVaga(@Param("id") Long id);
 }
