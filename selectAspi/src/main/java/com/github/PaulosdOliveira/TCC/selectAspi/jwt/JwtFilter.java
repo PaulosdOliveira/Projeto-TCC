@@ -48,13 +48,16 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     public boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
+        var metodo = request.getMethod();
         System.out.println(path + "----------------------------------");
         System.out.println(request.getRequestURL() + "@@@@@@@@@@@@@@");
 
-        System.out.println(path.contains("/login") || path.contains("/cadastro") || path.contains("/qualificacao"));
+        boolean pular = path.contains("/login") || path.contains("/cidades") || path.contains("/estados") || (path.contains("/candidato") && metodo.equals(HttpMethod.GET.name()))
+                        || path.contains("/cadastro") || (path.contains("/foto") && metodo.equals(HttpMethod.GET.name()))
+                        || (path.contains("/qualificacao") && !path.contains("/qualificacao-candidato")) || (path.contains("/vaga") && !path.contains("/candidatos") && metodo.equals(HttpMethod.GET.name()));
 
-        return path.contains("/login") || path.contains("/cidades") || path.contains("/estados") || path.contains("/cadastro")
-               || path.contains("/qualificacao")   && !path.contains("/qualificacao-candidato");
+        System.out.println(pular);
+        return false;
     }
 
 

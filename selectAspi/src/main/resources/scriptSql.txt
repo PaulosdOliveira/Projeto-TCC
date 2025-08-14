@@ -2,6 +2,19 @@ create database plataforma;
 
 use plataforma;
 
+create table estado(
+id int primary key auto_increment,
+sigla varchar(2) unique not null
+);
+
+
+create table cidade(
+id int primary key auto_increment,
+nome varchar(40) not null,
+estado_id int not null,
+foreign key (estado_id) references estado(id)
+);
+
 create table candidatos(
 id bigint primary key auto_increment,
 cpf varchar(14) not null unique,
@@ -16,16 +29,18 @@ tel varchar(18),
 email varchar(254) not null unique,
 curriculo longblob,
 trabalhando boolean not null,
-estado varchar(2) not null,
-cidade varchar(55) not null
+estado_id int ,
+cidade_id int ,
+foreign key (estado_id) references estado(id),
+foreign key (cidade_id) references cidade(id)
 );
+
+
 
 create table qualificacao(
 id bigint primary key auto_increment,
 nome_qualificacao varchar(30) not null unique
 );
-
-
 
 create table qualificacao_usuario(
 candidato_id bigint not null ,
@@ -37,7 +52,6 @@ foreign key(qualificacao_id) references qualificacao(id)
 );
 
 
-
 create table chave_secreta(
 id bigint primary key auto_increment,
 encoded longblob not null,
@@ -46,11 +60,10 @@ data_criacao datetime not null
 );
 
 
-
 create table empresa(
-id binary(16) primary key auto_increment,
+id binary(16) primary key,
 cnpj varchar(20) not null unique,
-nome text not null,
+nome text not null unique,
 email varchar(180) not null unique,
 senha varchar(300) not null,
 descricao text,
@@ -59,31 +72,40 @@ capa longblob
 );
 
 
+
 create table vaga_emprego (
 id bigint primary key auto_increment,
 titulo varchar(255) not null,
 descricao text not null,
+principais_atividades text not null,
+requisitos text not null,
+diferenciais text not null,
+local_de_trabalho text not null,
+horario text not null,
 data_hora_publicacao datetime not null,
 data_hora_encerramento datetime,
 empresa_id binary(16),
 salario decimal(10,2) not null,
-salario_a_combinar boolean default false,
-nivel enum('ESTAGIARIO','JUNIOR', 'PLENO', 'SENIOR', 'ESPECIALISTA', 'GERENTE', 	'INDEFINIDO'),
-estado varchar(2) not null,
-cidade varchar(40) not null,
+nivel enum('ESTAGIARIO','JUNIOR', 'PLENO', 'SENIOR', 'ESPECIALISTA', 'GERENTE', 'INDEFINIDO'),
+estado_id int ,
+cidade_id int ,
 modelo enum('PRESENCIAL', 'HIBRIDO', 'REMOTO'),
 vaga_ativa boolean,
 tipo_contrato enum('CLT', 'PJ', 'ESTAGIO', 'TEMPORARIO'),
 experiencia_previa boolean,
 exclusivo_para_pcd boolean default false,
 exclusivo_para_sexo enum('MASCULINO', 'FEMININO', 'TODOS') default 'TODOS',
-foreign key (empresa_id) references empresa(id)
+foreign key (empresa_id) references empresa(id),
+foreign key (estado_id) references estado(id),
+foreign key (cidade_id) references cidade(id)
 );
+
 
 create table candidato_a_vaga(
 candidato_id bigint ,
 vaga_emprego_id bigint,
 data_candidatura datetime not null,
+status enum('EM_ANALISE', 'SELECIONADO', 'DISPENSADO') not null,
 primary key(candidato_id, vaga_emprego_id),
 foreign key (candidato_id) references candidatos(id),
 foreign key (vaga_emprego_id) references vaga_emprego(id)
@@ -99,3 +121,210 @@ candidato_id bigint,
 foreign key (empresa_id) references empresa(id),
 foreign key (candidato_id) references candidatos(id)
 );
+
+
+create table modelo_de_proposta(
+id binary(16) primary key,
+empresa_id binary(16),
+titulo varchar(50) not null,
+descricao text not null,
+foreign key (empresa_id) references empresa(id)
+);
+
+
+insert into estado (sigla) values
+('AC'),('AL'),('AP'),('AM'),('BA'),('CE'),
+('DF'),('ES'),('GO'),('MA'),('MT'),('MS'),
+('MG'),('PA'),('PB'),('PR'),('PE'),('PI'),
+('RJ'),('RN'),('RS'),('RO'),('RR'),('SC'),
+('SP'),('SE'),('TO');
+
+
+-- Acre (1)
+INSERT INTO cidade (nome, estado_id) VALUES ('Rio Branco', 1);
+INSERT INTO cidade (nome, estado_id) VALUES ('Cruzeiro do Sul', 1);
+INSERT INTO cidade (nome, estado_id) VALUES ('Tarauacá', 1);
+INSERT INTO cidade (nome, estado_id) VALUES ('Sena Madureira', 1);
+INSERT INTO cidade (nome, estado_id) VALUES ('Feijó', 1);
+
+-- Alagoas (2)
+INSERT INTO cidade (nome, estado_id) VALUES ('Maceió', 2);
+INSERT INTO cidade (nome, estado_id) VALUES ('Arapiraca', 2);
+INSERT INTO cidade (nome, estado_id) VALUES ('Marechal Deodoro', 2);
+INSERT INTO cidade (nome, estado_id) VALUES ('Rio Largo', 2);
+INSERT INTO cidade (nome, estado_id) VALUES ('Palmeira dos Índios', 2);
+
+-- Amapá (3)
+INSERT INTO cidade (nome, estado_id) VALUES ('Macapá', 3);
+INSERT INTO cidade (nome, estado_id) VALUES ('Santana', 3);
+INSERT INTO cidade (nome, estado_id) VALUES ('Laranjal do Jari', 3);
+INSERT INTO cidade (nome, estado_id) VALUES ('Oiapoque', 3);
+INSERT INTO cidade (nome, estado_id) VALUES ('Mazagão', 3);
+
+-- Amazonas (4)
+INSERT INTO cidade (nome, estado_id) VALUES ('Manaus', 4);
+INSERT INTO cidade (nome, estado_id) VALUES ('Parintins', 4);
+INSERT INTO cidade (nome, estado_id) VALUES ('Itacoatiara', 4);
+INSERT INTO cidade (nome, estado_id) VALUES ('Manacapuru', 4);
+INSERT INTO cidade (nome, estado_id) VALUES ('Coari', 4);
+
+-- Bahia (5)
+INSERT INTO cidade (nome, estado_id) VALUES ('Salvador', 5);
+INSERT INTO cidade (nome, estado_id) VALUES ('Feira de Santana', 5);
+INSERT INTO cidade (nome, estado_id) VALUES ('Vitória da Conquista', 5);
+INSERT INTO cidade (nome, estado_id) VALUES ('Camaçari', 5);
+INSERT INTO cidade (nome, estado_id) VALUES ('Ilhéus', 5);
+
+-- Ceará (6)
+INSERT INTO cidade (nome, estado_id) VALUES ('Fortaleza', 6);
+INSERT INTO cidade (nome, estado_id) VALUES ('Caucaia', 6);
+INSERT INTO cidade (nome, estado_id) VALUES ('Juazeiro do Norte', 6);
+INSERT INTO cidade (nome, estado_id) VALUES ('Maracanaú', 6);
+INSERT INTO cidade (nome, estado_id) VALUES ('Sobral', 6);
+
+-- Distrito Federal (7)
+INSERT INTO cidade (nome, estado_id) VALUES ('Brasília', 7);
+INSERT INTO cidade (nome, estado_id) VALUES ('Taguatinga', 7);
+INSERT INTO cidade (nome, estado_id) VALUES ('Ceilândia', 7);
+INSERT INTO cidade (nome, estado_id) VALUES ('Samambaia', 7);
+INSERT INTO cidade (nome, estado_id) VALUES ('Planaltina', 7);
+
+-- Espírito Santo (8)
+INSERT INTO cidade (nome, estado_id) VALUES ('Vitória', 8);
+INSERT INTO cidade (nome, estado_id) VALUES ('Vila Velha', 8);
+INSERT INTO cidade (nome, estado_id) VALUES ('Serra', 8);
+INSERT INTO cidade (nome, estado_id) VALUES ('Cariacica', 8);
+INSERT INTO cidade (nome, estado_id) VALUES ('Linhares', 8);
+
+-- Goiás (9)
+INSERT INTO cidade (nome, estado_id) VALUES ('Goiânia', 9);
+INSERT INTO cidade (nome, estado_id) VALUES ('Anápolis', 9);
+INSERT INTO cidade (nome, estado_id) VALUES ('Aparecida de Goiânia', 9);
+INSERT INTO cidade (nome, estado_id) VALUES ('Rio Verde', 9);
+INSERT INTO cidade (nome, estado_id) VALUES ('Luziânia', 9);
+
+-- Maranhão (10)
+INSERT INTO cidade (nome, estado_id) VALUES ('São Luís', 10);
+INSERT INTO cidade (nome, estado_id) VALUES ('Imperatriz', 10);
+INSERT INTO cidade (nome, estado_id) VALUES ('Timon', 10);
+INSERT INTO cidade (nome, estado_id) VALUES ('Caxias', 10);
+INSERT INTO cidade (nome, estado_id) VALUES ('Codó', 10);
+
+-- Mato Grosso (11)
+INSERT INTO cidade (nome, estado_id) VALUES ('Cuiabá', 11);
+INSERT INTO cidade (nome, estado_id) VALUES ('Várzea Grande', 11);
+INSERT INTO cidade (nome, estado_id) VALUES ('Rondonópolis', 11);
+INSERT INTO cidade (nome, estado_id) VALUES ('Sinop', 11);
+INSERT INTO cidade (nome, estado_id) VALUES ('Tangará da Serra', 11);
+
+-- Mato Grosso do Sul (12)
+INSERT INTO cidade (nome, estado_id) VALUES ('Campo Grande', 12);
+INSERT INTO cidade (nome, estado_id) VALUES ('Dourados', 12);
+INSERT INTO cidade (nome, estado_id) VALUES ('Três Lagoas', 12);
+INSERT INTO cidade (nome, estado_id) VALUES ('Corumbá', 12);
+INSERT INTO cidade (nome, estado_id) VALUES ('Naviraí', 12);
+
+-- Minas Gerais (13)
+INSERT INTO cidade (nome, estado_id) VALUES ('Belo Horizonte', 13);
+INSERT INTO cidade (nome, estado_id) VALUES ('Uberlândia', 13);
+INSERT INTO cidade (nome, estado_id) VALUES ('Contagem', 13);
+INSERT INTO cidade (nome, estado_id) VALUES ('Juiz de Fora', 13);
+INSERT INTO cidade (nome, estado_id) VALUES ('Betim', 13);
+
+-- Pará (14)
+INSERT INTO cidade (nome, estado_id) VALUES ('Belém', 14);
+INSERT INTO cidade (nome, estado_id) VALUES ('Ananindeua', 14);
+INSERT INTO cidade (nome, estado_id) VALUES ('Santarém', 14);
+INSERT INTO cidade (nome, estado_id) VALUES ('Marabá', 14);
+INSERT INTO cidade (nome, estado_id) VALUES ('Parauapebas', 14);
+
+-- Paraíba (15)
+INSERT INTO cidade (nome, estado_id) VALUES ('João Pessoa', 15);
+INSERT INTO cidade (nome, estado_id) VALUES ('Campina Grande', 15);
+INSERT INTO cidade (nome, estado_id) VALUES ('Santa Rita', 15);
+INSERT INTO cidade (nome, estado_id) VALUES ('Patos', 15);
+INSERT INTO cidade (nome, estado_id) VALUES ('Bayeux', 15);
+
+-- Paraná (16)
+INSERT INTO cidade (nome, estado_id) VALUES ('Curitiba', 16);
+INSERT INTO cidade (nome, estado_id) VALUES ('Londrina', 16);
+INSERT INTO cidade (nome, estado_id) VALUES ('Maringá', 16);
+INSERT INTO cidade (nome, estado_id) VALUES ('Ponta Grossa', 16);
+INSERT INTO cidade (nome, estado_id) VALUES ('Cascavel', 16);
+
+-- Pernambuco (17)
+INSERT INTO cidade (nome, estado_id) VALUES ('Recife', 17);
+INSERT INTO cidade (nome, estado_id) VALUES ('Jaboatão dos Guararapes', 17);
+INSERT INTO cidade (nome, estado_id) VALUES ('Olinda', 17);
+INSERT INTO cidade (nome, estado_id) VALUES ('Caruaru', 17);
+INSERT INTO cidade (nome, estado_id) VALUES ('Petrolina', 17);
+
+-- Piauí (18)
+INSERT INTO cidade (nome, estado_id) VALUES ('Teresina', 18);
+INSERT INTO cidade (nome, estado_id) VALUES ('Parnaíba', 18);
+INSERT INTO cidade (nome, estado_id) VALUES ('Picos', 18);
+INSERT INTO cidade (nome, estado_id) VALUES ('Piripiri', 18);
+INSERT INTO cidade (nome, estado_id) VALUES ('Floriano', 18);
+
+-- Rio de Janeiro (19)
+INSERT INTO cidade (nome, estado_id) VALUES ('Rio de Janeiro', 19);
+INSERT INTO cidade (nome, estado_id) VALUES ('São Gonçalo', 19);
+INSERT INTO cidade (nome, estado_id) VALUES ('Duque de Caxias', 19);
+INSERT INTO cidade (nome, estado_id) VALUES ('Nova Iguaçu', 19);
+INSERT INTO cidade (nome, estado_id) VALUES ('Niterói', 19);
+
+-- Rio Grande do Norte (20)
+INSERT INTO cidade (nome, estado_id) VALUES ('Natal', 20);
+INSERT INTO cidade (nome, estado_id) VALUES ('Mossoró', 20);
+INSERT INTO cidade (nome, estado_id) VALUES ('Parnamirim', 20);
+INSERT INTO cidade (nome, estado_id) VALUES ('São Gonçalo do Amarante', 20);
+INSERT INTO cidade (nome, estado_id) VALUES ('Macau', 20);
+
+-- Rio Grande do Sul (21)
+INSERT INTO cidade (nome, estado_id) VALUES ('Porto Alegre', 21);
+INSERT INTO cidade (nome, estado_id) VALUES ('Caxias do Sul', 21);
+INSERT INTO cidade (nome, estado_id) VALUES ('Pelotas', 21);
+INSERT INTO cidade (nome, estado_id) VALUES ('Canoas', 21);
+INSERT INTO cidade (nome, estado_id) VALUES ('Santa Maria', 21);
+
+-- Rondônia (22)
+INSERT INTO cidade (nome, estado_id) VALUES ('Porto Velho', 22);
+INSERT INTO cidade (nome, estado_id) VALUES ('Ji-Paraná', 22);
+INSERT INTO cidade (nome, estado_id) VALUES ('Ariquemes', 22);
+INSERT INTO cidade (nome, estado_id) VALUES ('Vilhena', 22);
+INSERT INTO cidade (nome, estado_id) VALUES ('Cacoal', 22);
+
+-- Roraima (23)
+INSERT INTO cidade (nome, estado_id) VALUES ('Boa Vista', 23);
+INSERT INTO cidade (nome, estado_id) VALUES ('Rorainópolis', 23);
+INSERT INTO cidade (nome, estado_id) VALUES ('Pacaraima', 23);
+INSERT INTO cidade (nome, estado_id) VALUES ('Caracaraí', 23);
+INSERT INTO cidade (nome, estado_id) VALUES ('Mucajaí', 23);
+
+-- Santa Catarina (24)
+INSERT INTO cidade (nome, estado_id) VALUES ('Florianópolis', 24);
+INSERT INTO cidade (nome, estado_id) VALUES ('Joinville', 24);
+INSERT INTO cidade (nome, estado_id) VALUES ('Blumenau', 24);
+INSERT INTO cidade (nome, estado_id) VALUES ('São José', 24);
+INSERT INTO cidade (nome, estado_id) VALUES ('Criciúma', 24);
+
+-- São Paulo (25)
+INSERT INTO cidade (nome, estado_id) VALUES ('São Paulo', 25);
+INSERT INTO cidade (nome, estado_id) VALUES ('Guarulhos', 25);
+INSERT INTO cidade (nome, estado_id) VALUES ('Campinas', 25);
+INSERT INTO cidade (nome, estado_id) VALUES ('São Bernardo do Campo', 25);
+INSERT INTO cidade (nome, estado_id) VALUES ('Santo André', 25);
+
+-- Sergipe (26)
+INSERT INTO cidade (nome, estado_id) VALUES ('Aracaju', 26);
+INSERT INTO cidade (nome, estado_id) VALUES ('Nossa Senhora do Socorro', 26);
+INSERT INTO cidade (nome, estado_id) VALUES ('Lagarto', 26);
+INSERT INTO cidade (nome, estado_id) VALUES ('Itabaiana', 26);
+INSERT INTO cidade (nome, estado_id) VALUES ('São Cristóvão', 26);
+
+-- Tocantins (27)
+INSERT INTO cidade (nome, estado_id) VALUES ('Palmas', 27);
+INSERT INTO cidade (nome, estado_id) VALUES ('Araguaína', 27);
+INSERT INTO cidade (nome, estado_id) VALUES ('Gurupi', 27);
+INSERT INTO cidade (nome, estado_id) VALUES ('Porto Nacional', 27);
+INSERT INTO cidade (nome, estado_id) VALUES ('Paraíso do Tocantins', 27);

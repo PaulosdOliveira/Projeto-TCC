@@ -4,10 +4,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.application.candidato.Candidato
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.QualificacaoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.QualificacaoUsuarioRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ChaveCompostaQualificacao;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.Qualificacao;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuario;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuarioDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -43,6 +40,11 @@ public class QualificacaoService {
 
     public List<Qualificacao> findAll() {
         return qualificacaoRepository.buscarTudo();
+    }
+
+
+    public List<QualificacoesSalvas> buscarQualificacoesPerfil(Long idCandidato) {
+        return qualificacaoUsuarioRepository.buscarQualificacoesPerfil(idCandidato);
     }
 
 }

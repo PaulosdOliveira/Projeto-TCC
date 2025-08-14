@@ -28,7 +28,6 @@ public class CandidatoServiceTest {
         CadastroCandidatoDTO cadastro = new CadastroCandidatoDTO();
         cadastro.setNome("c");
         cadastro.setCpf("0987222222");
-        cadastro.setCep("44094018");
         cadastro.setEmail("chelsea@oei");
         cadastro.setTel("11 998-1286");
         cadastro.setSenha("123");
@@ -44,25 +43,11 @@ public class CandidatoServiceTest {
         System.out.println(service.getCandidatoAccessToken(dadosLogin));
     }
 
-    @Test
-    void buscarCandidatosPorQualificacaoTest() {
-        List<ConsultaQualificacaoUsuario> qualificacoes = new ArrayList<>();
-        qualificacoes.add(new ConsultaQualificacaoUsuario(1L, Nivel.BASICO));
-        service.findByQualificacao(qualificacoes, null, null).forEach(System.out::println);
-    }
 
     @Test
     void test(){
         repository.findAll().forEach(System.out::println);
     }
 
-    @Test
-    void buscarEstadosTest(){
-        System.out.println(repository.buscarEstados());
-    }
 
-    @Test
-    void buscarCidadesTest(){
-        System.out.println(repository.buscarCidades(""));
-    }
 }

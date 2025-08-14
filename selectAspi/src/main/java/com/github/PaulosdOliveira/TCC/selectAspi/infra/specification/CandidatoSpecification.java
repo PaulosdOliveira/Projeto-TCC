@@ -7,7 +7,6 @@ import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Predicate;
-import org.springframework.boot.autoconfigure.rsocket.RSocketProperties;
 import org.springframework.data.jpa.domain.Specification;
 
 public class CandidatoSpecification {
@@ -41,6 +40,17 @@ public class CandidatoSpecification {
     }
 
     public static Specification<Candidato> stringEqual(String campo, String valor){
+        return ((root, query, cb) ->
+                cb.equal(root.get(campo), valor));
+    }
+
+    public static Specification<Candidato> foreignKeyIgual(String foreign, String key){
+        return ((root, query, cb) ->
+                cb.equal(root.get(foreign).get("id"), key));
+    }
+
+
+    public static Specification<Candidato> is(String campo, boolean valor){
         return ((root, query, cb) ->
                 cb.equal(root.get(campo), valor));
     }

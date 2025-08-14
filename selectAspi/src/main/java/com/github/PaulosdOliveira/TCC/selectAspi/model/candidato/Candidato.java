@@ -1,6 +1,8 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.candidato;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Cidade;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Estado;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuario;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -57,19 +59,24 @@ public class Candidato {
     @Column(nullable = false)
     private boolean trabalhando;
 
-    @Column(name = "estado", nullable = false)
-    private String uf;
+    @JoinColumn
+    @ManyToOne
+    private Estado estado;
 
-    @Column(name = "cidade", nullable = false)
-    private String localidade;
-
-    /*@OneToMany(mappedBy = "candidato", fetch = FetchType.EAGER)
-    private List<QualificacaoUsuario> qualificacoes;*/
+    @JoinColumn
+    @ManyToOne
+    private Cidade cidade;
 
 
-    public Candidato(CadastroCandidatoDTO dadosCadastrais, String senhaCriptografada) {
+
+    @OneToMany(mappedBy = "id.candidato", fetch = FetchType.EAGER)
+    private List<QualificacaoUsuario> qualificacoes;
+
+
+    public Candidato(CadastroCandidatoDTO dadosCadastrais) {
         BeanUtils.copyProperties(dadosCadastrais, this);
-        this.senha = senhaCriptografada;
+        this.cidade = new Cidade(dadosCadastrais.getIdCidade());
+        this.estado = new Estado(dadosCadastrais.getIdEstado());
     }
 
     public Candidato(Long id) {
@@ -84,8 +91,6 @@ public class Candidato {
                ", tel='" + tel + '\'' +
                ", email='" + email + '\'' +
                ", trabalhando=" + trabalhando +
-               ", uf='" + uf + '\'' +
-               ", localidade='" + localidade + '\'' +
                ", qualificacoes="  +
                ", id=" + id +
                ", cpf='" + cpf + '\'' +

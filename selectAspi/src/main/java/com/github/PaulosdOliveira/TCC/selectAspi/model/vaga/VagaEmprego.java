@@ -1,10 +1,13 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.vaga;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Sexo;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Cidade;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Estado;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.TipoContrato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Modelo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Nivel;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.Empresa;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import lombok.NoArgsConstructor;
@@ -31,6 +34,21 @@ public class VagaEmprego {
     @Column(nullable = false, columnDefinition = "text")
     private String descricao;
 
+    @Column(nullable = false)
+    private String principais_atividades;
+
+    @Column(nullable = false)
+    private String requisitos;
+
+    @Column(nullable = false)
+    private String diferenciais;
+
+    @Column(nullable = false)
+    private String local_de_trabalho;
+
+    @Column(nullable = false)
+    private String horario;
+
     @CreatedDate
     private LocalDateTime dataHoraPublicacao;
 
@@ -43,17 +61,16 @@ public class VagaEmprego {
     @Column(nullable = false)
     private Float salario;
 
-    @Column(name = "salario_a_combinar")
-    private Boolean salarioACombinar;
-
     @Enumerated(EnumType.STRING)
     private Nivel nivel;
 
-    @Column(nullable = false, length = 2)
-    private String estado;
+    @JoinColumn
+    @ManyToOne
+    private Estado estado;
 
-    @Column(nullable = false, length = 40)
-    private String cidade;
+    @JoinColumn
+    @ManyToOne
+    private Cidade cidade;
 
     @Enumerated(EnumType.STRING)
     private Modelo modelo;
@@ -61,32 +78,31 @@ public class VagaEmprego {
     private boolean vagaAtiva;
 
     @Enumerated(EnumType.STRING)
-    private Sexo ExclusivoParaSexo;
+    private Sexo exclusivoParaSexo;
 
-    private Boolean ExclusivoParaPcd;
+    private Boolean exclusivoParaPcd;
 
     @Enumerated(EnumType.STRING)
     private TipoContrato tipoContrato;
 
-    public VagaEmprego(CadastroVagaDTO dadosCadastrais, String estado, String cidade, Empresa empresa) {
-        Long diasEmAberto = dadosCadastrais.getDiasEmAberto();
-        if (dadosCadastrais.getSalario() == 0) this.salarioACombinar = true;
+    public VagaEmprego(CadastroVagaDTO dadosCadastrais, Empresa empresa) {
+        int diasEmAberto = dadosCadastrais.getDiasEmAberto();
         if (diasEmAberto > 0) this.dataHoraEncerramento = LocalDateTime.now().plusDays(diasEmAberto);
-        this.estado = estado;
-        this.cidade = cidade;
+        this.estado = new Estado(dadosCadastrais.getIdEstado());
+        this.cidade = new Cidade(dadosCadastrais.getIdCidade());
         this.empresa = empresa;
         this.vagaAtiva = true;
-        this.descricao = dadosCadastrais.getDescricao_vaga() + "###"
-                         + dadosCadastrais.getPrincipais_atividades() + "###"
-                         + dadosCadastrais.getRequisitos() + "###"
-                         + dadosCadastrais.getDiferenciais() + "###"
-                         + dadosCadastrais.getLocal_de_trabalho() + "###"
-                         + dadosCadastrais.getHorario();
         BeanUtils.copyProperties(dadosCadastrais, this);
     }
 
 
     public VagaEmprego(Long id) {
         this.id = id;
+    }
+
+    public VagaEmprego(Long id, boolean vagaAtiva, LocalDateTime dataEncerramento) {
+        this.id = id;
+        this.vagaAtiva = vagaAtiva;
+        this.dataHoraEncerramento = dataEncerramento;
     }
 }

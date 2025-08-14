@@ -1,10 +1,7 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.candidato;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuarioDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosLoginCandidatoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.CadastroCandidatoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.ConsultaCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService;
 import com.github.PaulosdOliveira.TCC.selectAspi.jwt.Token;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -35,6 +33,7 @@ public class CandidatoController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/foto")
     public void salvarFotoCandidato(@RequestParam MultipartFile foto) throws IOException {
+        System.out.println("CHEGOOOOUUUUUUU");
         service.salvarFotoCandidato(foto.getBytes());
     }
 
@@ -69,17 +68,25 @@ public class CandidatoController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/qualificacao-candidato")
-    public void cadastrarQualificacao(@RequestBody  List< @Valid QualificacaoUsuarioDTO> qualificacoes) {
+    public void cadastrarQualificacao(@RequestBody List<@Valid QualificacaoUsuarioDTO> qualificacoes) {
         service.cadastarQualificacaoUsuario(qualificacoes);
     }
 
     @PostMapping("/qualificacao-candidato/consulta")
-    public List<ConsultaCandidatoDTO> findByQ(
-            @RequestParam(name = "estado", required = false) String estado,
-            @RequestParam(name = "cidade", required = false) String cidade,
-            @RequestBody List<@Valid ConsultaQualificacaoUsuario> qualificacoes) {
-        return service.findByQualificacao(qualificacoes, estado, cidade).stream().map(ConsultaCandidatoDTO::new).toList();
+    public List<ConsultaCandidatoDTO> findByQ(@RequestBody DadosConsultaCandidatoDTO dadosConsulta) {
+        return service.findByQualificacao(dadosConsulta)
+                .stream().map(candidato ->
+                        new ConsultaCandidatoDTO(candidato.getId(), candidato.getNome(), candidato.getCidade().getNome(), candidato.getEstado().getSigla(),
+                                candidato.getDataNascimento())).toList();
     }
+
+    @GetMapping("/{id}")
+    public PerfilCandidatoDTO carregarPerfil(@PathVariable Long id) {
+        return service.carregarPerfil(id);
+    }
+
+
+
 
 
 }

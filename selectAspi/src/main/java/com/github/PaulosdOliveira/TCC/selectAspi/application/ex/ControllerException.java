@@ -51,6 +51,14 @@ public class ControllerException {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(VagaNaoEncontradaException.class)
     public Map<String, Object> handlerVagaNaoEncontradaException(VagaNaoEncontradaException e) {
+        System.out.println(e.getMessage());
+        return getMap(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UsuarioNaoEncontradoException.class)
+    public Map<String, Object> handlerUsuarioNaoEncontradoException(UsuarioNaoEncontradoException e) {
+        System.out.println(e.getMessage());
         return getMap(e.getMessage());
     }
 
@@ -83,6 +91,13 @@ public class ControllerException {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(IdadeBaixaException.class)
     public Map<String, Object> handlerIdadeBaixaException(IdadeBaixaException e) {
+        return getMap(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RuntimeException.class)
+    public Map<String, Object> handlerRuntimeException(RuntimeException e) {
+        System.out.println(e);
         return getMap(e.getMessage());
     }
 

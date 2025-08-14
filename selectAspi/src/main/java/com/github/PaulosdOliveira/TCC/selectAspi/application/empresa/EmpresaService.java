@@ -1,14 +1,11 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.empresa;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.EmpresaRepository;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.DadosLoginEmpresaDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.CadastroEmpresaDTO;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.LoginEmpresaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.validation.EmpresaValidator;
 import org.springframework.security.core.context.SecurityContextHolder;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.Empresa;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.github.PaulosdOliveira.TCC.selectAspi.jwt.JwtService;
@@ -48,7 +45,9 @@ public class EmpresaService {
     public String getAccessToken(DadosLoginEmpresaDTO dadosLogin) {
         LoginEmpresaDTO loginDTO = buscarPorEmailOuNnpj(dadosLogin.getLogin());
         if (encoder.matches(dadosLogin.getSenha(), loginDTO.getSenha())) {
-            return jwtService.getAccessToken(loginDTO.getId().toString(), loginDTO.getEmail(), loginDTO.getNome(), "empresa");
+            String token = jwtService.getAccessToken(loginDTO.getId().toString(), loginDTO.getEmail(), loginDTO.getNome(), "empresa");
+            System.out.println("TOKEN: " + token);
+            return token;
         }
         throw new UsernameNotFoundException("Usuário e/ou senha incorretos");
     }
@@ -59,8 +58,8 @@ public class EmpresaService {
     }
 
 
-    public Empresa findById(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Algo deu errado"));
+    public PerfilEmpresa carregarPerfil(UUID id) {
+        return repository.carregarPerfil(id).orElseThrow();
     }
 
     public void logarEmpresa(String email) {
@@ -74,10 +73,14 @@ public class EmpresaService {
     }
 
     public void salvarFoto(byte[] foto) {
-        System.out.println(SecurityContextHolder
-                .getContext().getAuthentication().getCredentials().toString() + "88888888888888888888");
         UUID id = UUID.fromString(SecurityContextHolder
                 .getContext().getAuthentication().getCredentials().toString());
         repository.salvarFoto(foto, id);
+    }
+
+    public void salvarCapa(byte[] foto){
+        UUID id = UUID.fromString(SecurityContextHolder.getContext()
+                .getAuthentication().getCredentials().toString());
+        repository.salvarCapa(foto, id);
     }
 }

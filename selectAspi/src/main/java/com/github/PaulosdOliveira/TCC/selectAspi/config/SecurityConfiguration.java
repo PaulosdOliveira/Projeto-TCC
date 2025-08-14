@@ -32,12 +32,15 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.configure(http))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/candidato").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/candidato/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/candidato/foto/**").permitAll();
                     auth.requestMatchers("/candidato/login").permitAll();
                     auth.requestMatchers("/empresa/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/qualificacao").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/qualificacao/teste").permitAll();
-                    auth.requestMatchers("/vaga/estados").permitAll();
-                    auth.requestMatchers("/vaga/cidades/**").permitAll();
+                    auth.requestMatchers("/utils/estados").permitAll();
+                    auth.requestMatchers("/utils/cidades/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET,"/vaga/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

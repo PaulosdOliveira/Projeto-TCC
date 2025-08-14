@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class CadastroCandidatoDTO {
 
     //@CPF(message = "Digite um CPF válida")
-    @NotBlank( message = "Informe o seu CPF")
+    @NotBlank(message = "Informe o seu CPF")
     private String cpf;
 
     @Email(message = "Digite um email válido")
@@ -46,8 +46,11 @@ public class CadastroCandidatoDTO {
     @NotNull(message = "Informe se está trabalho atualmente")
     private boolean trabalhando;
 
-    @NotBlank(message = "Informe um cep de sua cidade")
-    private String cep;
+    @NotNull(message = "Obrigatório")
+    private int idEstado;
+
+    @NotNull(message = "Obrigatório")
+    private int idCidade;
 
 
 }

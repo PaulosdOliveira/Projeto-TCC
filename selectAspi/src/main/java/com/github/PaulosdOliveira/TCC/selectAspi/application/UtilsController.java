@@ -1,12 +1,14 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.CandidatoRepository;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.CidadeDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Estado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -14,16 +16,16 @@ import java.util.List;
 public class UtilsController {
 
     @Autowired
-    private CandidatoRepository candidatoRepository;
+    private UtilsService service;
 
     @GetMapping("/estados")
-    public List<String> buscarEstados(){
-        return candidatoRepository.buscarEstados();
+    public List<Estado> buscarEstados() {
+        return service.buscarEstados();
     }
 
-    @GetMapping("/cidades/{uf}")
-    public List<String> buscarCiiades(@PathVariable String uf){
-        return candidatoRepository.buscarCidades(uf);
+    @GetMapping("/cidades/{idEstado}")
+    public List<CidadeDTO> buscarCidadesDeEstado(@PathVariable int idEstado) {
+        return service.buscarCidadesDeEstado(idEstado);
     }
 
 }

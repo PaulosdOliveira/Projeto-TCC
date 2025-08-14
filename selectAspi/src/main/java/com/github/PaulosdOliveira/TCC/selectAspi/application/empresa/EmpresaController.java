@@ -4,6 +4,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.application.qualificacao.Qualif
 import com.github.PaulosdOliveira.TCC.selectAspi.jwt.Token;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.DadosLoginEmpresaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.CadastroEmpresaDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.PerfilEmpresa;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.Qualificacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService;
 import org.springframework.web.bind.annotation.*;
@@ -34,14 +35,17 @@ public class EmpresaController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
     public Token getAccessToken(@RequestBody @Valid DadosLoginEmpresaDTO dadosLogin) {
-
         return new Token(service.getAccessToken(dadosLogin));
     }
 
     @PostMapping("/foto")
     public void salvarFoto(@RequestParam MultipartFile foto) throws IOException {
-        System.out.println("OIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
         service.salvarFoto(foto.getBytes());
+    }
+
+    @PostMapping("/capa")
+    public void salvarCapa(@RequestParam MultipartFile foto) throws IOException {
+        service.salvarCapa(foto.getBytes());
     }
 
     @GetMapping("/foto/{id}")
@@ -54,6 +58,12 @@ public class EmpresaController {
     public ResponseEntity<byte[]> renderizarCapa(@PathVariable UUID id) {
         byte[] foto = service.buscarCapaEmpresa(id);
         return utils.renderizarFoto(foto);
+    }
+
+
+    @GetMapping("/{id}")
+    public PerfilEmpresa carregarPerfil(@PathVariable UUID id) {
+        return service.carregarPerfil(id);
     }
 
 

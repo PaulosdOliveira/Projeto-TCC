@@ -13,8 +13,10 @@ public class LocalizacaoService {
 
     private final WebClient webClient = WebClient.create("https://viacep.com.br/ws");
 
+    @Deprecated
     public Localizacao buscarLocalizacaoPorCep(String cep) {
         try {
+            System.out.println("Chegou aquuii no CEP");
             return webClient.get()
                     .uri("/{cep}/json", cep)
                     .retrieve()

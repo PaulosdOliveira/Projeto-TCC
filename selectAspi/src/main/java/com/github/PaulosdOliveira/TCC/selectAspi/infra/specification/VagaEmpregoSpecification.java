@@ -21,18 +21,23 @@ public class VagaEmpregoSpecification {
 
     public static Specification<VagaEmprego> exclusivaPcd(boolean isPcd) {
         return ((root, query, cb) ->
-                cb.equal(root.get("ExclusivoParaPcd"), isPcd));
+                cb.equal(root.get("exclusivoParaPcd"), isPcd));
     }
 
     public static Specification<VagaEmprego> notSexoExclusivo(Sexo sexo) {
         return ((root, query, cb) ->
-                cb.notEqual(root.get("ExclusivoParaSexo"), sexo.equals(Sexo.MASCULINO) ? Sexo.FEMININO : Sexo.MASCULINO));
+                cb.notEqual(root.get("exclusivoParaSexo"), sexo.equals(Sexo.MASCULINO) ? Sexo.FEMININO : Sexo.MASCULINO));
 
     }
 
     public static Specification<VagaEmprego> isAtiva() {
         return (root, query, cb) ->
                 cb.equal(root.get("vagaAtiva"), true);
+    }
+
+    public static  Specification<VagaEmprego> foreignKeyIgual(String foreign, String id){
+        return (root,  query, cb) ->
+                cb.equal(root.get(foreign).get("id"), Integer.parseInt(id));
     }
 
 

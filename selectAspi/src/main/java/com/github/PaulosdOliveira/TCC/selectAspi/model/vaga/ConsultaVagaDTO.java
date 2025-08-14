@@ -7,9 +7,11 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.TipoContrato;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
+
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
+
 
 @NoArgsConstructor
 @Data
@@ -19,16 +21,22 @@ public class ConsultaVagaDTO {
     private UUID id_empresa;
     private String nome_empresa;
     private String titulo;
-    private String[] descricao;
+    private String descricao;
+    private String principais_atividades;
+    private String requisitos;
+    private String diferenciais;
+    private String local_de_trabalho;
+    private String horario;
     private LocalDateTime dataHoraPublicacao;
     private LocalDateTime dataHoraEncerramento;
+    private Long diasEmAberto;
     private Float salario;
     private Nivel nivel;
     private String estado;
     private String cidade;
     private Modelo modelo;
-    private Sexo ExclusivoParaSexo;
-    private Boolean ExclusivoParaPcd;
+    private Sexo exclusivoParaSexo;
+    private Boolean exclusivoParaPcd;
     private TipoContrato tipoContrato;
     private boolean jaCandidatou;
 
@@ -36,7 +44,13 @@ public class ConsultaVagaDTO {
         BeanUtils.copyProperties(vaga, this);
         this.nome_empresa = vaga.getEmpresa().getNome();
         this.id_empresa = vaga.getEmpresa().getId();
-        this.descricao = vaga.getDescricao().split("###");
+        this.cidade = vaga.getCidade().getNome();
+        this.estado = vaga.getEstado().getSigla();
+        this.diasEmAberto = dataHoraEncerramento != null?
+                ChronoUnit.DAYS.between(dataHoraPublicacao, dataHoraEncerramento) : 0;
+        System.out.println(vaga.getPrincipais_atividades());
+        System.out.println(this.principais_atividades);
     }
+
 
 }

@@ -28,7 +28,6 @@ public class VagaServiceTest {
     @Test
     void cadastrarVagaTest() {
         CadastroVagaDTO dados = new CadastroVagaDTO();
-        dados.setCep("01021-000");
         dados.setTitulo("Lavador de carro");
         dados.setDescricao_vaga("Estamos em busca de um(a) Atendente de Loja para integrar nossa equipe e oferecer um atendimento de qualidade aos clientes. O(a) profissional será responsável por auxiliar os clientes durante todo o processo de compra, garantir a organização do ambiente e contribuir para uma experiência positiva na loja.#");
        dados.setPrincipais_atividades("Recepcionar os clientes com cordialidade e atenção;\n" +

@@ -3,7 +3,9 @@ package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosFitroVaga;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.PerfilCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,23 +49,23 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
            " from Candidato c where c.email = :login  or c.cpf = :login")
     Optional<LoginCandidatoDTO> buscarCandidatoLogin(@Param("login") String login);
 
-    @Query("Select DISTINCT c.uf from Candidato c")
-    List<String> buscarEstados();
-
-    @Query("Select distinct c.localidade from Candidato c where c.uf like %:uf order by c.localidade")
-    List<String> buscarCidades(String uf);
+    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.PerfilCandidatoDTO(c.id, c.nome," +
+           " c.descricao, c.tel, c.email, c.trabalhando, c.pcd, c.cidade, c.estado, c.dataNascimento) from Candidato c where c.id = :id")
+    Optional<PerfilCandidatoDTO> carregarPerfilCandidato(Long id);
 
     // Deescobrindo se candidato é PCD e qual é o seu sexo
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosFitroVaga(c.sexo, c.pcd) from Candidato c where c.id = :id")
     DadosFitroVaga buscarDadosFiltroVaga(Long id);
 
-    default List<Candidato> findCandidatoByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String estado, String cidade) {
-        Specification<Candidato> spec = Specification.where(null);
+    default List<Candidato> findCandidatoByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String idEstado, String idCidade, String sexo, boolean isPcd, Boolean trabalhando) {
+        Specification<Candidato> spec = is("pcd", isPcd);
         for (ConsultaQualificacaoUsuario q : qualificacoes) {
             spec = spec.and(findByQualificacao(q.getIdQualificacao(), q.getNivel()));
         }
-        if (estado != null) spec = spec.and(stringEqual("uf", estado));
-        if (cidade != null) spec = spec.and(stringEqual("localidade", cidade.replaceAll("-", " ")));
+        if (StringUtils.isNotBlank(idEstado)) spec = spec.and(foreignKeyIgual("estado", idEstado));
+        if (StringUtils.isNotBlank(idCidade)) spec = spec.and(foreignKeyIgual("cidade", idCidade));
+        if (StringUtils.isNotBlank(sexo)) spec = spec.and(stringEqual("sexo", sexo));
+        if(trabalhando != null) spec = spec.and(is("trabalhando", trabalhando));
         spec = spec.and(orderByRandom());
         return findAll(spec);
     }

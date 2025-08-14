@@ -15,12 +15,15 @@ public class VagaScheduler {
     private VagaEmpregoRepository repository;
 
     @Transactional
-    @Scheduled(cron = "0 38 10 * * *")
-    public void desativarVagasExpiradas(){
+    @Scheduled(cron = "0 00 09 * * *")
+    public void desativarVagasExpiradas() {
         System.out.println("Limpesa sendo realizada");
         var vagas = repository.findAtivas();
         vagas.removeIf(vaga -> {
-            if(vaga.getDataHoraEncerramento().isBefore(LocalDateTime.now())) vaga.setVagaAtiva(false);
+            if (vaga.getDataHoraEncerramento() == null) return false;
+            if (vaga.getDataHoraEncerramento().isBefore(LocalDateTime.now())) {
+                repository.desativarVaga(vaga.getId());
+            }
             return false;
         });
 

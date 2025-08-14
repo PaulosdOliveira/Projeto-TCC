@@ -7,9 +7,15 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Nivel;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.TipoContrato;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
+
+import java.time.temporal.ChronoUnit;
 
 
+@NoArgsConstructor
 @Data
 public class CadastroVagaDTO {
 
@@ -17,7 +23,7 @@ public class CadastroVagaDTO {
     private String titulo;
 
     @NotBlank(message = "Campo obrigatório")
-    private String descricao_vaga;
+    private String descricao;
 
     @NotBlank(message = "Campo obrigatório")
     private String principais_atividades;
@@ -35,7 +41,7 @@ public class CadastroVagaDTO {
     private String horario;
 
     @NotNull(message = "Campo obrigatório")
-    private Long diasEmAberto;
+    private int diasEmAberto;
 
     @NotNull(message = "Campo obrigatório")
     private Float salario;
@@ -44,8 +50,11 @@ public class CadastroVagaDTO {
     @NotNull(message = "Campo obrigatório")
     private Nivel nivel;
 
-    @NotBlank(message = "Campo obrigatório")
-    private String cep;
+    @NotNull(message = "Campo obrigatório")
+    private Integer idEstado;
+
+    @NotNull(message = "Campo obrigatório")
+    private Integer idCidade;
 
     @NotNull(message = "Campo obrigatório")
     private Modelo modelo;
@@ -58,4 +67,12 @@ public class CadastroVagaDTO {
 
     @NotNull(message = "Campo obrigatório")
     private TipoContrato tipoContrato;
+
+    public CadastroVagaDTO(VagaEmprego vaga) {
+        BeanUtils.copyProperties(vaga, this);
+        this.diasEmAberto = vaga.getDataHoraEncerramento() != null ?
+                (int) ChronoUnit.DAYS.between(vaga.getDataHoraPublicacao(), vaga.getDataHoraEncerramento()) : 0;
+        this.idCidade = vaga.getCidade().getId();
+        this.idEstado = vaga.getEstado().getId();
+    }
 }

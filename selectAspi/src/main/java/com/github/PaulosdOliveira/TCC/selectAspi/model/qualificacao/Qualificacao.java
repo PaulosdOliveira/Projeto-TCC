@@ -21,4 +21,8 @@ public class Qualificacao {
     public Qualificacao(Long id) {
         this.id = id;
     }
+
+    public Qualificacao(String nome) {
+        this.nome = nome;
+    }
 }
