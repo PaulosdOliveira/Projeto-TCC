@@ -29,7 +29,7 @@ public class VagaServiceTest {
     void cadastrarVagaTest() {
         CadastroVagaDTO dados = new CadastroVagaDTO();
         dados.setTitulo("Lavador de carro");
-        dados.setDescricao_vaga("Estamos em busca de um(a) Atendente de Loja para integrar nossa equipe e oferecer um atendimento de qualidade aos clientes. O(a) profissional será responsável por auxiliar os clientes durante todo o processo de compra, garantir a organização do ambiente e contribuir para uma experiência positiva na loja.#");
+        dados.setDescricao("Estamos em busca de um(a) Atendente de Loja para integrar nossa equipe e oferecer um atendimento de qualidade aos clientes. O(a) profissional será responsável por auxiliar os clientes durante todo o processo de compra, garantir a organização do ambiente e contribuir para uma experiência positiva na loja.#");
        dados.setPrincipais_atividades("Recepcionar os clientes com cordialidade e atenção;\n" +
                                       "\n" +
                                       "Auxiliar na escolha de produtos e esclarecer dúvidas;\n" +
@@ -59,7 +59,7 @@ public class VagaServiceTest {
        dados.setHorario("Escala de trabalho 6x1 — das 13h às 21h, com uma folga semanal e um domingo por mês.#");
         dados.setNivel(Nivel.INDEFINIDO);
         dados.setModelo(Modelo.PRESENCIAL);
-        dados.setDiasEmAberto(3L);
+        dados.setDiasEmAberto(3);
         dados.setExclusivoParaPcd(false);
         dados.setExclusivoParaSexo(Sexo.TODOS);
         dados.setTipoContrato(TipoContrato.CLT);

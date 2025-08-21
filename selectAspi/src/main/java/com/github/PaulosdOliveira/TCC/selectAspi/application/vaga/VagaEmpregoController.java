@@ -53,7 +53,7 @@ public class VagaEmpregoController {
         candidatoVagaService.cancelarCandidatura(idVaga);
     }
 
-    @PreAuthorize("hasRole('candidato')")
+
     @GetMapping("/buscar")
     public List<CardVagaDTO> buscarVagas(
             @RequestParam(required = false) String titulo,
@@ -93,6 +93,7 @@ public class VagaEmpregoController {
     @PutMapping("/{idVaga}")
     @PreAuthorize("hasRole('empresa')")
     public void editarDadosVaga(@PathVariable Long idVaga, @RequestBody @Valid CadastroVagaDTO novosDados) {
+        System.out.println("Chegou aqui@@ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         service.editarVaga(idVaga, novosDados);
     }
 

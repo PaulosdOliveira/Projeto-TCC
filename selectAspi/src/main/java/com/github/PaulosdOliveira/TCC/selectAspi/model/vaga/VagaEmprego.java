@@ -49,6 +49,12 @@ public class VagaEmprego {
     @Column(nullable = false)
     private String horario;
 
+    @Column(nullable = false, columnDefinition = "text")
+    private String mensagemConvocacao;
+
+    @Column(nullable = false, columnDefinition = "text")
+    private String mensagemDispensa;
+
     @CreatedDate
     private LocalDateTime dataHoraPublicacao;
 
@@ -104,5 +110,32 @@ public class VagaEmprego {
         this.id = id;
         this.vagaAtiva = vagaAtiva;
         this.dataHoraEncerramento = dataEncerramento;
+    }
+
+    @Override
+    public String toString() {
+        return "VagaEmprego{" +
+               "id=" + id +
+               ", titulo='" + titulo + '\'' +
+               ", descricao='" + descricao + '\'' +
+               ", principais_atividades='" + principais_atividades + '\'' +
+               ", requisitos='" + requisitos + '\'' +
+               ", diferenciais='" + diferenciais + '\'' +
+               ", local_de_trabalho='" + local_de_trabalho + '\'' +
+               ", horario='" + horario + '\'' +
+               ", mensagemConvocacao='" + mensagemConvocacao + '\'' +
+               ", mensagemDispensa='" + mensagemDispensa + '\'' +
+               ", dataHoraPublicacao=" + dataHoraPublicacao +
+               ", dataHoraEncerramento=" + dataHoraEncerramento +
+               ", salario=" + salario +
+               ", nivel=" + nivel +
+               ", estado=" + estado +
+               ", cidade=" + cidade +
+               ", modelo=" + modelo +
+               ", vagaAtiva=" + vagaAtiva +
+               ", exclusivoParaSexo=" + exclusivoParaSexo +
+               ", exclusivoParaPcd=" + exclusivoParaPcd +
+               ", tipoContrato=" + tipoContrato +
+               '}';
     }
 }

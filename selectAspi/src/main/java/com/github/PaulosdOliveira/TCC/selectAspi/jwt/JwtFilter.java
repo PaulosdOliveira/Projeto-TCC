@@ -52,18 +52,18 @@ public class JwtFilter extends OncePerRequestFilter {
         System.out.println(path + "----------------------------------");
         System.out.println(request.getRequestURL() + "@@@@@@@@@@@@@@");
 
-        boolean pular = path.contains("/login") || path.contains("/cidades") || path.contains("/estados") || (path.contains("/candidato") && metodo.equals(HttpMethod.GET.name()))
-                        || path.contains("/cadastro") || (path.contains("/foto") && metodo.equals(HttpMethod.GET.name()))
-                        || (path.contains("/qualificacao") && !path.contains("/qualificacao-candidato")) || (path.contains("/vaga") && !path.contains("/candidatos") && metodo.equals(HttpMethod.GET.name()));
-
+        boolean pular = (metodo.equals(HttpMethod.POST.name()) && path.contains("/login") || path.contains("/buscar"))
+                        || (!metodo.equals(HttpMethod.POST.name()) && path.contains("/foto") || path.contains("/capa"))
+                        || (metodo.equals(HttpMethod.GET.name()) && path.contains("/vaga/buscar") || path.contains("/vaga?idEmpresa="))
+                        || path.contains("conect");
         System.out.println(pular);
-        return false;
+        return pular;
     }
 
 
     private String getRequestToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        System.out.println(token + "@@@@@@@@");
+        System.out.println("TOKEN: " + token);
         if (token != null) {
             String[] tokenDividido = token.split(" ");
             return tokenDividido[1];

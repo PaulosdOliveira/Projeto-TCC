@@ -5,6 +5,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Sexo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Modelo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Nivel;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.TipoContrato;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,12 @@ public class CadastroVagaDTO {
 
     @NotBlank(message = "Campo obrigatório")
     private String horario;
+
+    @NotBlank(message = "Campo obrigatório")
+    private String mensagemConvocacao;
+
+    @NotBlank(message = "Campo obrigatório")
+    private String mensagemDispensa;
 
     @NotNull(message = "Campo obrigatório")
     private int diasEmAberto;

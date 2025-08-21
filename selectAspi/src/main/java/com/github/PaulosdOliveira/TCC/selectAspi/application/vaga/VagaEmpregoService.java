@@ -13,9 +13,10 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Estado;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaPK;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
+
 import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService.getTempoDecorrido;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -59,8 +60,11 @@ public class VagaEmpregoService {
         vaga.setEstado(new Estado(dados.getIdEstado()));
         vaga.setSalario(dados.getSalario());
         vaga.setTipoContrato(dados.getTipoContrato());
+        vaga.setMensagemConvocacao(dados.getMensagemConvocacao());
+        vaga.setMensagemDispensa(dados.getMensagemDispensa());
         if (dados.getDiasEmAberto() > 0)
             vaga.setDataHoraEncerramento(vaga.getDataHoraPublicacao().plusDays(dados.getDiasEmAberto()));
+
     }
 
 

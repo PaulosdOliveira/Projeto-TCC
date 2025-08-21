@@ -4,6 +4,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Sexo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Modelo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Nivel;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.TipoContrato;
+import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +28,8 @@ public class ConsultaVagaDTO {
     private String diferenciais;
     private String local_de_trabalho;
     private String horario;
+    private String mensagemConvocacao;
+    private String mensagemDispensa;
     private LocalDateTime dataHoraPublicacao;
     private LocalDateTime dataHoraEncerramento;
     private Long diasEmAberto;
@@ -40,6 +43,8 @@ public class ConsultaVagaDTO {
     private TipoContrato tipoContrato;
     private boolean jaCandidatou;
 
+
+    // CONSTRUTOR USADO NO REPOSITORY
     public ConsultaVagaDTO(VagaEmprego vaga) {
         BeanUtils.copyProperties(vaga, this);
         this.nome_empresa = vaga.getEmpresa().getNome();

@@ -1,9 +1,10 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.Empresa;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -26,13 +27,18 @@ public class Mensagem {
     @CreatedDate
     private LocalDateTime dataHoraEnvio;
 
-    @Column(nullable = false, name = "empresa_id")
-    private UUID idEmpresa;
+    @JoinColumn
+    @ManyToOne
+    private Empresa empresa;
 
-    @Column(nullable = false, name = "candidato_id")
-    private Long idCandidato;
+    @JoinColumn
+    @ManyToOne
+    private Candidato candidato;
 
-    public Mensagem(MensagemDTO dto) {
-        BeanUtils.copyProperties(dto, this);
+    public Mensagem(CadastroMensagemDTO dto) {
+        this.texto = dto.getTexto();
+        this.candidato = new Candidato(dto.getIdCandidato());
+        this.empresa = new Empresa(dto.getIdEmpresa().toString());
+        System.out.println(texto);
     }
 }

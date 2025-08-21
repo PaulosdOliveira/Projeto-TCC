@@ -8,9 +8,12 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidatoC
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidatoVaga;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaCandidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaPK;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.StatusCandidatura;
 import com.github.PaulosdOliveira.TCC.selectAspi.validation.CandidaturaValidator;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -30,10 +33,13 @@ public class CandidatoVagaService {
         repository.save(new CandidatoVaga(idCandidato, idVaga));
     }
 
+    @Transactional
     public void cancelarCandidatura(Long idVaga) {
         Long idCandidato = candidatoService.getIdCandidatoLogado();
-        repository.deleteById(new CandidaturaPK(new Candidato(idCandidato), new VagaEmprego(idVaga)));
-
+        var idCandidatura = new CandidaturaPK(new Candidato(idCandidato), new VagaEmprego(idVaga));
+        var candidatura = repository.findById(idCandidatura).orElseThrow();
+        if (candidatura.getStatus() == StatusCandidatura.EM_ANALISE) repository.deleteById(idCandidatura);
+        else throw new RuntimeException("Vaga candidatura de definida");
     }
 
     public List<CandidatoCadastradoDTO> buscarCandidatosVaga(Long idVaga) {

@@ -1,18 +1,22 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import java.util.UUID;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+
+@NoArgsConstructor
 @Data
 public class MensagemDTO {
-    @NotBlank(message = "A mensagem não pode ser vázia")
+    private UUID id;
     private String texto;
+    private String horaEnvio;
 
-    @NotNull(message = "Algo de errado")
-    private UUID idEmpresa;
-
-    @NotNull(message = "Algo de errado")
-    private Long idCandidato;
+    public MensagemDTO(UUID id, String texto, LocalDateTime horaEnvio) {
+        this.id = id;
+        this.texto = texto;
+        this.horaEnvio = horaEnvio.getHour() + ":" + horaEnvio.getMinute();
+    }
 }

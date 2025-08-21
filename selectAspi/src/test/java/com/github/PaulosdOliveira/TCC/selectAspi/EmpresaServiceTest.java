@@ -39,6 +39,6 @@ public class EmpresaServiceTest {
     @Test
     void buscarEmpresas(){
         repository.findAll()
-                .forEach(e -> System.out.println("Nome: " + e.getId()));
+                .forEach(e -> System.out.println("ID: " + e.getId()));
     }
 }

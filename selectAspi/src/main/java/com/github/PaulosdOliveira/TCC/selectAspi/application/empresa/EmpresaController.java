@@ -7,6 +7,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.CadastroEmpresaDT
 import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.PerfilEmpresa;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.Qualificacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -38,11 +39,13 @@ public class EmpresaController {
         return new Token(service.getAccessToken(dadosLogin));
     }
 
+    @PreAuthorize("hasRole('empresa')")
     @PostMapping("/foto")
     public void salvarFoto(@RequestParam MultipartFile foto) throws IOException {
         service.salvarFoto(foto.getBytes());
     }
 
+    @PreAuthorize("hasRole('empresa')")
     @PostMapping("/capa")
     public void salvarCapa(@RequestParam MultipartFile foto) throws IOException {
         service.salvarCapa(foto.getBytes());

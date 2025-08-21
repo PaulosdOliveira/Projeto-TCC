@@ -31,16 +31,16 @@ public class SecurityConfiguration {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configure(http))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/candidato").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/candidato/**").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/candidato/foto/**").permitAll();
                     auth.requestMatchers("/candidato/login").permitAll();
-                    auth.requestMatchers("/empresa/**").permitAll();
+                    auth.requestMatchers(HttpMethod.POST, "/empresa").permitAll();
+                    auth.requestMatchers("/empresa/login").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/empresa/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/vaga", "/vaga/buscar").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/qualificacao").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/qualificacao/teste").permitAll();
-                    auth.requestMatchers("/utils/estados").permitAll();
-                    auth.requestMatchers("/utils/cidades/**").permitAll();
-                    auth.requestMatchers(HttpMethod.GET,"/vaga/**").permitAll();
+                    auth.requestMatchers("/utils/estados", "/utils/cidades/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/vaga/buscar", "/vaga?idEmpresa=**").permitAll();
+                    auth.requestMatchers("/conect").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
@@ -59,7 +59,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:3000"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
