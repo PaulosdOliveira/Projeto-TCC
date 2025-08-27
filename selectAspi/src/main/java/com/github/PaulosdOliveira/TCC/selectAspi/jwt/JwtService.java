@@ -3,8 +3,11 @@ package com.github.PaulosdOliveira.TCC.selectAspi.jwt;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.token.DadosToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
+
 import io.jsonwebtoken.Jwts;
+
 import java.util.HashMap;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -40,21 +43,11 @@ public class JwtService {
     }
 
     public DadosToken getEmailByToken(String token) {
-        String perfil = Jwts.parser()
+        var payLoad = Jwts.parser()
                 .verifyWith(secretKeyService.getSecret())
                 .build()
                 .parseSignedClaims(token)
-                .getPayload()
-                .get("perfil").toString();
-
-        String email = Jwts.parser()
-                .verifyWith(secretKeyService.getSecret())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
-
-        return new DadosToken(email, perfil);
-
+                .getPayload();
+        return new DadosToken(payLoad.getSubject(), payLoad.get("perfil").toString());
     }
 }

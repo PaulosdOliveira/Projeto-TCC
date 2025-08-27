@@ -1,6 +1,7 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.mensagem;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.MensagemRepository;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.ChatContatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.Contato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.MensagemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +36,12 @@ public class MensagemService {
     }
 
 
+    public ChatContatoDTO buscarDadosContato(String idContato) {
+        var dados = new ChatContatoDTO();
+        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString()
+                .contains("empresa")) dados = repository.buscarDadosChatCandidato(Long.parseLong(idContato));
+        else dados = repository.buscarDadosChatEmpresa(UUID.fromString(idContato));
+        System.out.println(dados);
+        return dados;
+    }
 }

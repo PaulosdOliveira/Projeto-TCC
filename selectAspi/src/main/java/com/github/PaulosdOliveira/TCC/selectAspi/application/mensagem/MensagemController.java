@@ -1,15 +1,12 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.mensagem;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.ChatContatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.Contato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.MensagemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 
 @RestController
@@ -23,6 +20,11 @@ public class MensagemController {
     @GetMapping("/{idDestinatario}")
     public List<MensagemDTO> carregarMensagens(@PathVariable String idDestinatario) {
         return service.carregarMensagens(idDestinatario);
+    }
+
+    @GetMapping("/dados/{idContato}")
+    public ChatContatoDTO buscarDadosContato(@PathVariable String idContato){
+      return service.buscarDadosContato(idContato);
     }
 
     @GetMapping("/contatos-recentes")

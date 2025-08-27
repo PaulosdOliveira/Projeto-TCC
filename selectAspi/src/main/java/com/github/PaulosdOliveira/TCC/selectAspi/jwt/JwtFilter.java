@@ -31,15 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getRequestToken(request);
         if (token != null) {
-            DadosToken dadosToken = service.getEmailByToken(token);
-            if (dadosToken.getPerfil().equals("candidato")) {
-                System.out.println("Candidato ################");
-                candidatoService.logarCandidato(dadosToken.getEmail());
-            } else {
-                System.out.println("Empresa ###################################");
-                System.out.println(dadosToken.getEmail() + " " + dadosToken.getPerfil());
-                empresaService.logarEmpresa(dadosToken.getEmail());
-            }
+            logarUsuario(token);
         }
         filterChain.doFilter(request, response);
     }
@@ -51,7 +43,6 @@ public class JwtFilter extends OncePerRequestFilter {
         var metodo = request.getMethod();
         System.out.println(path + "----------------------------------");
         System.out.println(request.getRequestURL() + "@@@@@@@@@@@@@@");
-
         boolean pular = (metodo.equals(HttpMethod.POST.name()) && path.contains("/login") || path.contains("/buscar"))
                         || (!metodo.equals(HttpMethod.POST.name()) && path.contains("/foto") || path.contains("/capa"))
                         || (metodo.equals(HttpMethod.GET.name()) && path.contains("/vaga/buscar") || path.contains("/vaga?idEmpresa="))
@@ -69,5 +60,20 @@ public class JwtFilter extends OncePerRequestFilter {
             return tokenDividido[1];
         }
         return null;
+    }
+
+    // LOGANDO USUÁRIO ATRAVÉZ DO TOKEN
+    public void logarUsuario(String token) {
+        if (token != null) {
+            DadosToken dadosToken = service.getEmailByToken(token);
+            if (dadosToken.getPerfil().equals("candidato")) {
+                System.out.println("Candidato ################");
+                candidatoService.logarCandidato(dadosToken.getEmail());
+            } else {
+                System.out.println("Empresa ###################################");
+                System.out.println(dadosToken.getEmail() + " " + dadosToken.getPerfil());
+                empresaService.logarEmpresa(dadosToken.getEmail());
+            }
+        }
     }
 }

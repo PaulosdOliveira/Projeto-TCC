@@ -8,11 +8,13 @@ import lombok.Data;
 @Data
 public class CadastroMensagemDTO {
     @NotBlank(message = "A mensagem não pode ser vázia")
-    private String texto;
+    private final String texto;
 
     @NotNull(message = "Algo de errado")
-    private UUID idEmpresa;
+    private final UUID idEmpresa;
 
     @NotNull(message = "Algo de errado")
-    private Long idCandidato;
+    private final Long idCandidato;
+
+    private final String perfilRemetente;
 }

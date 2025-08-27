@@ -73,7 +73,6 @@ public class CandidatoService {
     }
 
     public LoginCandidatoDTO buscarPorEmailOuCpf(String login) {
-        System.out.println("O que está acontecendo ??????  " + login);
         return repository.buscarCandidatoLogin(login).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
     }
 

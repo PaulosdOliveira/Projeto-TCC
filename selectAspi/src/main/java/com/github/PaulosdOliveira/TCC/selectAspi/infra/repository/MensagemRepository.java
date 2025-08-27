@@ -1,5 +1,6 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.ChatContatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.Contato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.Mensagem;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.MensagemDTO;
@@ -11,16 +12,23 @@ import java.util.UUID;
 
 public interface MensagemRepository extends JpaRepository<Mensagem, UUID> {
 
-    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.MensagemDTO(m.id, m.texto, m.dataHoraEnvio) from Mensagem m where m.candidato.id = :idCandidato  and m.empresa.id = :idEmpresa order by m.dataHoraEnvio")
+
+    @Query("Select DISTINCT new com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.ChatContatoDTO(m.empresa.nome, m.empresa.id) from Mensagem m where m.empresa.id = :idEmpresa")
+    ChatContatoDTO buscarDadosChatEmpresa(UUID idEmpresa);
+
+    @Query("Select DISTINCT new com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.ChatContatoDTO(m.candidato.nome, m.candidato.id) from Mensagem m where m.candidato.id = :idCandidato ")
+    ChatContatoDTO buscarDadosChatCandidato(Long idCandidato);
+
+    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.MensagemDTO(m.id, m.texto, m.dataHoraEnvio, m.empresa.id, m.candidato.id, m.perfilRemetente) from Mensagem m where m.candidato.id = :idCandidato  and m.empresa.id = :idEmpresa order by m.dataHoraEnvio")
     List<MensagemDTO> buscarMensagens(Long idCandidato, UUID idEmpresa);
 
 
     @Query("""
             Select  new com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.Contato(m.candidato.id, m.candidato.nome, m.texto) from Mensagem m
              where m.dataHoraEnvio = (
-              select max(m2.dataHoraEnvio) from Mensagem m2 where m2.empresa.id = m.empresa.id
+              select max(m2.dataHoraEnvio) from Mensagem m2 where m2.candidato.id = m.candidato.id group by m.candidato.id
               )
-               and m.empresa.id = :idEmpresa
+               and m.empresa.id = :idEmpresa order by m.dataHoraEnvio DESC
             """)
     List<Contato> buscarContatosRecentesEmpresa(UUID idEmpresa);
 
@@ -28,9 +36,9 @@ public interface MensagemRepository extends JpaRepository<Mensagem, UUID> {
     @Query("""
             Select  new com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.Contato(m.empresa.id, m.empresa.nome, m.texto)
             from Mensagem m where  m.dataHoraEnvio = (
-            select max(m2.dataHoraEnvio) from Mensagem m2 where m2.candidato.id = m.candidato.id
+            select max(m2.dataHoraEnvio) from Mensagem m2 where m2.empresa.id = m.empresa.id
             )
-            and m.candidato.id = :idCandidato
+            and m.candidato.id = :idCandidato order by m.dataHoraEnvio DESC
             """ )
     List<Contato> buscarContatosRecentesCandidato(Long idCandidato);
 

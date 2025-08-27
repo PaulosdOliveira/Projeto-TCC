@@ -41,4 +41,6 @@ public class EmpresaServiceTest {
         repository.findAll()
                 .forEach(e -> System.out.println("ID: " + e.getId()));
     }
+
+    // c2e355c0-5fa9-4387-bacd-a699cbb1515d
 }

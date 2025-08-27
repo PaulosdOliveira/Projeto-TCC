@@ -35,10 +35,14 @@ public class Mensagem {
     @ManyToOne
     private Candidato candidato;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "enviado_por")
+    private PerfilRemetente perfilRemetente;
+
     public Mensagem(CadastroMensagemDTO dto) {
         this.texto = dto.getTexto();
         this.candidato = new Candidato(dto.getIdCandidato());
         this.empresa = new Empresa(dto.getIdEmpresa().toString());
-        System.out.println(texto);
+        this.perfilRemetente = PerfilRemetente.ofName(dto.getPerfilRemetente());
     }
 }
