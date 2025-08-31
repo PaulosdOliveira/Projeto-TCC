@@ -43,10 +43,10 @@ public class JwtFilter extends OncePerRequestFilter {
         var metodo = request.getMethod();
         System.out.println(path + "----------------------------------");
         System.out.println(request.getRequestURL() + "@@@@@@@@@@@@@@");
-        boolean pular = (metodo.equals(HttpMethod.POST.name()) && path.contains("/login") || path.contains("/buscar"))
+        boolean pular = (metodo.equals(HttpMethod.POST.name()) && path.contains("/login") || path.contains("/vaga/buscar"))
                         || (!metodo.equals(HttpMethod.POST.name()) && path.contains("/foto") || path.contains("/capa"))
                         || (metodo.equals(HttpMethod.GET.name()) && path.contains("/vaga/buscar") || path.contains("/vaga?idEmpresa="))
-                        || path.contains("conect");
+                        || path.contains("conect") || (path.equals("/candidato") && metodo.equals(HttpMethod.POST.name()));
         System.out.println(pular);
         return pular;
     }
