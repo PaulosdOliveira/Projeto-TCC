@@ -34,6 +34,6 @@ public interface CandidatoVagaRepository extends JpaRepository<CandidatoVaga, Ca
     void dispensarCandidato(@Param("idCandidatura") CandidaturaPK idCandidatura);
 
 
-    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaCandidato(c.candidatura.vaga.id, c.candidatura.vaga.titulo,c.candidatura.vaga.empresa.nome, c.status) from CandidatoVaga c where c.candidatura.candidato.id = :idCandidato")
+    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaCandidato(c.candidatura.vaga.id, c.candidatura.vaga.titulo,c.candidatura.vaga.empresa.nome,c.candidatura.vaga.empresa.id, c.status) from CandidatoVaga c where c.candidatura.candidato.id = :idCandidato")
     List<CandidaturaCandidato> CandidaturasCandidato(@Param("idCandidato") Long idCandidato);
 }

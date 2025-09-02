@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -55,5 +56,11 @@ public class UtilsService {
         long minutos = ChronoUnit.MINUTES.between(dataEnvio, dataAtual);
         if (minutos > 0) return "Há " + minutos + " Minutos";
         return "Agora";
+    }
+
+    public static Long getIdCandidatoLogado() {
+        return Long.parseLong(
+                SecurityContextHolder.getContext().getAuthentication().getCredentials().toString()
+        );
     }
 }

@@ -36,6 +36,39 @@ foreign key (cidade_id) references cidade(id)
 );
 
 
+ create table formacao(
+ id binary(16) primary key,
+ candidato_id bigint,
+ instituicao varchar(150) not null,
+ curso varchar(150) not null,
+ nivel enum("TECNICO", "TECNOLOGO", "GRADUACAO","POS_GRADUACAO", "MESTRADO","DOUTORADO"),
+ inicio date not null,
+ fim date not null,
+ foreign key (candidato_id) references candidatos(id)
+ );
+
+create table experiencia(
+ id binary(16) primary key,
+ candidato_id bigint,
+ empresa varchar(150) not null,
+ cargo varchar(100) not null,
+ descricao text not null,
+ inicio date not null,
+ fim date not null,
+ foreign key (candidato_id) references candidatos(id)
+);
+
+
+ create table cursos(
+  id binary(16) primary key,
+  candidato_id bigint,
+  instituicao varchar(150),
+  curso varchar(150) not null,
+  carga_horaria varchar(3) not null,
+  foreign key (candidato_id) references candidatos(id)
+ );
+
+
 
 create table qualificacao(
 id bigint primary key auto_increment,

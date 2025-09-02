@@ -49,5 +49,11 @@ public class CandidatoServiceTest {
         repository.findAll().forEach(System.out::println);
     }
 
+    @Test
+    void testar(){
+        String nome = "Paulo";
+        assert (!nome.equals("Paulo"));
+        System.out.println(nome);
+    }
 
 }
