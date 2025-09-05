@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -23,7 +24,7 @@ public class Formacao {
     @ManyToOne
     private Candidato candidato;
 
-    @NotBlank(message = "Campo obrigatório")
+
     @Column(length = 150, nullable = false)
     private String instituicao;
 
@@ -43,12 +44,9 @@ public class Formacao {
     @Column(nullable = false)
     private LocalDate fim;
 
-    public Formacao(String instituicao, String curso, Nivel nivel, LocalDate inicio, LocalDate fim) {
-        this.instituicao = instituicao;
-        this.curso = curso;
-        this.nivel = nivel;
-        this.inicio = inicio;
-        this.fim = fim;
+    public Formacao(CadastroFormacaoDTO dadosCadastrais, Candidato candidato) {
+        BeanUtils.copyProperties(dadosCadastrais, this);
+        this.candidato = candidato;
     }
 
 }

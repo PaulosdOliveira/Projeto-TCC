@@ -4,6 +4,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -45,14 +46,19 @@ public class Experiencia {
         this.fim = fim;
     }
 
+    public Experiencia(CadastroExperienciaDTO dadosCdastrais, Candidato candidato) {
+        BeanUtils.copyProperties(dadosCdastrais, this);
+        this.candidato = candidato;
+    }
+
     @Override
     public String toString() {
         return "Experiencia{" +
-               "empresa: '" + empresa + '\'' +
-               ", cargo: '" + cargo + '\'' +
-               ", descricao: '" + descricao + '\'' +
-               ", inicio: " + inicio +
-               ", fim: " + fim +
-               '}';
+                "empresa: '" + empresa + '\'' +
+                ", cargo: '" + cargo + '\'' +
+                ", descricao: '" + descricao + '\'' +
+                ", inicio: " + inicio +
+                ", fim: " + fim +
+                '}';
     }
 }

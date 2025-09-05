@@ -1,7 +1,9 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.formacao;
 
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.CadastroCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.CadastroFormacaoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.FormacaoDTO;
 import jakarta.validation.Valid;
@@ -24,7 +26,7 @@ public class FormacaoController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('candidato')")
     @PostMapping("/formacao")
-    public void cadastrarFormacao(@RequestBody List<@Valid Formacao> formacoes) {
+    public void cadastrarFormacao(@RequestBody List<@Valid CadastroFormacaoDTO> formacoes) {
         service.salvarFormacoes(formacoes, new Candidato(getIdCandidatoLogado()));
     }
 

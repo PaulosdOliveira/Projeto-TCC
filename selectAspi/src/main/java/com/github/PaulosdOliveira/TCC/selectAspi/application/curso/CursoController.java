@@ -2,6 +2,7 @@ package com.github.PaulosdOliveira.TCC.selectAspi.application.curso;
 
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CadastroCursoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoComplementar;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class CursoController {
 
     @PreAuthorize("hasRole('candidato')")
     @PostMapping("/curso")
-    public void cadastrarCurso(@RequestBody List<CursoComplementar> cursos) {
+    public void cadastrarCurso(@RequestBody List<CadastroCursoDTO> cursos) {
         service.cadastrarCursos(cursos, new Candidato(getIdCandidatoLogado()));
     }
 

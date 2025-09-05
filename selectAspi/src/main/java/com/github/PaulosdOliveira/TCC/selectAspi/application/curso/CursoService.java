@@ -2,6 +2,7 @@ package com.github.PaulosdOliveira.TCC.selectAspi.application.curso;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.CursoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CadastroCursoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoComplementar;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,8 @@ public class CursoService {
     private CursoRepository repository;
 
 
-    public void cadastrarCursos(List<CursoComplementar> cursos, Candidato candidato) {
-        cursos.removeIf(c -> {
-            c.setCandidato(candidato);
-            return false;
-        });
+    public void cadastrarCursos(List<CadastroCursoDTO> cursosDTO, Candidato candidato) {
+       var cursos =  cursosDTO.stream().map(dto -> new CursoComplementar(dto, candidato)).toList();
         repository.saveAll(cursos);
     }
 

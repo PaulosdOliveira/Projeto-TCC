@@ -3,6 +3,7 @@ package com.github.PaulosdOliveira.TCC.selectAspi.application.experiencia;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.ExperienciaRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.CadastroExperienciaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.Experiencia;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.ExperienciaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.validation.ExperienciaValidator;
@@ -24,12 +25,8 @@ public class ExperienciaService {
     private ExperienciaValidator validator;
 
 
-    public void cadastrarExperiencia(List<Experiencia> experiencias, Candidato candidato) {
-        experiencias.removeIf(e -> {
-            validator.validar(e);
-            e.setCandidato(candidato);
-            return false;
-        });
+    public void cadastrarExperiencia(List<CadastroExperienciaDTO> experienciasDTO, Candidato candidato) {
+       var experiencias = experienciasDTO.stream().map(dto -> new Experiencia(dto, candidato)).toList();
         repository.saveAll(experiencias);
     }
 

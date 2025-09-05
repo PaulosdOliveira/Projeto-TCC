@@ -2,6 +2,7 @@ package com.github.PaulosdOliveira.TCC.selectAspi.application.formacao;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.FormacaoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.CadastroFormacaoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.FormacaoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,8 @@ public class FormacaoService {
     @Autowired
     private FormacaoRepository repository;
 
-    public void salvarFormacoes(List<Formacao> formacoes, Candidato candidato) {
-        formacoes.removeIf(f -> {
-            f.setCandidato(candidato);
-            return false;
-        });
+    public void salvarFormacoes(List<CadastroFormacaoDTO> formacoesDTO, Candidato candidato) {
+        var formacoes = formacoesDTO.stream().map(dto -> new Formacao(dto, candidato)).toList();
         repository.saveAll(formacoes);
     }
 
