@@ -50,7 +50,8 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
     Optional<LoginCandidatoDTO> buscarCandidatoLogin(@Param("login") String login);
 
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.PerfilCandidatoDTO(c.id, c.nome," +
-           " c.descricao, c.tel, c.email, c.trabalhando, c.pcd, c.cidade, c.estado, c.dataNascimento) from Candidato c where c.id = :id")
+           "c.descricao, c.tel, c.email, c.trabalhando, c.pcd, c.cidade, c.estado, c.dataNascimento) from Candidato c " +
+           "where c.id = :id")
     Optional<PerfilCandidatoDTO> carregarPerfilCandidato(Long id);
 
     // Deescobrindo se candidato é PCD e qual é o seu sexo
@@ -65,7 +66,7 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
         if (StringUtils.isNotBlank(idEstado)) spec = spec.and(foreignKeyIgual("estado", idEstado));
         if (StringUtils.isNotBlank(idCidade)) spec = spec.and(foreignKeyIgual("cidade", idCidade));
         if (StringUtils.isNotBlank(sexo)) spec = spec.and(stringEqual("sexo", sexo));
-        if(trabalhando != null) spec = spec.and(is("trabalhando", trabalhando));
+        if (trabalhando != null) spec = spec.and(is("trabalhando", trabalhando));
         spec = spec.and(orderByRandom());
         return findAll(spec);
     }

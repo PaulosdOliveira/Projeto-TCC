@@ -1,25 +1,21 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.candidato;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.application.formacao.FormacaoService;
+
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.*;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.FormacaoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuarioDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService;
 import com.github.PaulosdOliveira.TCC.selectAspi.jwt.Token;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.multipart.MultipartFile;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import lombok.RequiredArgsConstructor;
-import jakarta.validation.Valid;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,7 +23,6 @@ import java.util.UUID;
 public class CandidatoController {
 
     private final CandidatoService service;
-    private final FormacaoService formacaoService;
     private final UtilsService utils;
 
     @PostMapping
@@ -38,9 +33,8 @@ public class CandidatoController {
 
     @PreAuthorize("hasRole('candidato')")
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/foto")
+    @PutMapping("/foto")
     public void salvarFotoCandidato(@RequestParam MultipartFile foto) throws IOException {
-        System.out.println("CHEGOOOOUUUUUUU");
         service.salvarFotoCandidato(foto.getBytes());
     }
 
@@ -69,16 +63,9 @@ public class CandidatoController {
     @PostMapping("/login")
     public Token login(@RequestBody @Valid DadosLoginCandidatoDTO dadosLogin) {
         String token = service.getCandidatoAccessToken(dadosLogin);
-        System.out.println(token + ":::::::::::::");
         return new Token(token);
     }
 
-    @PreAuthorize("hasRole('candidato')")
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/qualificacao-candidato")
-    public void cadastrarQualificacao(@RequestBody List<@Valid QualificacaoUsuarioDTO> qualificacoes) {
-        service.cadastarQualificacaoUsuario(qualificacoes);
-    }
 
     @PostMapping("/qualificacao-candidato/buscar-candidatos")
     public List<ConsultaCandidatoDTO> findByQualificacao(@RequestBody DadosConsultaCandidatoDTO dadosConsulta) {
@@ -91,26 +78,6 @@ public class CandidatoController {
     @GetMapping("/{id}")
     public PerfilCandidatoDTO carregarPerfil(@PathVariable Long id) {
         return service.carregarPerfil(id);
-    }
-
-
-    /// FORMAÇÃO <<<<<<<<<<<<<<<<<<<<<-----------------------------
-    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('candidato')")
-    @PostMapping("/formacao")
-    public void cadastrarFormacao(@RequestBody List<Formacao> formacoes) {
-        formacaoService.salvarFormacoes(formacoes);
-    }
-
-    @GetMapping("/formacao/{idCandidato}")
-    public List<FormacaoDTO> buscarFormacoesCandidato(@PathVariable Long idCandidato) {
-        return formacaoService.buscarFormacoesCandidato(idCandidato);
-    }
-
-    @PreAuthorize("hasRole('candidato')")
-    @DeleteMapping("/formacao/{idFormacao}")
-    public void deletarFormacao(UUID idFormacao){
-        formacaoService.deletarFormacao(idFormacao);
     }
 
 }

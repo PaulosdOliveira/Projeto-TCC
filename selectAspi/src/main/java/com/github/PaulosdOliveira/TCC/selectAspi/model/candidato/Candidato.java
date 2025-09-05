@@ -1,6 +1,5 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.candidato;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Cidade;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Estado;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuario;
@@ -8,9 +7,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
-
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 

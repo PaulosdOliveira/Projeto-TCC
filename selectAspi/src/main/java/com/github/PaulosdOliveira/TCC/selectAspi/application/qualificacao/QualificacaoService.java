@@ -1,14 +1,12 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.qualificacao;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.application.candidato.CandidatoService;
+
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.QualificacaoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.QualificacaoUsuarioRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,14 +21,11 @@ public class QualificacaoService {
         qualificacaoRepository.save(qualificacao);
     }
 
-    public void cadastrarQualificacaoUsuario(List<QualificacaoUsuarioDTO> dto, Long idCandidatoLogado) {
-        var candidato = new Candidato(idCandidatoLogado);
-        dto.forEach(item -> {
-            var qualificacao = new Qualificacao(item.getIdQualificacao());
-            var idQualificacaoUsuario = new ChaveCompostaQualificacao(candidato, qualificacao);
-            var qualificacaoUsuario = new QualificacaoUsuario(idQualificacaoUsuario, item.getNivel());
-            qualificacaoUsuarioRepository.save(qualificacaoUsuario);
-        });
+    public void cadastrarQualificacaoUsuario(List<QualificacaoUsuarioDTO> dtoList, Candidato candidato) {
+        List<QualificacaoUsuario> qualificacoes = dtoList.stream().map(item ->
+                new QualificacaoUsuario(new ChaveCompostaQualificacao(candidato, new Qualificacao(item.getIdQualificacao())), item.getNivel()))
+                .toList();
+        qualificacaoUsuarioRepository.saveAll(qualificacoes);
     }
 
     public List<String> getQualificacaoByIdCandidato(Long id) {

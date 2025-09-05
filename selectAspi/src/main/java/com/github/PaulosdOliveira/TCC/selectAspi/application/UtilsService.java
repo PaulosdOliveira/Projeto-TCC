@@ -4,17 +4,20 @@ import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.CidadeReposito
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.EstadoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.CidadeDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Estado;
-import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
 import java.time.temporal.ChronoUnit;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -25,11 +28,11 @@ public class UtilsService {
     private final CidadeRepository cidadeRepository;
 
 
-    public List<Estado> buscarEstados(){
+    public List<Estado> buscarEstados() {
         return estadoRepository.findAll();
     }
 
-    public List<CidadeDTO> buscarCidadesDeEstado(int idEstado){
+    public List<CidadeDTO> buscarCidadesDeEstado(int idEstado) {
         return cidadeRepository.buscarCidadesDeEstado(idEstado);
     }
 
@@ -58,9 +61,40 @@ public class UtilsService {
         return "Agora";
     }
 
+    // VERIFICAR TEMPO DE EXPERIÊNCIA
+    public static String getTempoDeExperiencia(LocalDate inicio, LocalDate fim) {
+        String tempoExperiencia;
+        long anos = ChronoUnit.YEARS.between(inicio, fim);
+        long meses = ChronoUnit.MONTHS.between(inicio.plusYears(anos), fim);
+        tempoExperiencia = anos > 0 ? anos + (anos > 1 ? " anos" : " ano") + (meses > 0 ? " e " : "") : "";
+        tempoExperiencia += meses > 0 ? meses + (meses > 1 ? " meses" : " mês") : "";
+        return tempoExperiencia;
+    }
+
+
     public static Long getIdCandidatoLogado() {
         return Long.parseLong(
                 SecurityContextHolder.getContext().getAuthentication().getCredentials().toString()
         );
     }
+
+
+    // Padroniizando erros
+    public static Map<String, Object> getMapErro(String erro) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("erro", erro);
+        return map;
+    }
+
+    // Padroniizando erros
+    public static Map<String, Object> objectErro(String erro, String[][] matrizObject) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("erro", erro);
+        for (int i = 0; i < matrizObject[0].length; i++) {
+            map.put(matrizObject[0][i], matrizObject[1][i]);
+        }
+        return map;
+    }
+
+
 }

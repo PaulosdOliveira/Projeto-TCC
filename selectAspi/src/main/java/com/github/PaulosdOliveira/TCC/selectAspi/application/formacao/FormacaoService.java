@@ -5,7 +5,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.FormacaoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Service;
 import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService.getIdCandidatoLogado;
 import java.util.List;
@@ -17,10 +17,9 @@ public class FormacaoService {
     @Autowired
     private FormacaoRepository repository;
 
-    public void salvarFormacoes(List<Formacao> formacoes) {
-        Long idCandidatoLogado = getIdCandidatoLogado();
+    public void salvarFormacoes(List<Formacao> formacoes, Candidato candidato) {
         formacoes.removeIf(f -> {
-            f.setCandidato(new Candidato(idCandidatoLogado));
+            f.setCandidato(candidato);
             return false;
         });
         repository.saveAll(formacoes);

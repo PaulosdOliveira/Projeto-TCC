@@ -63,8 +63,8 @@ create table experiencia(
   id binary(16) primary key,
   candidato_id bigint,
   instituicao varchar(150),
-  curso varchar(150) not null,
-  carga_horaria varchar(3) not null,
+  curso varchar(100) not null,
+  carga_horaria int not null,
   foreign key (candidato_id) references candidatos(id)
  );
 

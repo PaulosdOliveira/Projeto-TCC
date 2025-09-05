@@ -1,12 +1,16 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.candidato;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoComplementar;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.Experiencia;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuarioDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.br.CPF;
+import java.util.List;
 
 import java.time.LocalDate;
 
@@ -27,7 +31,6 @@ public class CadastroCandidatoDTO {
 
     @NotBlank(message = "Informe o seu nome")
     private String nome;
-
 
     @NotNull(message = "Informe a sua data de nascimento")
     @Past(message = "A data de nascimento não pode ser futura")
@@ -51,6 +54,14 @@ public class CadastroCandidatoDTO {
 
     @NotNull(message = "Obrigatório")
     private int idCidade;
+
+    private List<QualificacaoUsuarioDTO> qualificacoes;
+
+    private List<Formacao> formacoes;
+
+    private List<Experiencia> experiencias;
+
+    private List<CursoComplementar> cursos;
 
 
 }
