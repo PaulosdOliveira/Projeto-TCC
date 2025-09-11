@@ -4,6 +4,7 @@ package com.github.PaulosdOliveira.TCC.selectAspi.model.formacao;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
 import java.time.LocalDate;
 
 @Data
@@ -19,12 +20,7 @@ public class CadastroFormacaoDTO {
     private Nivel nivel;
 
     @NotNull(message = "Campo obrigatório")
-    private LocalDate inicio;
-
-    @NotNull(message = "Campo obrigatório")
-    private LocalDate fim;
-
-
+    private Situacao situacao;
 
 
 }

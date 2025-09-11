@@ -13,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import lombok.RequiredArgsConstructor;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -78,6 +77,16 @@ public class CandidatoController {
     @GetMapping("/{id}")
     public PerfilCandidatoDTO carregarPerfil(@PathVariable Long id) {
         return service.carregarPerfil(id);
+    }
+
+    @GetMapping("/dadosSalvos")
+    public EdicaoCandidatoDTO buscarDadosSalvos() {
+        return service.buscarDadosSalvos();
+    }
+
+    @PutMapping
+    public void editarPerfil(@RequestBody EdicaoCandidatoDTO novosDados){
+        service.editarDados(novosDados);
     }
 
 }

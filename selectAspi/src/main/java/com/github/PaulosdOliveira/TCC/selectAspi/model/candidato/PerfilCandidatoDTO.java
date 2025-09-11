@@ -1,14 +1,10 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.candidato;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoComplementar;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.Experiencia;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.ExperienciaDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.FormacaoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Cidade;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Estado;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuario;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacoesSalvas;
 import lombok.Data;
 import lombok.NoArgsConstructor;

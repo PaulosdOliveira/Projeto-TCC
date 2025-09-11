@@ -1,29 +1,26 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.formacao;
 
 import lombok.Data;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 
 @Data
 public class FormacaoDTO {
+    private UUID id;
     private String instituicao;
     private String curso;
     private String nivel;
-    private String inicio;
-    private String fim;
+    private String situacao;
 
 
-    public FormacaoDTO(String instituicao, String curso, Nivel nivel, LocalDate inicio, LocalDate fim) {
+
+    public FormacaoDTO(UUID id, String instituicao, String curso, Nivel nivel, Situacao situacao) {
+        this.id = id;
         this.instituicao = instituicao;
         this.curso = curso;
         this.nivel = nivel.getTexto();
-        this.inicio = formatDate(inicio);
-        this.fim = formatDate(fim);
+        this.situacao = situacao.getTexto();
     }
 
-    private String formatDate(LocalDate data) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return formatter.format(data);
-    }
+
 }

@@ -25,19 +25,19 @@ public class FormacaoController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('candidato')")
-    @PostMapping("/formacao")
+    @PostMapping("")
     public void cadastrarFormacao(@RequestBody List<@Valid CadastroFormacaoDTO> formacoes) {
         service.salvarFormacoes(formacoes, new Candidato(getIdCandidatoLogado()));
     }
 
-    @GetMapping("/formacao/{idCandidato}")
+    @GetMapping("/{idCandidato}")
     public List<FormacaoDTO> buscarFormacoesCandidato(@PathVariable Long idCandidato) {
         return service.buscarFormacoesCandidato(idCandidato);
     }
 
     @PreAuthorize("hasRole('candidato')")
-    @DeleteMapping("/formacao/{idFormacao}")
-    public void deletarFormacao(UUID idFormacao) {
+    @DeleteMapping("/{idFormacao}")
+    public void deletarFormacao(@PathVariable UUID idFormacao) {
         service.deletarFormacao(idFormacao);
     }
 

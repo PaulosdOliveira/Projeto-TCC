@@ -76,6 +76,12 @@ public class Candidato {
         this.estado = new Estado(dadosCadastrais.getIdEstado());
     }
 
+    public void carregarNovosDados(EdicaoCandidatoDTO novosDados) {
+        BeanUtils.copyProperties(novosDados, this);
+        this.cidade = new Cidade(novosDados.getIdCidade());
+        this.estado = new Estado(novosDados.getIdEstado());
+    }
+
     public Candidato(Long id) {
         this.id = id;
     }

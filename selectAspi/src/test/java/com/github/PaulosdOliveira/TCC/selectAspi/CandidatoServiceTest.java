@@ -2,16 +2,15 @@ package com.github.PaulosdOliveira.TCC.selectAspi;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.application.candidato.CandidatoService;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.CandidatoRepository;
+import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.FormacaoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.CadastroCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosLoginCandidatoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.Nivel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
+
 
 @SpringBootTest
 public class CandidatoServiceTest {
@@ -19,9 +18,11 @@ public class CandidatoServiceTest {
     @Autowired
     private CandidatoService service;
 
-
     @Autowired
     private CandidatoRepository repository;
+
+    @Autowired
+    private FormacaoRepository formacaoRepository;
 
     @Test
     void cadastrarCandidatoTest() throws Exception {
@@ -45,15 +46,13 @@ public class CandidatoServiceTest {
 
 
     @Test
-    void test(){
+    void test() {
         repository.findAll().forEach(System.out::println);
     }
 
     @Test
-    void testar(){
-        String nome = "Paulo";
-        assert (!nome.equals("Paulo"));
-        System.out.println(nome);
+    void testar() {
+        formacaoRepository.deletarFormacao(UUID.fromString("9df5b745-b02c-4bd7-8e70-e767f8aa823b"), 44L);
     }
 
 }

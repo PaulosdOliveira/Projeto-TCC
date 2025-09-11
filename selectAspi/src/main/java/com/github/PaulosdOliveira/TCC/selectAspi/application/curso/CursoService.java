@@ -21,7 +21,7 @@ public class CursoService {
 
 
     public void cadastrarCursos(List<CadastroCursoDTO> cursosDTO, Candidato candidato) {
-       var cursos =  cursosDTO.stream().map(dto -> new CursoComplementar(dto, candidato)).toList();
+        var cursos = cursosDTO.stream().map(dto -> new CursoComplementar(dto, candidato)).toList();
         repository.saveAll(cursos);
     }
 

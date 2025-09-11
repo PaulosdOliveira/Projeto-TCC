@@ -1,6 +1,7 @@
 package com.github.PaulosdOliveira.TCC.selectAspi;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.application.vaga.VagaEmpregoService;
+import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.FormacaoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.MensagemRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.VagaEmpregoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Sexo;
@@ -23,6 +24,9 @@ public class VagaServiceTest {
 
     @Autowired
     private MensagemRepository mensagemRepository;
+
+
+
 
 
     @Test

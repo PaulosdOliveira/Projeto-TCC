@@ -22,17 +22,17 @@ public class CursoController {
     private CursoService service;
 
     @PreAuthorize("hasRole('candidato')")
-    @PostMapping("/curso")
+    @PostMapping("")
     public void cadastrarCurso(@RequestBody List<CadastroCursoDTO> cursos) {
         service.cadastrarCursos(cursos, new Candidato(getIdCandidatoLogado()));
     }
 
-    @GetMapping("/curso/{idCandidato}")
+    @GetMapping("/{idCandidato}")
     public List<CursoDTO> buscarCursosCandidato(@PathVariable Long idCandidato) {
         return service.buscarCursosCandidato(idCandidato);
     }
 
-    @DeleteMapping("/curso/{idCurso}")
+    @DeleteMapping("/{idCurso}")
     public void deletarCurso(@PathVariable UUID idCurso) {
         service.deletarCurso(idCurso);
     }

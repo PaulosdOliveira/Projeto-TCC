@@ -11,6 +11,8 @@ public class QualificacaoUsuarioDTO {
     @NotNull(message = "Algo de errado ocorreu")
     private Long idQualificacao;
 
+    private String nome;
+
     @NotNull(message = "Informe o nivel de hábilidade")
     private Nivel nivel;
 

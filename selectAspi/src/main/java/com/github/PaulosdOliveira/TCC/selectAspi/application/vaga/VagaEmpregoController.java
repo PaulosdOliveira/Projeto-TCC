@@ -54,7 +54,7 @@ public class VagaEmpregoController {
     }
 
 
-    @GetMapping("/buscar")
+    @GetMapping("")
     public List<CardVagaDTO> buscarVagas(
             @RequestParam(required = false) String titulo,
             @RequestParam(required = false) String idEstado,

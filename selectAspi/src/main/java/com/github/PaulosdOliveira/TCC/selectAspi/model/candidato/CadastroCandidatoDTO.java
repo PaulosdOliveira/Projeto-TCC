@@ -1,11 +1,8 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.candidato;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CadastroCursoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoComplementar;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.CadastroExperienciaDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.Experiencia;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.CadastroFormacaoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuarioDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

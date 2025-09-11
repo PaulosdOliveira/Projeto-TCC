@@ -121,17 +121,7 @@ public class ControllerException {
         return getMapErro(e.getMessage());
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(TempoExperienciaxception.class)
-    public Map<String, Object> handlerTempoExperienciaxception(TempoExperienciaxception e) {
-        Experiencia dados = e.getExperiencia();
-        String[][] objetcMatriz = {
-                {"Empresa", "Cargo", "Descrição", "Inicio", "Fim"},
-                {dados.getEmpresa(), dados.getCargo(), dados.getDescricao(), dados.getInicio().toString(), dados.getFim().toString()}
-        };
-        return objectErro(e.getMessage(), objetcMatriz);
-    }
+
 
 
 }

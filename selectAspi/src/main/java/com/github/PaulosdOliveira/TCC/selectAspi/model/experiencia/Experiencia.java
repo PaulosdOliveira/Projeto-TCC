@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -31,20 +30,10 @@ public class Experiencia {
     @Column(nullable = false, columnDefinition = "text")
     private String descricao;
 
-    @Column(nullable = false)
-    private LocalDate inicio;
 
-    @Column(nullable = false, length = 150)
-    private LocalDate fim;
+    @Column(nullable = false, length = 30)
+    private String duracao;
 
-
-    public Experiencia(String empresa, String cargo, String descricao, LocalDate inicio, LocalDate fim) {
-        this.empresa = empresa;
-        this.cargo = cargo;
-        this.descricao = descricao;
-        this.inicio = inicio;
-        this.fim = fim;
-    }
 
     public Experiencia(CadastroExperienciaDTO dadosCdastrais, Candidato candidato) {
         BeanUtils.copyProperties(dadosCdastrais, this);
@@ -54,11 +43,10 @@ public class Experiencia {
     @Override
     public String toString() {
         return "Experiencia{" +
-                "empresa: '" + empresa + '\'' +
-                ", cargo: '" + cargo + '\'' +
-                ", descricao: '" + descricao + '\'' +
-                ", inicio: " + inicio +
-                ", fim: " + fim +
-                '}';
+               "empresa: '" + empresa + '\'' +
+               ", cargo: '" + cargo + '\'' +
+               ", descricao: '" + descricao + '\'' +
+
+               '}';
     }
 }

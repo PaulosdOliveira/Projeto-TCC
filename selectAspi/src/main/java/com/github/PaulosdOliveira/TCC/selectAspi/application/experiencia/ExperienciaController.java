@@ -20,18 +20,18 @@ public class ExperienciaController {
     private ExperienciaService service;
 
     @PreAuthorize("hasRole('candidato')")
-    @PostMapping("/experiencia")
+    @PostMapping("")
     public void cadastrarExperiencia(@RequestBody List<CadastroExperienciaDTO> experiencias) {
         service.cadastrarExperiencia(experiencias, new Candidato(getIdCandidatoLogado()));
     }
 
-    @GetMapping("/experiencia/{idCandidato}")
+    @GetMapping("/{idCandidato}")
     public List<ExperienciaDTO> buscarExperienciasCandidato(@PathVariable Long idCandidato) {
         return service.buscarExperienciasCandidato(idCandidato);
     }
 
     @PreAuthorize("hasRole('candidato')")
-    @DeleteMapping("/experiencia/{id}")
+    @DeleteMapping("/{id}")
     public void deletarExperienciasCandidato(@PathVariable UUID id) {
         service.deletarExperiencia(id);
     }

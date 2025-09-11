@@ -25,8 +25,13 @@ public interface QualificacaoUsuarioRepository extends JpaRepository<Qualificaca
     List<String> getQualifcacoesById(@Param("id") Long id);
 
 
-    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacoesSalvas(q.id.qualificacao.nome,q.nivel) from QualificacaoUsuario q where q.id.candidato.id = :idCandidato ")
+    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacoesSalvas(q) from QualificacaoUsuario q where q.id.candidato.id = :idCandidato ")
     List<QualificacoesSalvas> buscarQualificacoesPerfil(@Param("idCandidato") Long idCandidato);
+
+    @Modifying
+    @Transactional
+    @Query("Delete from QualificacaoUsuario q where q.id.qualificacao.id = :idQualificacao and q.id.candidato.id = :idCandidato")
+    void deletarQualificacaoSalva(Long idQualificacao, Long idCandidato);
 
 
 }

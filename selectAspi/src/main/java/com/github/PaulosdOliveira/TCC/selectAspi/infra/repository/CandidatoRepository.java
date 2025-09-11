@@ -1,9 +1,6 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosFitroVaga;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.PerfilCandidatoDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,6 +37,10 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
     @Query("Update  Candidato  set curriculo = :curriculo where id = :id")
     void salvarCurriculoCandidato(@Param("id") Long id, @Param("curriculo") byte[] curriculo);
 
+    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.EdicaoCandidatoDTO(c.nome, c.dataNascimento, c.descricao, " +
+           " c.tel, c.pcd, c.trabalhando, c.sexo, c.cidade.id, c.estado.id) from Candidato c where c.id = :id")
+    EdicaoCandidatoDTO buscarDadosSalvos(Long id);
+
 
     @Query("Select c.curriculo from Candidato c where c.id = :id")
     byte[] buscarCurriculoCandidato(@Param("id") Long id);
@@ -57,6 +58,9 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
     // Deescobrindo se candidato é PCD e qual é o seu sexo
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosFitroVaga(c.sexo, c.pcd) from Candidato c where c.id = :id")
     DadosFitroVaga buscarDadosFiltroVaga(Long id);
+
+
+    String findCpfById(Long id);
 
     default List<Candidato> findCandidatoByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String idEstado, String idCidade, String sexo, boolean isPcd, Boolean trabalhando) {
         Specification<Candidato> spec = is("pcd", isPcd);

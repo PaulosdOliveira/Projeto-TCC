@@ -13,11 +13,12 @@ import java.util.UUID;
 public interface ExperienciaRepository extends JpaRepository<Experiencia, UUID> {
 
 
-    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.ExperienciaDTO(e.id, e.empresa, e.cargo, e.descricao, e.inicio, e.fim) from Experiencia e where e.candidato.id = :idCandidato")
+    @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.ExperienciaDTO(e.id, e.empresa, e.cargo, e.descricao, e.duracao) from Experiencia e where e.candidato.id = :idCandidato")
     List<ExperienciaDTO> buscarExperienciasUsuario(@Param("idCandidato") Long idCandidato);
 
     @Modifying
     @Transactional
     @Query("Delete from Experiencia e where e.id = :id and e.candidato.id = :idProprietario")
     void deletarExperiencia(UUID id, Long idProprietario);
+
 }

@@ -51,13 +51,14 @@ public class CandidatoService {
         enderecoValidator.validar(dadosCadastrais.getIdEstado(), dadosCadastrais.getIdCidade());
         dadosCadastrais.setSenha(encoder.encode(dadosCadastrais.getSenha()));
         Candidato candidato = new Candidato(dadosCadastrais);
+        System.out.println(dadosCadastrais);
         repository.save(candidato);
+        System.out.println(dadosCadastrais.getFormacoes());
         formacaoService.salvarFormacoes(dadosCadastrais.getFormacoes(), candidato);
         experienciaService.cadastrarExperiencia(dadosCadastrais.getExperiencias(), candidato);
         cursoService.cadastrarCursos(dadosCadastrais.getCursos(), candidato);
         qualificacaoService.cadastrarQualificacaoUsuario(dadosCadastrais.getQualificacoes(), candidato);
     }
-
 
     public Candidato findById(Long id) {
         return repository.findById(id).orElseThrow();
@@ -95,9 +96,13 @@ public class CandidatoService {
     }
 
     public Long getIdCandidatoLogado() {
-        return Long.parseLong(
-                SecurityContextHolder.getContext().getAuthentication().getCredentials().toString()
-        );
+        String idStr = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
+        try {
+            return Long.parseLong(idStr);
+        } catch (NumberFormatException e) {
+            System.out.println("Deu errro aqui no número: " + idStr);
+            return 43L;
+        }
     }
 
     public void logarCandidato(String email) {
@@ -117,7 +122,8 @@ public class CandidatoService {
 
     // Buscando informações do perfil do candidato para a consulta de vagas
     public DadosFitroVaga buscarFiltroVaga() {
-        return repository.buscarDadosFiltroVaga(getIdCandidatoLogado());
+        var id = getIdCandidatoLogado();
+        return repository.buscarDadosFiltroVaga(id);
     }
 
     // Buscar qualificações do usuário logado
@@ -127,14 +133,29 @@ public class CandidatoService {
 
 
     public PerfilCandidatoDTO carregarPerfil(Long id) {
+        PerfilCandidatoDTO perfil = repository.carregarPerfilCandidato(id).orElseThrow(UsuarioNaoEncontradoException::new);
         List<ExperienciaDTO> experiencias = experienciaService.buscarExperienciasCandidato(id);
         List<CursoDTO> cursos = cursoService.buscarCursosCandidato(id);
-        List <FormacaoDTO > formacoes = formacaoService.buscarFormacoesCandidato(id);
+        List<FormacaoDTO> formacoes = formacaoService.buscarFormacoesCandidato(id);
         List<QualificacoesSalvas> qualificacoes = qualificacaoService.buscarQualificacoesPerfil(id);
-        PerfilCandidatoDTO perfil = repository.carregarPerfilCandidato(id).orElseThrow(UsuarioNaoEncontradoException::new);
         perfil.completarPerfil(qualificacoes, experiencias, cursos, formacoes);
         return perfil;
     }
 
+    public EdicaoCandidatoDTO buscarDadosSalvos() {
+        Long id = getIdCandidatoLogado();
+        var dados = repository.buscarDadosSalvos(id);
+        return dados;
+    }
 
+
+    public void editarDados(EdicaoCandidatoDTO novosDados) {
+        Candidato candidato = findById(getIdCandidatoLogado());
+        candidato.carregarNovosDados(novosDados);
+        repository.save(candidato);
+        formacaoService.salvarFormacoes(novosDados.getFormacoes(), candidato);
+        experienciaService.cadastrarExperiencia(novosDados.getExperiencias(), candidato);
+        cursoService.cadastrarCursos(novosDados.getCursos(), candidato);
+        qualificacaoService.cadastrarQualificacaoUsuario(novosDados.getQualificacoes(), candidato);
+    }
 }

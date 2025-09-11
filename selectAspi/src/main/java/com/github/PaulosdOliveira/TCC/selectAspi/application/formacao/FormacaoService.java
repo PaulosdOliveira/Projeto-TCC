@@ -8,6 +8,8 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.FormacaoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService.getIdCandidatoLogado;
 import java.util.List;
 import java.util.UUID;
@@ -27,9 +29,11 @@ public class FormacaoService {
         return repository.buscarFormacoesCandidato(idCandidato);
     }
 
+
+
     public void deletarFormacao(UUID idFormacao) {
         Long idCandidato = getIdCandidatoLogado();
-        repository.deletarFormacao(idFormacao, idCandidato);
+        repository.deletarFormacao(idFormacao, 43L);
     }
 
 }

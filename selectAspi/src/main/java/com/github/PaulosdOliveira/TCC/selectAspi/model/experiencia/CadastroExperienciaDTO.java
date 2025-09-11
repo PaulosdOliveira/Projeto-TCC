@@ -17,9 +17,6 @@ public class CadastroExperienciaDTO {
     @NotBlank(message = "Campo obrigatório")
     private String descricao;
 
-    @NotBlank(message = "Campo obrigatório")
-    private LocalDate inicio;
-
-    @NotBlank(message = "Campo obrigatório")
-    private LocalDate fim;
+    @NotBlank(message = "Informe a duração da experiência")
+    private String duracao;
 }

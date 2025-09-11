@@ -6,7 +6,6 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.CadastroExperienciaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.Experiencia;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.ExperienciaDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.validation.ExperienciaValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +20,7 @@ public class ExperienciaService {
     @Autowired
     private ExperienciaRepository repository;
 
-    @Autowired
-    private ExperienciaValidator validator;
+
 
 
     public void cadastrarExperiencia(List<CadastroExperienciaDTO> experienciasDTO, Candidato candidato) {

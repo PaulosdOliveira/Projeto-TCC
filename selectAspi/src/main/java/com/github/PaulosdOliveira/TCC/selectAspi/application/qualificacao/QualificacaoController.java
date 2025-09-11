@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService.getIdCandidatoLogado;
+
 import java.util.List;
 
 @RequestMapping("qualificacao")
@@ -27,12 +29,15 @@ public class QualificacaoController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    public List<Qualificacao> findAll(){
-        return service.findAll();
+    @GetMapping(params = "nome")
+    public List<Qualificacao> findByNomeLike(@RequestParam String nome) {
+        return service.findAll(nome);
     }
 
-
+    @DeleteMapping("/{idQualificacao}")
+    public void deletarQualificacaoUsuario(@PathVariable Long idQualificacao) {
+        service.deletarQualificacaoSalva(idQualificacao);
+    }
 
 
 }

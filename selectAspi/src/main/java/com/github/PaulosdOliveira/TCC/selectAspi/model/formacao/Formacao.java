@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -24,7 +22,6 @@ public class Formacao {
     @ManyToOne
     private Candidato candidato;
 
-
     @Column(length = 150, nullable = false)
     private String instituicao;
 
@@ -36,13 +33,9 @@ public class Formacao {
     @Enumerated(EnumType.STRING)
     private Nivel nivel;
 
-    @NotNull(message = "Campo obrigatório")
-    @Column(nullable = false)
-    private LocalDate inicio;
+    @Enumerated(EnumType.STRING)
+    private Situacao situacao;
 
-    @NotNull(message = "Campo obrigatório")
-    @Column(nullable = false)
-    private LocalDate fim;
 
     public Formacao(CadastroFormacaoDTO dadosCadastrais, Candidato candidato) {
         BeanUtils.copyProperties(dadosCadastrais, this);

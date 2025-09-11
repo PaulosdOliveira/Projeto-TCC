@@ -7,7 +7,10 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+
+import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService.getIdCandidatoLogado;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +26,7 @@ public class QualificacaoService {
 
     public void cadastrarQualificacaoUsuario(List<QualificacaoUsuarioDTO> dtoList, Candidato candidato) {
         List<QualificacaoUsuario> qualificacoes = dtoList.stream().map(item ->
-                new QualificacaoUsuario(new ChaveCompostaQualificacao(candidato, new Qualificacao(item.getIdQualificacao())), item.getNivel()))
+                        new QualificacaoUsuario(new ChaveCompostaQualificacao(candidato, new Qualificacao(item.getIdQualificacao())), item.getNivel()))
                 .toList();
         qualificacaoUsuarioRepository.saveAll(qualificacoes);
     }
@@ -33,8 +36,8 @@ public class QualificacaoService {
     }
 
 
-    public List<Qualificacao> findAll() {
-        return qualificacaoRepository.buscarTudo();
+    public List<Qualificacao> findAll(String nome) {
+        return qualificacaoRepository.findByNomeLike(nome);
     }
 
 
@@ -42,4 +45,8 @@ public class QualificacaoService {
         return qualificacaoUsuarioRepository.buscarQualificacoesPerfil(idCandidato);
     }
 
+    public void deletarQualificacaoSalva(Long idQualificacao) {
+        var idCandidato = getIdCandidatoLogado();
+        qualificacaoUsuarioRepository.deletarQualificacaoSalva(idQualificacao, idCandidato);
+    }
 }

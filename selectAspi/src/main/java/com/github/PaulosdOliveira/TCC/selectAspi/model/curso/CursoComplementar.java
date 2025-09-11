@@ -34,5 +34,6 @@ public class CursoComplementar {
 
     public CursoComplementar(CadastroCursoDTO dadosCadastrais, Candidato candidato) {
         BeanUtils.copyProperties(dadosCadastrais, this);
+        this.candidato = candidato;
     }
 }

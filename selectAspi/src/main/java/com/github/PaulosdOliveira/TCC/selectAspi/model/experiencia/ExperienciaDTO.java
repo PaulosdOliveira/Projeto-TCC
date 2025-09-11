@@ -1,13 +1,15 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia;
 
 
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
-import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService.getTempoDeExperiencia;
 
+@AllArgsConstructor
+@NotBlank
 @Data
 public class ExperienciaDTO {
     private UUID id;
@@ -17,11 +19,4 @@ public class ExperienciaDTO {
     private String duracao;
 
 
-    public ExperienciaDTO(UUID id, String empresa, String cargo, String descricao, LocalDate inicio, LocalDate fim) {
-        this.id = id;
-        this.empresa = empresa;
-        this.cargo = cargo;
-        this.descricao = descricao;
-        this.duracao = getTempoDeExperiencia(inicio, fim);
-    }
 }

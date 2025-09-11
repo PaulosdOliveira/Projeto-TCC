@@ -10,13 +10,15 @@ public class CursoDTO {
     private final UUID id;
     private final String instituicao;
     private final String curso;
-    private final String cargaHoraria;
+    private final short carga;
+    private  String cargaHoraria;
 
 
-    public CursoDTO(UUID id, String instituicao, String curso, short cargaHoraria) {
+    public CursoDTO(UUID id, String instituicao, String curso, short carga) {
         this.id = id;
         this.instituicao = instituicao;
         this.curso = curso;
-        this.cargaHoraria = cargaHoraria + " Horas";
+        this.carga = carga;
+        this.cargaHoraria = carga + " Horas";
     }
 }
