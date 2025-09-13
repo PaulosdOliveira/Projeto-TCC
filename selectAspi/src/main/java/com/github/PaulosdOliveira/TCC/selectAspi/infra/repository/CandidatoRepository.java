@@ -62,10 +62,13 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
 
     String findCpfById(Long id);
 
-    default List<Candidato> findCandidatoByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String idEstado, String idCidade, String sexo, boolean isPcd, Boolean trabalhando) {
+    default List<Candidato> findCandidatoByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String idEstado, String idCidade, String sexo, boolean isPcd, Boolean trabalhando, List<String> formacoes) {
         Specification<Candidato> spec = is("pcd", isPcd);
         for (ConsultaQualificacaoUsuario q : qualificacoes) {
             spec = spec.and(findByQualificacao(q.getIdQualificacao(), q.getNivel()));
+        }
+        for (String curso : formacoes) {
+            spec = spec.and(findByFormacao(curso));
         }
         if (StringUtils.isNotBlank(idEstado)) spec = spec.and(foreignKeyIgual("estado", idEstado));
         if (StringUtils.isNotBlank(idCidade)) spec = spec.and(foreignKeyIgual("cidade", idCidade));

@@ -1,5 +1,6 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.model.candidato;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Cidade;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Estado;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuario;
@@ -7,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -65,9 +67,11 @@ public class Candidato {
     private Cidade cidade;
 
 
-
     @OneToMany(mappedBy = "id.candidato", fetch = FetchType.EAGER)
     private List<QualificacaoUsuario> qualificacoes;
+
+    @OneToMany(mappedBy = "candidato", fetch = FetchType.EAGER)
+    private List<Formacao> formacoes;
 
 
     public Candidato(CadastroCandidatoDTO dadosCadastrais) {
@@ -94,7 +98,7 @@ public class Candidato {
                ", tel='" + tel + '\'' +
                ", email='" + email + '\'' +
                ", trabalhando=" + trabalhando +
-               ", qualificacoes="  +
+               ", qualificacoes=" +
                ", id=" + id +
                ", cpf='" + cpf + '\'' +
                '}';

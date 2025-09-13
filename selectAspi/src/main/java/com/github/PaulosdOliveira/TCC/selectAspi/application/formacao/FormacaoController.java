@@ -1,11 +1,10 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.formacao;
 
 
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.CadastroCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.CadastroFormacaoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.FormacaoDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.OptionFormacaoDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +32,12 @@ public class FormacaoController {
     @GetMapping("/{idCandidato}")
     public List<FormacaoDTO> buscarFormacoesCandidato(@PathVariable Long idCandidato) {
         return service.buscarFormacoesCandidato(idCandidato);
+    }
+
+
+    @GetMapping(params = "curso")
+    public List<OptionFormacaoDTO> findCursoLikeString(@RequestParam String curso){
+     return service.distinctCursosLikeString(curso);
     }
 
     @PreAuthorize("hasRole('candidato')")

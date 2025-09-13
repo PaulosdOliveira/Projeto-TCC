@@ -2,6 +2,7 @@ package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.FormacaoDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.OptionFormacaoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +23,6 @@ public interface FormacaoRepository extends JpaRepository<Formacao, UUID> {
     void deletarFormacao(UUID idFormacao, Long idCandidato);
 
 
-
+    @Query("Select distinct new com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.OptionFormacaoDTO(f.id, f.curso) from Formacao f where f.curso like :curso% group by f.curso")
+    List<OptionFormacaoDTO> distinctCursosLikeString(String curso);
 }

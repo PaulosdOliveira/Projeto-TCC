@@ -117,7 +117,7 @@ public class CandidatoService {
 
     public List<Candidato> findByQualificacao(DadosConsultaCandidatoDTO dadosConsulta) {
         return repository.findCandidatoByQualificacao(dadosConsulta.getQualificacoes(), dadosConsulta.getIdEstado(), dadosConsulta.getIdCidade(),
-                dadosConsulta.getSexo(), dadosConsulta.isPcd(), dadosConsulta.getTrabalhando());
+                dadosConsulta.getSexo(), dadosConsulta.isPcd(), dadosConsulta.getTrabalhando(), dadosConsulta.getFormacoes());
     }
 
     // Buscando informações do perfil do candidato para a consulta de vagas

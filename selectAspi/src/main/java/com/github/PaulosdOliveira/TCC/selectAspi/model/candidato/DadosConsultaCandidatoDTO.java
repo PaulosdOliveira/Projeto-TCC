@@ -12,4 +12,5 @@ public class DadosConsultaCandidatoDTO {
     private String sexo;
     private boolean pcd;
     private Boolean trabalhando;
+    private List<String> formacoes;
 }

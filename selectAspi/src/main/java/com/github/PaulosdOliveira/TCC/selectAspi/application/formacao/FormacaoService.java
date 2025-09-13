@@ -5,10 +5,10 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.CadastroFormacaoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.FormacaoDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.OptionFormacaoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService.getIdCandidatoLogado;
 import java.util.List;
@@ -29,11 +29,13 @@ public class FormacaoService {
         return repository.buscarFormacoesCandidato(idCandidato);
     }
 
-
-
     public void deletarFormacao(UUID idFormacao) {
         Long idCandidato = getIdCandidatoLogado();
         repository.deletarFormacao(idFormacao, 43L);
+    }
+
+    public List<OptionFormacaoDTO> distinctCursosLikeString(String curso){
+        return repository.distinctCursosLikeString(curso);
     }
 
 }

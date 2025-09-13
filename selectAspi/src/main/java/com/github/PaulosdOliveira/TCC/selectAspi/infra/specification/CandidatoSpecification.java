@@ -1,6 +1,7 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.infra.specification;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.Formacao;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.Nivel;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuario;
 import jakarta.persistence.criteria.Expression;
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 public class CandidatoSpecification {
 
 
+    // Buscando candidatos que possuem a qualificação listada
     public static Specification<Candidato> findByQualificacao(Long id, Nivel nivel) {
         return ((root, query, cb) -> {
             Join<Candidato, QualificacaoUsuario> quJoin = root.join("qualificacoes");
@@ -23,6 +25,14 @@ public class CandidatoSpecification {
                 nivelIN = quJoin.get("nivel").in(nivel, Nivel.AVANCADO.name());
             }
             return cb.and(idQualificacaoEqual, nivelIN);
+        });
+    }
+
+    public static Specification<Candidato> findByFormacao(String curso){
+        return ((root, query, cb) ->{
+            Join<Candidato, Formacao> fJoin = root.join("formacoes");
+            Predicate cursoEqual = cb.equal(fJoin.get("curso"), curso);
+            return cb.and(cursoEqual);
         });
     }
 
