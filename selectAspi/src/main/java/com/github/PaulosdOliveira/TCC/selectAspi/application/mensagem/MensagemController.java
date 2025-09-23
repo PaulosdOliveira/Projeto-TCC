@@ -37,9 +37,9 @@ public class MensagemController {
         service.visualizarMensagens(idDestinatario);
     }
 
-    @PutMapping("/visualizar/{idMensagem}")
-    public void visualizarMensagem(@PathVariable UUID idMensagem) {
-        service.visualizarMensagemrecebida(idMensagem);
+    @PutMapping("/visualizar/{idMensagem}/{idRemetente}")
+    public void visualizarMensagem(@PathVariable UUID idMensagem, @PathVariable String idRemetente) {
+        service.visualizarMensagemrecebida(idMensagem, idRemetente);
     }
 
     @GetMapping("/nofificacoes")

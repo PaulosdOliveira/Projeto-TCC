@@ -59,13 +59,13 @@ public interface MensagemRepository extends JpaRepository<Mensagem, UUID> {
     //Candidato vizualizando mensagem recebida
     @Transactional
     @Modifying
-    @Query("Update Mensagem m set m.visualizado = true where m.id = :idMensagem")
+    @Query("Update Mensagem m set m.visualizado = true where m.id = :idMensagem and m.perfilRemetente = 'EMPRESA'")
     void visualizarMensagem(UUID idMensagem, Long idUsuario);
 
     //Empresa vizualizando mensagem recebida
     @Transactional
     @Modifying
-    @Query("Update Mensagem m set m.visualizado = true where m.id = :idMensagem")
+    @Query("Update Mensagem m set m.visualizado = true where m.id = :idMensagem and m.perfilRemetente = 'CANDIDATO'")
     void visualizarMensagem(UUID idMensagem, UUID idUsuario);
 
 

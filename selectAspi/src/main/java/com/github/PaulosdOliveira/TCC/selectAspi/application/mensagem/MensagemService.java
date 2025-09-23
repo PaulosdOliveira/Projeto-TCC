@@ -75,12 +75,20 @@ public class MensagemService {
         messagingTemplate.convertAndSend("/mensagem/visualizar/" + idUsuarioLogado, getMap("idContato", idDestino));
     }
 
-    void visualizarMensagemrecebida(UUID idMensagem) {
+    void visualizarMensagemrecebida(UUID idMensagem, String idRemetente) {
+        String idUsuarioLogado;
         try {
-            repository.visualizarMensagem(idMensagem, getIdCandidatoLogado());
+            var id = getIdCandidatoLogado();
+            repository.visualizarMensagem(idMensagem, id);
+            assert id != null;
+            idUsuarioLogado = id.toString();
         } catch (Exception e) {
-            repository.visualizarMensagem(idMensagem, getIdEmpresaLogada());
+            var id = getIdEmpresaLogada();
+            repository.visualizarMensagem(idMensagem, id);
+            assert id != null;
+            idUsuarioLogado = id.toString();
         }
+        messagingTemplate.convertAndSend("/mensagem/visualizar/" + idUsuarioLogado, getMap("idContato", idRemetente));
     }
 
     public List<String> getNotificacoes() {
