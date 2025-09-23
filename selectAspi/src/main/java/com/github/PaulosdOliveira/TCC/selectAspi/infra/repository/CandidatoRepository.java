@@ -1,6 +1,7 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.*;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.ChatContatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,6 +16,7 @@ import static com.github.PaulosdOliveira.TCC.selectAspi.infra.specification.Cand
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface CandidatoRepository extends JpaRepository<Candidato, Long>, JpaSpecificationExecutor<Candidato> {
 
@@ -27,10 +29,8 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
     @Query("Update  Candidato  set foto = :foto where id = :id")
     void salvarFotoCandidato(@Param("id") Long id, @Param("foto") byte[] foto);
 
-
     @Query("Select c.foto from Candidato c where c.id = :id")
     byte[] buscarFotoCandidato(@Param("id") Long id);
-
 
     @Transactional
     @Modifying
@@ -41,10 +41,8 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
            " c.tel, c.pcd, c.trabalhando, c.sexo, c.cidade.id, c.estado.id) from Candidato c where c.id = :id")
     EdicaoCandidatoDTO buscarDadosSalvos(Long id);
 
-
     @Query("Select c.curriculo from Candidato c where c.id = :id")
     byte[] buscarCurriculoCandidato(@Param("id") Long id);
-
 
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO(c.id, c.nome, c.email, c.senha)" +
            " from Candidato c where c.email = :login  or c.cpf = :login")
@@ -58,6 +56,10 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
     // Deescobrindo se candidato é PCD e qual é o seu sexo
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.DadosFitroVaga(c.sexo, c.pcd) from Candidato c where c.id = :id")
     DadosFitroVaga buscarDadosFiltroVaga(Long id);
+
+    // BUSCANDO INFORMAÇÕES DO CONTATO PARA PREENCHER O CABEÇALHO DO CHAT
+    @Query("Select DISTINCT new com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.ChatContatoDTO(c.nome, c.id) from Candidato  c where c.id = :id")
+    ChatContatoDTO buscarDadosChat(Long id);
 
 
     String findCpfById(Long id);

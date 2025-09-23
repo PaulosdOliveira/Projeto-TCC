@@ -11,23 +11,30 @@ public class Contato {
     private final String id;
     private final String nome;
     private final String ultimaMensagem;
-    private String urlFoto;
+    private String urlFoto = "http://localhost:8080";
+    private final Long naoVizualizadas;
 
-    public Contato(Long id, String nome, String ultimaMensagem) {
+
+    // CASO O CONTATO SEJA UM  CANDIDATO
+    public Contato(Long id, String nome, String ultimaMensagem, Long naoVizualizadas) {
         String[] nomeDividido = nome.split(" ");
         this.id = id.toString();
         this.nome = nomeDividido[0] + " " + (nomeDividido.length > 1 ? nomeDividido[nomeDividido.length - 1] : "");
         this.ultimaMensagem = ultimaMensagem;
-        this.urlFoto = "http://localhost:8080/candidato/foto/" + id;
+        this.urlFoto += "/candidato/foto/" + id;
+        this.naoVizualizadas = naoVizualizadas;
     }
 
-    public Contato(UUID id, String nome, String ultimaMensagem) {
-        String[] nomeDividido = nome.split(" ");
+
+    // CASO O CONTATO SEJA UMA EMPRESA
+    public Contato(UUID id, String nome, String ultimaMensagem, Long naoVizualizadas) {
         this.id = id.toString();
+        System.out.println("Nome: " + nome);
+        String[] nomeDividido = nome.split(" ");
         this.nome = nomeDividido[0] + " " + (nomeDividido.length > 1 ? nomeDividido[nomeDividido.length - 1] : "");
         this.ultimaMensagem = ultimaMensagem;
-        this.urlFoto = "http://localhost:8080/empresa/foto/" + id;
+        this.urlFoto += "/empresa/foto/" + id;
+        this.naoVizualizadas = naoVizualizadas;
     }
-
 
 }

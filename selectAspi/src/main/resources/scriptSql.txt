@@ -154,6 +154,7 @@ data_hora_envio datetime not null,
 empresa_id binary(16),
 candidato_id bigint,
 enviado_por enum('EMPRESA', 'CANDIDATO') not null,
+visualizado boolean default false,
 foreign key (empresa_id) references empresa(id),
 foreign key (candidato_id) references candidatos(id)
 );

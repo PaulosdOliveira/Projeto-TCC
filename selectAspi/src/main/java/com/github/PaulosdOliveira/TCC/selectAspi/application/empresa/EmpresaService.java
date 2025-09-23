@@ -1,5 +1,7 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.empresa;
 
+import com.github.PaulosdOliveira.TCC.selectAspi.model.AuthSocket;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.LoginCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.EmpresaRepository;
@@ -62,14 +64,15 @@ public class EmpresaService {
         return repository.carregarPerfil(id).orElseThrow();
     }
 
-    public void logarEmpresa(String email) {
+
+    // CRIANDO USER DETAILS DE EMPRESA
+    public AuthSocket getEmpresaUserDetails(String email) {
         LoginEmpresaDTO loginDTO = buscarPorEmailOuNnpj(email);
         UserDetails userDetails = User.withUsername(loginDTO.getEmail())
                 .authorities("empresa")
                 .password(loginDTO.getSenha())
                 .build();
-        SecurityContextHolder.getContext()
-                .setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, loginDTO.getId(), userDetails.getAuthorities()));
+        return new AuthSocket(userDetails, loginDTO.getId().toString());
     }
 
     public void salvarFoto(byte[] foto) {
@@ -78,7 +81,7 @@ public class EmpresaService {
         repository.salvarFoto(foto, id);
     }
 
-    public void salvarCapa(byte[] foto){
+    public void salvarCapa(byte[] foto) {
         UUID id = UUID.fromString(SecurityContextHolder.getContext()
                 .getAuthentication().getCredentials().toString());
         repository.salvarCapa(foto, id);

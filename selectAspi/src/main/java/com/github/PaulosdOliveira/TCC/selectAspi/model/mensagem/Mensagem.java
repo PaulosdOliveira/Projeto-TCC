@@ -39,6 +39,9 @@ public class Mensagem {
     @Column(name = "enviado_por")
     private PerfilRemetente perfilRemetente;
 
+    @Column
+    private boolean visualizado;
+
     public Mensagem(CadastroMensagemDTO dto) {
         this.texto = dto.getTexto();
         this.candidato = new Candidato(dto.getIdCandidato());

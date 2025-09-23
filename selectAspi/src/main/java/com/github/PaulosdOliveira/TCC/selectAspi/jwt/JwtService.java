@@ -42,7 +42,9 @@ public class JwtService {
         return map;
     }
 
-    public DadosToken getEmailByToken(String token) {
+
+    // RECUPERANDO DADOS DO TOKEN
+    public DadosToken getDadosToken(String token) {
         var payLoad = Jwts.parser()
                 .verifyWith(secretKeyService.getSecret())
                 .build()

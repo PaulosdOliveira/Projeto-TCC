@@ -11,13 +11,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import lombok.RequiredArgsConstructor;
+
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -73,16 +71,42 @@ public class UtilsService {
 
 
     public static Long getIdCandidatoLogado() {
-        return Long.parseLong(
-                SecurityContextHolder.getContext().getAuthentication().getCredentials().toString()
-        );
+        try {
+            return Long.parseLong(
+                    SecurityContextHolder.getContext().getAuthentication().getCredentials().toString()
+            );
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar id da empresa logada");
+            return null;
+        }
+    }
+
+
+    public static UUID getIdEmpresaLogada() {
+        try {
+            return UUID.fromString(
+                    SecurityContextHolder.getContext().getAuthentication().getCredentials().toString()
+            );
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar id da empresa logada");
+            return null;
+        }
+    }
+
+    public static String getIdAuthString() {
+        try {
+            return SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar id do usuário logado");
+            return null;
+        }
     }
 
 
     // Padroniizando erros
-    public static Map<String, Object> getMapErro(String erro) {
+    public static Map<String, Object> getMap(String label, String value) {
         Map<String, Object> map = new HashMap<>();
-        map.put("erro", erro);
+        map.put(label, value);
         return map;
     }
 

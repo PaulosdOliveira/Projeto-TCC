@@ -6,9 +6,11 @@ import com.github.PaulosdOliveira.TCC.selectAspi.application.formacao.FormacaoSe
 import com.github.PaulosdOliveira.TCC.selectAspi.application.qualificacao.QualificacaoService;
 import com.github.PaulosdOliveira.TCC.selectAspi.exception.UsuarioNaoEncontradoException;
 import com.github.PaulosdOliveira.TCC.selectAspi.jwt.JwtService;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.AuthSocket;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.CandidatoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoDTO;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.LoginEmpresaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.ExperienciaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.FormacaoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
@@ -105,14 +107,15 @@ public class CandidatoService {
         }
     }
 
-    public void logarCandidato(String email) {
+
+    // CRIANDO USERDETAILS DE CANDIDATO
+    public AuthSocket getCandidatoUserDetails(String email) {
         LoginCandidatoDTO loginDTO = buscarPorEmailOuCpf(email);
         UserDetails userDetails = User.withUsername(loginDTO.getEmail())
                 .authorities("candidato")
                 .password(loginDTO.getSenha())
                 .build();
-        SecurityContextHolder.getContext()
-                .setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, loginDTO.getId(), userDetails.getAuthorities()));
+        return new AuthSocket(userDetails, loginDTO.getId().toString());
     }
 
     public List<Candidato> findByQualificacao(DadosConsultaCandidatoDTO dadosConsulta) {

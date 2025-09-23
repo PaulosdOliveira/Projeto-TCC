@@ -2,9 +2,15 @@ package com.github.PaulosdOliveira.TCC.selectAspi.jwt;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.application.candidato.CandidatoService;
 import com.github.PaulosdOliveira.TCC.selectAspi.application.empresa.EmpresaService;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.AuthSocket;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.LoginEmpresaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.token.DadosToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -65,15 +71,21 @@ public class JwtFilter extends OncePerRequestFilter {
     // LOGANDO USUÁRIO ATRAVÉZ DO TOKEN
     public void logarUsuario(String token) {
         if (token != null) {
-            DadosToken dadosToken = service.getEmailByToken(token);
+            DadosToken dadosToken = service.getDadosToken(token);
+            AuthSocket authSocket;
             if (dadosToken.getPerfil().equals("candidato")) {
                 System.out.println("Candidato ################");
-                candidatoService.logarCandidato(dadosToken.getEmail());
+                authSocket = candidatoService.getCandidatoUserDetails(dadosToken.getEmail());
             } else {
                 System.out.println("Empresa ###################################");
                 System.out.println(dadosToken.getEmail() + " " + dadosToken.getPerfil());
-                empresaService.logarEmpresa(dadosToken.getEmail());
+                authSocket = empresaService.getEmpresaUserDetails(dadosToken.getEmail());
             }
+            // LOGANDO USUÁRIO
+            SecurityContextHolder.getContext()
+                    .setAuthentication(new UsernamePasswordAuthenticationToken(authSocket.getUserDetails(), authSocket.getIdUsuario(), authSocket.getUserDetails().getAuthorities()));
         }
     }
+
+
 }

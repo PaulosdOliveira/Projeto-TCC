@@ -3,6 +3,7 @@ package com.github.PaulosdOliveira.TCC.selectAspi.infra.repository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.Empresa;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.LoginEmpresaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.PerfilEmpresa;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.ChatContatoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -41,4 +42,7 @@ public interface EmpresaRepository extends JpaRepository<Empresa, UUID> {
     @Modifying
     @Query("Update Empresa e set e.capa = :capa where e.id = :id")
     void salvarCapa(@Param("capa") byte[] foto, @Param("id") UUID id);
+
+    @Query("Select DISTINCT new com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.ChatContatoDTO(e.nome, e.id) from Empresa e where e.id = :idEmpresa")
+    ChatContatoDTO buscarDadosChatEmpresa(UUID idEmpresa);
 }

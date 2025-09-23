@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/mensagem")
@@ -23,8 +23,8 @@ public class MensagemController {
     }
 
     @GetMapping("/dados/{idContato}")
-    public ChatContatoDTO buscarDadosContato(@PathVariable String idContato){
-      return service.buscarDadosContato(idContato);
+    public ChatContatoDTO buscarDadosContato(@PathVariable String idContato) {
+        return service.buscarDadosContato(idContato);
     }
 
     @GetMapping("/contatos-recentes")
@@ -32,6 +32,19 @@ public class MensagemController {
         return service.buscarChatsRecetes();
     }
 
+    @PutMapping("/visualizar")
+    public void visualizarMensagens(@RequestParam String idDestinatario) {
+        service.visualizarMensagens(idDestinatario);
+    }
 
+    @PutMapping("/visualizar/{idMensagem}")
+    public void visualizarMensagem(@PathVariable UUID idMensagem) {
+        service.visualizarMensagemrecebida(idMensagem);
+    }
+
+    @GetMapping("/nofificacoes")
+    public List<String> getNofificacoes() {
+        return service.getNotificacoes();
+    }
 
 }
