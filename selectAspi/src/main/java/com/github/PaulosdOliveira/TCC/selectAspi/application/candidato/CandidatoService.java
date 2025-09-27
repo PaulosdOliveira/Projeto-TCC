@@ -10,16 +10,13 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.AuthSocket;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.infra.repository.CandidatoRepository;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.empresa.LoginEmpresaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.ExperienciaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.formacao.FormacaoDTO;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacaoUsuarioDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.QualificacoesSalvas;
 import com.github.PaulosdOliveira.TCC.selectAspi.validation.CandidatoValidator;
 import com.github.PaulosdOliveira.TCC.selectAspi.validation.EnderecoBaseValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -118,7 +114,12 @@ public class CandidatoService {
         return new AuthSocket(userDetails, loginDTO.getId().toString());
     }
 
-    public List<Candidato> findByQualificacao(DadosConsultaCandidatoDTO dadosConsulta) {
+    public Page<Candidato> findByQualificacao(DadosConsultaCandidatoDTO dadosConsulta)  {
+        try {
+        Thread.sleep(4000);
+        }catch (InterruptedException e){
+            System.out.println(e);
+        }
         return repository.findCandidatoByQualificacao(dadosConsulta.getQualificacoes(), dadosConsulta.getIdEstado(), dadosConsulta.getIdCidade(),
                 dadosConsulta.getSexo(), dadosConsulta.isPcd(), dadosConsulta.getTrabalhando(), dadosConsulta.getFormacoes());
     }

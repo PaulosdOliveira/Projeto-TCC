@@ -4,6 +4,8 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.mensagem.ChatContatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.qualificacao.ConsultaQualificacaoUsuario;
 import io.micrometer.common.util.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,7 +66,7 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
 
     String findCpfById(Long id);
 
-    default List<Candidato> findCandidatoByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String idEstado, String idCidade, String sexo, boolean isPcd, Boolean trabalhando, List<String> formacoes) {
+    default Page<Candidato> findCandidatoByQualificacao(List<ConsultaQualificacaoUsuario> qualificacoes, String idEstado, String idCidade, String sexo, boolean isPcd, Boolean trabalhando, List<String> formacoes) {
         Specification<Candidato> spec = is("pcd", isPcd);
         for (ConsultaQualificacaoUsuario q : qualificacoes) {
             spec = spec.and(findByQualificacao(q.getIdQualificacao(), q.getNivel()));
@@ -77,7 +79,7 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
         if (StringUtils.isNotBlank(sexo)) spec = spec.and(stringEqual("sexo", sexo));
         if (trabalhando != null) spec = spec.and(is("trabalhando", trabalhando));
         spec = spec.and(orderByRandom());
-        return findAll(spec);
+        return findAll(spec, PageRequest.of(0, 20));
     }
 
 

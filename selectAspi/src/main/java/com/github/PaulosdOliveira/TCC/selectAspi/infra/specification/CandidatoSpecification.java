@@ -28,15 +28,15 @@ public class CandidatoSpecification {
         });
     }
 
-    public static Specification<Candidato> findByFormacao(String curso){
-        return ((root, query, cb) ->{
+    public static Specification<Candidato> findByFormacao(String curso) {
+        return ((root, query, cb) -> {
             Join<Candidato, Formacao> fJoin = root.join("formacoes");
             Predicate cursoEqual = cb.equal(fJoin.get("curso"), curso);
             return cb.and(cursoEqual);
         });
     }
 
-
+    // COLOCANDO ORDEM ALEATÓRIA NA CONSULTA
     public static Specification<Candidato> orderByRandom() {
         return (root, query, cb) -> {
             assert query != null;
@@ -49,22 +49,21 @@ public class CandidatoSpecification {
         };
     }
 
-    public static Specification<Candidato> stringEqual(String campo, String valor){
+    public static Specification<Candidato> stringEqual(String campo, String valor) {
         return ((root, query, cb) ->
                 cb.equal(root.get(campo), valor));
     }
 
-    public static Specification<Candidato> foreignKeyIgual(String foreign, String key){
+    public static Specification<Candidato> foreignKeyIgual(String foreign, String key) {
         return ((root, query, cb) ->
                 cb.equal(root.get(foreign).get("id"), key));
     }
 
 
-    public static Specification<Candidato> is(String campo, boolean valor){
+    public static Specification<Candidato> is(String campo, boolean valor) {
         return ((root, query, cb) ->
                 cb.equal(root.get(campo), valor));
     }
-
 
 
 }

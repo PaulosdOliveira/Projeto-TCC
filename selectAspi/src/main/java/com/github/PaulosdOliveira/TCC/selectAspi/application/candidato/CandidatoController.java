@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import lombok.RequiredArgsConstructor;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class CandidatoController {
         return new Token(token);
     }
 
-
+    // BUSCA CANDIDATOS A PARTIR DE FILTROS (ESTADO, CIDADE, QUAIFICAÇÕES, FORMAÇÕES, ETC...)
     @PostMapping("/qualificacao-candidato/buscar-candidatos")
     public List<ConsultaCandidatoDTO> findByQualificacao(@RequestBody DadosConsultaCandidatoDTO dadosConsulta) {
         return service.findByQualificacao(dadosConsulta)
@@ -85,7 +86,7 @@ public class CandidatoController {
     }
 
     @PutMapping
-    public void editarPerfil(@RequestBody EdicaoCandidatoDTO novosDados){
+    public void editarPerfil(@RequestBody EdicaoCandidatoDTO novosDados) {
         service.editarDados(novosDados);
     }
 
