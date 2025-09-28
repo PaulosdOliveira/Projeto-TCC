@@ -5,6 +5,8 @@ import static com.github.PaulosdOliveira.TCC.selectAspi.infra.specification.Vaga
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.CadastroVagaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.ConsultaVagaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.VagaEmpresaDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.VagaEmprego;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Sexo;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,11 +26,12 @@ import java.util.UUID;
 public interface VagaEmpregoRepository extends JpaRepository<VagaEmprego, Long>, JpaSpecificationExecutor<VagaEmprego> {
 
 
-    default List<VagaEmprego> buscarVagas(String titulo, String idEstado, String idCidade, String senioridade,
-                                          String modelo, String tipo_contrato, Sexo sexoCandidatoLogado, boolean isPcd) {
+    default Page<VagaEmprego> buscarVagas(String titulo, String idEstado, String idCidade, String senioridade,
+                                          String modelo, String tipo_contrato, Sexo sexoCandidatoLogado, boolean isPcd, int pageNumber) {
         Specification<VagaEmprego> spec = isAtiva()
                 .and(notSexoExclusivo(sexoCandidatoLogado))
-                .and(exclusivaPcd(isPcd));
+                .and(exclusivaPcd(isPcd))
+                .and(dateIsValid());
         System.out.println("Sexo: " + sexoCandidatoLogado + "Is PCD: " + isPcd);
         if (StringUtils.isNotBlank(titulo)) spec = spec.and(stringLike("titulo", titulo))
                 .or(stringLike("descricao", titulo));
@@ -36,19 +40,19 @@ public interface VagaEmpregoRepository extends JpaRepository<VagaEmprego, Long>,
         if (StringUtils.isNotBlank(senioridade)) spec = spec.and(stringEqual("nivel", senioridade));
         if (StringUtils.isNotBlank(modelo)) spec = spec.and(stringEqual("modelo", modelo));
         if (StringUtils.isNotBlank(tipo_contrato)) spec = spec.and(stringEqual("tipoContrato", tipo_contrato));
-        return findAll(spec, Sort.by("dataHoraPublicacao").descending());
+        return findAll(spec, PageRequest.of(pageNumber, 10, Sort.by("dataHoraPublicacao").descending()));
     }
 
-
-    default List<VagaEmprego> buscarVagasAlinhadas(List<String> qualificacoes, Sexo sexo, boolean isPcd) {
+    default Page<VagaEmprego> buscarVagasAlinhadas(List<String> qualificacoes, Sexo sexo, boolean isPcd) {
         Specification<VagaEmprego> spec = isAtiva()
                 .and(notSexoExclusivo(sexo))
-                .and(exclusivaPcd(isPcd));
+                .and(exclusivaPcd(isPcd))
+                .and(dateIsValid());
         Specification<VagaEmprego> descricaoLike = Specification.where(null);
         for (String qualificacao : qualificacoes)
             descricaoLike = descricaoLike.or(stringLike("descricao", qualificacao));
         spec = spec.and(descricaoLike);
-        return findAll(spec, Sort.by("dataHoraPublicacao").descending());
+        return findAll(spec, PageRequest.of(0, 10, Sort.by("dataHoraPublicacao").descending()));
     }
 
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.VagaEmprego(v.id, v.vagaAtiva, v.dataHoraEncerramento) from VagaEmprego v where v.vagaAtiva = false")

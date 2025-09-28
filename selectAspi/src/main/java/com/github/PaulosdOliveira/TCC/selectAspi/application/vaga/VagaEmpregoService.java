@@ -12,15 +12,20 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Cidade;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.localizacao.Estado;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaPK;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService.getTempoDecorrido;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -31,6 +36,7 @@ public class VagaEmpregoService {
     private final VagaEmpregoRepository repository;
     private final CandidatoVagaRepository candidatoVagaRepository;
 
+    // CADASTRANDO VAGAS
     public void cadastrarVaga(CadastroVagaDTO dadosCadastrais) {
         String id = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
         var empresaLogada = new Empresa(id);
@@ -42,6 +48,7 @@ public class VagaEmpregoService {
         return repository.findById(id).orElseThrow();
     }
 
+    // EDITANDO DADOS DE UMA VAGA
     @Transactional
     public void editarVaga(Long idVaga, CadastroVagaDTO dados) {
         VagaEmprego vaga = repository.findById(idVaga).orElseThrow();
@@ -67,15 +74,17 @@ public class VagaEmpregoService {
 
     }
 
-
+    // PESQUISANDO POR VAGAS
     @Transactional
-    public List<CardVagaDTO> buscarVagas(String titulo, String idEstado, String idCidade, String senioridade, String modelo, String tipo_contrato) {
+    public PageCardVaga buscarVagas(String titulo, String idEstado, String idCidade, String senioridade, String modelo, String tipo_contrato, int pageNumber) {
         var filtro = candidatoService.buscarFiltroVaga();
-        var vagas = repository.buscarVagas(titulo, idEstado, idCidade, senioridade, modelo, tipo_contrato, filtro.sexo(), filtro.pcd());
-        verificarVagas(vagas);
-        return convertToCard(vagas);
+        var vagas = repository.buscarVagas(titulo, idEstado, idCidade, senioridade, modelo, tipo_contrato, filtro.sexo(), filtro.pcd(), pageNumber);
+        return convertToPageCard(vagas);
     }
 
+
+    // ERA USADO PARA REMOVER VAGAS  DA LISTA CASO JÁ TIVESSEM PASSADO DO PRAZO
+    @Deprecated
     private void verificarVagas(List<VagaEmprego> vagas) {
         vagas.removeIf(vagaAtual -> {
             if (vagaAtual.getDataHoraEncerramento() == null) return false;
@@ -85,13 +94,15 @@ public class VagaEmpregoService {
         });
     }
 
-    public List<CardVagaDTO> buscarVagasAlinhadas() {
+    // BUSCANDO VAGAS ALINHADAS COM O PERFIL DO USUÁRIO
+    public PageCardVaga buscarVagasAlinhadas() {
         var filtro = candidatoService.buscarFiltroVaga();
         List<String> qualificacoes = candidatoService.buscarQualificacoes();
         var vagas = repository.buscarVagasAlinhadas(qualificacoes, filtro.sexo(), filtro.pcd());
-        return convertToCard(vagas);
+        return convertToPageCard(vagas);
     }
 
+    // VALIDANDO VAGA ANTES DE CANDIDATAR
     @Transactional
     public void validarVaga(Long id) {
         VagaEmprego vaga = repository.findById(id)
@@ -108,6 +119,7 @@ public class VagaEmpregoService {
         }
     }
 
+    // VERIFICANDO SE CANDIDATO ESTÁ ÁPTO À SE CANDIDATAR
     private boolean candidatoNaoEnquadra(boolean vagaExclusivaParaPcd, Sexo exclusividadeDeSexo) {
         var dadosCandidatoLogado = candidatoService.buscarFiltroVaga();
         boolean isSexoRestrito = !(exclusividadeDeSexo.equals(Sexo.TODOS) || dadosCandidatoLogado.sexo().equals(exclusividadeDeSexo));
@@ -117,15 +129,17 @@ public class VagaEmpregoService {
     }
 
     // TRANSFORMANDO LISTA DE VAGAS EM CARD
-    private List<CardVagaDTO> convertToCard(List<VagaEmprego> vagas) {
-        return vagas.stream().map(vaga -> new CardVagaDTO(
+    private PageCardVaga convertToPageCard(Page<VagaEmprego> vagas) {
+        var listaVagas = vagas.stream().map(vaga -> new CardVagaDTO(
                 vaga.getId(), vaga.getEmpresa().getNome(), vaga.getTitulo(),
                 vaga.getCidade().getNome(), vaga.getEstado().getSigla(), vaga.getSalario(),
                 vaga.getModelo().name(), vaga.getTipoContrato().name(), vaga.getNivel().name(),
                 vaga.getExclusivoParaPcd(), vaga.getExclusivoParaSexo(), getTempoDecorrido(vaga.getDataHoraPublicacao())
         )).toList();
+        return new PageCardVaga(listaVagas, vagas.getNumber(), vagas.getTotalPages());
     }
 
+    // CARREGANDO DADOS QUE SERÃO EXIBIDOS NA PÁGINA DA VAGA
     public ConsultaVagaDTO carregarVaga(Long id) {
         ConsultaVagaDTO vagaEncontrada = repository.carregarVaga(id).orElseThrow(VagaNaoEncontradaException::new);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().contains("empresa"))
@@ -138,11 +152,12 @@ public class VagaEmpregoService {
         return vagaEncontrada;
     }
 
-
+    // BUSCANDO DADOS CADASTRAIS DA VAGA PARA PREENCHER O FORMULÁRIO DE EDIÇÃO
     public CadastroVagaDTO buscarDadosCadastrais(Long idVaga) {
         return repository.buscarDadosCadastrais(idVaga).orElseThrow();
     }
 
+    //  BUSCANDO VAGAS PUBLICADAS POR UMA EMPRESA
     public List<VagaEmpresaDTO> buscarVagasEmpresa(UUID idEmpresa) {
         return repository.buscarVagasEmpresa(idEmpresa);
     }

@@ -6,6 +6,8 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Modelo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Nivel;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDateTime;
+
 public class VagaEmpregoSpecification {
 
     public static Specification<VagaEmprego> stringLike(String campo, String valor) {
@@ -16,7 +18,7 @@ public class VagaEmpregoSpecification {
 
     public static Specification<VagaEmprego> stringEqual(String campo, String valor) {
         return ((root, query, cb) ->
-                cb.equal(root.get(campo),  valor));
+                cb.equal(root.get(campo), valor));
     }
 
     public static Specification<VagaEmprego> exclusivaPcd(boolean isPcd) {
@@ -35,13 +37,15 @@ public class VagaEmpregoSpecification {
                 cb.equal(root.get("vagaAtiva"), true);
     }
 
-    public static  Specification<VagaEmprego> foreignKeyIgual(String foreign, String id){
-        return (root,  query, cb) ->
-                cb.equal(root.get(foreign).get("id"), Integer.parseInt(id));
+    public static Specification<VagaEmprego> dateIsValid() {
+        return (root, query, cb) ->
+                cb.greaterThan(root.get("dataHoraEncerramento"), LocalDateTime.now());
     }
 
-
-
+    public static Specification<VagaEmprego> foreignKeyIgual(String foreign, String id) {
+        return (root, query, cb) ->
+                cb.equal(root.get(foreign).get("id"), Integer.parseInt(id));
+    }
 
 
 }

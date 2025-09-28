@@ -6,6 +6,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidatoCadastradoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaCandidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaPK;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -53,17 +54,17 @@ public class VagaEmpregoController {
         candidatoVagaService.cancelarCandidatura(idVaga);
     }
 
-
     @GetMapping("")
-    public List<CardVagaDTO> buscarVagas(
+    public PageCardVaga buscarVagas(
             @RequestParam(required = false) String titulo,
             @RequestParam(required = false) String idEstado,
             @RequestParam(required = false) String idCidade,
             @RequestParam(required = false) String senioridade,
             @RequestParam(required = false) String modelo,
-            @RequestParam(required = false) String tipo_contrato
+            @RequestParam(required = false) String tipo_contrato,
+            @RequestParam(required = true) int pageNumber
     ) {
-        return service.buscarVagas(titulo, idEstado, idCidade, senioridade, modelo, tipo_contrato);
+        return service.buscarVagas(titulo, idEstado, idCidade, senioridade, modelo, tipo_contrato, pageNumber);
     }
 
     @GetMapping("/{idVaga}")
@@ -73,10 +74,9 @@ public class VagaEmpregoController {
 
     @PreAuthorize("hasRole('candidato')")
     @GetMapping("/alinhada")
-    public List<CardVagaDTO> buscarVagasAlinhadas() {
+    public PageCardVaga buscarVagasAlinhadas() {
         return service.buscarVagasAlinhadas();
     }
-
 
     @GetMapping(params = "idEmpresa")
     public List<VagaEmpresaDTO> buscarvagasEmpresa(@RequestParam UUID idEmpresa) {
@@ -88,7 +88,6 @@ public class VagaEmpregoController {
     public List<CandidatoCadastradoDTO> buscarCandidatosVaga(@PathVariable Long idVaga) {
         return candidatoVagaService.buscarCandidatosVaga(idVaga);
     }
-
 
     @PutMapping("/{idVaga}")
     @PreAuthorize("hasRole('empresa')")
@@ -102,7 +101,6 @@ public class VagaEmpregoController {
     public CadastroVagaDTO buscarDadosCadastrais(@PathVariable Long idVaga) {
         return service.buscarDadosCadastrais(idVaga);
     }
-
 
     @PutMapping("/candidato/selecionar/{idCandidato}/{idVaga}")
     public void selecionarCandidato(@PathVariable("idCandidato") Long idCandidato, @PathVariable("idVaga") Long idVaga) {
