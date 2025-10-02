@@ -75,7 +75,7 @@ public class VagaEmpregoController {
     @PreAuthorize("hasRole('candidato')")
     @GetMapping("/alinhada")
     public PageCardVaga buscarVagasAlinhadas() {
-        return service.buscarVagasAlinhadas();
+         return service.buscarVagasAlinhadas();
     }
 
     @GetMapping(params = "idEmpresa")

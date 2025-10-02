@@ -118,7 +118,6 @@ public class VagaEmpregoService {
             throw new VagaEncerradaException();
         }
     }
-
     // VERIFICANDO SE CANDIDATO ESTÁ ÁPTO À SE CANDIDATAR
     private boolean candidatoNaoEnquadra(boolean vagaExclusivaParaPcd, Sexo exclusividadeDeSexo) {
         var dadosCandidatoLogado = candidatoService.buscarFiltroVaga();
