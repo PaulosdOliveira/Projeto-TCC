@@ -6,6 +6,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CadastroCursoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoComplementar;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.curso.CursoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class CursoController {
     @Autowired
     private CursoService service;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('candidato')")
     @PostMapping("")
     public void cadastrarCurso(@RequestBody List<CadastroCursoDTO> cursos) {

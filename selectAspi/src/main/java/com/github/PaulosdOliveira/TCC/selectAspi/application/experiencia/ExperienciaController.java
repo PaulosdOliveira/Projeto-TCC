@@ -6,6 +6,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.CadastroExper
 import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.Experiencia;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.experiencia.ExperienciaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService.getIdCandidatoLogado;
@@ -19,8 +20,9 @@ public class ExperienciaController {
     @Autowired
     private ExperienciaService service;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('candidato')")
-    @PostMapping("")
+    @PostMapping()
     public void cadastrarExperiencia(@RequestBody List<CadastroExperienciaDTO> experiencias) {
         service.cadastrarExperiencia(experiencias, new Candidato(getIdCandidatoLogado()));
     }

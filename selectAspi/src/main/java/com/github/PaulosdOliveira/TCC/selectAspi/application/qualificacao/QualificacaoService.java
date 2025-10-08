@@ -28,6 +28,7 @@ public class QualificacaoService {
         List<QualificacaoUsuario> qualificacoes = dtoList.stream().map(item ->
                         new QualificacaoUsuario(new ChaveCompostaQualificacao(candidato, new Qualificacao(item.getIdQualificacao())), item.getNivel()))
                 .toList();
+        System.out.println(dtoList);
         qualificacaoUsuarioRepository.saveAll(qualificacoes);
     }
 
