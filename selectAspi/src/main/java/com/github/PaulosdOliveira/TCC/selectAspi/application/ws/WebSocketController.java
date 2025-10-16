@@ -46,10 +46,9 @@ public class WebSocketController {
 
         System.out.println(mensagemSalva);
 
-        // ENVIANDO NOTIFICACAO AO USUÁRIO
-        // VERIFICANDO SE É UMA EMPRESA QUE ESTÁ ENVIANDO A MENSAGEM
-        boolean isEmpresa = auth.getAuthorities().toString().contains("empresa");
+
         Contato contato;
+        // VERIFICANDO SE É UMA EMPRESA QUE ESTÁ ENVIANDO A MENSAGEM
         if (auth.getAuthorities().toString().contains("empresa")) {
             var empresa = empresaRepository.findById(mensagemSalva.getEmpresa().getId()).orElseThrow();
             contato = new Contato(empresa.getId(), empresa.getNome(), mensagemSalva.getTexto(), 1L);

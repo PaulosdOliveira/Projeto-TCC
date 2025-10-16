@@ -7,6 +7,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.ConsultaVagaDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.VagaEmpresaDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.VagaEmprego;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Sexo;
@@ -65,8 +66,9 @@ public interface VagaEmpregoRepository extends JpaRepository<VagaEmprego, Long>,
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.ConsultaVagaDTO(v) from VagaEmprego v where v.id = :id")
     Optional<ConsultaVagaDTO> carregarVaga(@Param("id") Long id);
 
+    //BUSCA DE VAGAS PUBLICADADS POR UMA EMPRESA
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.VagaEmpresaDTO(v.id, v.titulo, v.dataHoraPublicacao, COUNT(c.id)) from VagaEmprego v left join CandidatoVaga c on c.id.vaga = v where v.empresa.id = :idEmpresa  group by v.id")
-    List<VagaEmpresaDTO> buscarVagasEmpresa(@Param("idEmpresa") UUID idEmpresa);
+    Page<VagaEmpresaDTO> buscarVagasEmpresa(@Param("idEmpresa") UUID idEmpresa, Pageable pageable);
 
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.CadastroVagaDTO(v) from VagaEmprego v where v.id = :idVaga")
     Optional<CadastroVagaDTO> buscarDadosCadastrais(Long idVaga);

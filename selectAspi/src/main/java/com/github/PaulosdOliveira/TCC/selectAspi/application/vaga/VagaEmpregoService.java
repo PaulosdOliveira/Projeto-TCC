@@ -157,8 +157,8 @@ public class VagaEmpregoService {
     }
 
     //  BUSCANDO VAGAS PUBLICADAS POR UMA EMPRESA
-    public List<VagaEmpresaDTO> buscarVagasEmpresa(UUID idEmpresa) {
-        return repository.buscarVagasEmpresa(idEmpresa);
+    public Page<VagaEmpresaDTO> buscarVagasEmpresa(UUID idEmpresa, int pageNumber) {
+        return repository.buscarVagasEmpresa(idEmpresa, PageRequest.of(pageNumber, 10));
     }
 
 

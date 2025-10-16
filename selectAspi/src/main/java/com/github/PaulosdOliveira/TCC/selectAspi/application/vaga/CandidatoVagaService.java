@@ -10,6 +10,8 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.Candidatur
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaPK;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.StatusCandidatura;
 import com.github.PaulosdOliveira.TCC.selectAspi.validation.CandidaturaValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,8 +44,8 @@ public class CandidatoVagaService {
         else throw new RuntimeException("Vaga candidatura de definida");
     }
 
-    public List<CandidatoCadastradoDTO> buscarCandidatosVaga(Long idVaga) {
-        return repository.buscarCandidatosVaga(idVaga);
+    public Page<CandidatoCadastradoDTO> buscarCandidatosVaga(Long idVaga, StatusCandidatura status, int pageNumber) {
+        return repository.buscarCandidatosVaga(idVaga, status, PageRequest.of(pageNumber, 20));
     }
 
 

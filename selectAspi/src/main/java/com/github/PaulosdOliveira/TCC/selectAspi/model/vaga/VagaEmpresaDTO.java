@@ -6,6 +6,7 @@ import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService
 
 import java.time.LocalDateTime;
 
+// USADO PARA PREENCHER CARD DE VISUALIZAÇÃO DE VAGAS NO PERFIL DA EMPRESA
 @Data
 public class VagaEmpresaDTO {
     private Long id;
@@ -18,5 +19,11 @@ public class VagaEmpresaDTO {
         this.titulo = titulo;
         this.qtd_candidatos = qtd_candidatos + (qtd_candidatos != 1 ? " Candidaturas" : " Candidatura");
         this.tempo_decorrido = getTempoDecorrido(dataHoraPublicacao);
+    }
+
+    public VagaEmpresaDTO(VagaEmprego vaga) {
+        this.id = vaga.getId();
+        this.titulo = vaga.getTitulo();
+
     }
 }

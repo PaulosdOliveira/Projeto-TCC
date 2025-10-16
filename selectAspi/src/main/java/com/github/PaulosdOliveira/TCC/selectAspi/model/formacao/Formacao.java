@@ -29,10 +29,12 @@ public class Formacao {
     @Column(length = 150, nullable = false)
     private String curso;
 
+    @Column(nullable = false)
     @NotNull(message = "Campo obrigatório")
     @Enumerated(EnumType.STRING)
     private Nivel nivel;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Situacao situacao;
 

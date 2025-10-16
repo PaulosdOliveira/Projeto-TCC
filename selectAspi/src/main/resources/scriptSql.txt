@@ -41,7 +41,7 @@ foreign key (cidade_id) references cidade(id)
  candidato_id bigint,
  instituicao varchar(150) not null,
  curso varchar(150) not null,
- nivel enum("TECNICO", "TECNOLOGO", "GRADUACAO","POS_GRADUACAO", "MESTRADO","DOUTORADO"),
+ nivel enum("TECNICO", "TECNOLOGO", "GRADUACAO","POS_GRADUACAO", "MESTRADO","DOUTORADO") not null,
  inicio date not null,
  fim date not null,
  foreign key (candidato_id) references candidatos(id)
@@ -78,7 +78,7 @@ nome_qualificacao varchar(30) not null unique
 create table qualificacao_usuario(
 candidato_id bigint not null ,
 qualificacao_id bigint not null ,
-nivel enum('BASICO', 'INTERMEDIARIO', 'AVANCADO'),
+nivel enum('BASICO', 'INTERMEDIARIO', 'AVANCADO') not null,
 primary key(candidato_id, qualificacao_id),
 foreign key(candidato_id) references candidatos(id),
 foreign key(qualificacao_id) references qualificacao(id)

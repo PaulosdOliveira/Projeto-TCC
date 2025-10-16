@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.UUID;
 
 
@@ -53,6 +56,12 @@ public class CandidatoServiceTest {
     @Test
     void testar() {
         formacaoRepository.deletarFormacao(UUID.fromString("9df5b745-b02c-4bd7-8e70-e767f8aa823b"), 44L);
+    }
+
+    @Test
+    void cadastrarCurriculo() throws IOException {
+        File file = new File("C:\\Users\\santa\\OneDrive\\Documentos\\vs\\Curriculo-Paulo.pdf");
+        repository.salvarCurriculoCandidato(1L, Files.readAllBytes(file.toPath()));
     }
 
 }

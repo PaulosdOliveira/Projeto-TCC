@@ -86,7 +86,7 @@ public class CandidatoController {
     }
 
     @PutMapping
-    public void editarPerfil(@RequestBody EdicaoCandidatoDTO novosDados) {
+    public void editarPerfil(@RequestBody @Valid EdicaoCandidatoDTO novosDados) {
         service.editarDados(novosDados);
     }
 

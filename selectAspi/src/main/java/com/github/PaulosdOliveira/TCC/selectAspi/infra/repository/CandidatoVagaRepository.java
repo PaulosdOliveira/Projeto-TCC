@@ -4,6 +4,9 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidatoC
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidatoVaga;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaCandidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaPK;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.StatusCandidatura;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,8 +23,8 @@ public interface CandidatoVagaRepository extends JpaRepository<CandidatoVaga, Ca
     Optional<CandidatoVaga> candidaturaExiste(@Param("idCandidato") Long idCandidato, @Param("idVaga") Long idVaga);
 
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidatoCadastradoDTO(c.candidatura.candidato.id, c.candidatura.candidato.nome, c.candidatura.candidato.cidade.nome, c.candidatura.candidato.estado.sigla, c.candidatura.candidato.dataNascimento, c.status) " +
-           "from CandidatoVaga c where c.candidatura.vaga.id = :idVaga")
-    List<CandidatoCadastradoDTO> buscarCandidatosVaga(@Param("idVaga") Long idVaga);
+           "from CandidatoVaga c where c.candidatura.vaga.id = :idVaga and c.status = :status")
+    Page<CandidatoCadastradoDTO> buscarCandidatosVaga(@Param("idVaga") Long idVaga, StatusCandidatura status, Pageable paginacao);
 
     @Modifying
     @Transactional

@@ -6,6 +6,7 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidatoCadastradoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaCandidato;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaPK;
+import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.StatusCandidatura;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,6 @@ public class VagaEmpregoController {
 
     @Autowired
     private CandidatoVagaService candidatoVagaService;
-
 
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('empresa')")
@@ -75,18 +75,19 @@ public class VagaEmpregoController {
     @PreAuthorize("hasRole('candidato')")
     @GetMapping("/alinhada")
     public PageCardVaga buscarVagasAlinhadas() {
-         return service.buscarVagasAlinhadas();
+        return service.buscarVagasAlinhadas();
     }
 
-    @GetMapping(params = "idEmpresa")
-    public List<VagaEmpresaDTO> buscarvagasEmpresa(@RequestParam UUID idEmpresa) {
-        return service.buscarVagasEmpresa(idEmpresa);
+    // BUSCANDO VAGAS DE UMA EMPRESA PELO ID
+    @GetMapping(params = {"idEmpresa", "pageNumber"})
+    public Page<VagaEmpresaDTO> buscarvagasEmpresa(@RequestParam UUID idEmpresa, @RequestParam int pageNumber) {
+        return service.buscarVagasEmpresa(idEmpresa, pageNumber);
     }
 
-    @GetMapping("/candidatos/{idVaga}")
+    @GetMapping("/candidatos/{idVaga}/{status}/{pageNumber}")
     @PreAuthorize("hasRole('empresa')")
-    public List<CandidatoCadastradoDTO> buscarCandidatosVaga(@PathVariable Long idVaga) {
-        return candidatoVagaService.buscarCandidatosVaga(idVaga);
+    public Page<CandidatoCadastradoDTO> buscarCandidatosVaga(@PathVariable Long idVaga, @PathVariable StatusCandidatura status, @PathVariable int pageNumber) {
+        return candidatoVagaService.buscarCandidatosVaga(idVaga, status, pageNumber);
     }
 
     @PutMapping("/{idVaga}")

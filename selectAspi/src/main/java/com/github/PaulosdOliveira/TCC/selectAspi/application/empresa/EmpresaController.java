@@ -30,7 +30,6 @@ public class EmpresaController {
     private final UtilsService utils;
     private final ModeloDePropostaService propostaService;
 
-
     @PostMapping
     public void cadastrarEmpresa(@RequestBody @Valid CadastroEmpresaDTO dadosCadastrais) {
         service.cadastrarEmpresa(dadosCadastrais);

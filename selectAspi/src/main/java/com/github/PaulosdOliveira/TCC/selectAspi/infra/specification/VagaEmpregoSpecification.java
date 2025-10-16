@@ -29,7 +29,6 @@ public class VagaEmpregoSpecification {
     public static Specification<VagaEmprego> notSexoExclusivo(Sexo sexo) {
         return ((root, query, cb) ->
                 cb.notEqual(root.get("exclusivoParaSexo"), sexo.equals(Sexo.MASCULINO) ? Sexo.FEMININO : Sexo.MASCULINO));
-
     }
 
     public static Specification<VagaEmprego> isAtiva() {
@@ -42,9 +41,17 @@ public class VagaEmpregoSpecification {
                 cb.greaterThan(root.get("dataHoraEncerramento"), LocalDateTime.now());
     }
 
+    // USADO PARA PASSAR UMA CHAVE ESTRANGEIRA COMO CRITÉRIO EX( ID DO ESTADO DA VAGA)
     public static Specification<VagaEmprego> foreignKeyIgual(String foreign, String id) {
         return (root, query, cb) ->
                 cb.equal(root.get(foreign).get("id"), Integer.parseInt(id));
+    }
+
+    // BUSCANDO VAGAS PUBLICADOS POR UMA EMPRESA
+    public static Specification<VagaEmprego> idEmpresaEqualm(String idEmpresa) {
+
+        return (root, query, cb) ->
+                cb.equal(root.get("empresa").get("id"), Integer.parseInt(idEmpresa));
     }
 
 
