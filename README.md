@@ -33,6 +33,61 @@ Backend da plataforma de recrutamento, desenvolvido em Java com Spring Boot, que
  - <a href="https://www.apachefriends.org/pt_br/download.html" target="_blank">DownLoad XAMPP</a>
  4. Criar o banco de dados com o script localizado no repositório em "/safira/src/main/resources/scriptSql.txt"
  - <a href="https://github.com/PaulosdOliveira/Safira-Back-End/blob/main/selectAspi/src/main/resources/scriptSql.txt">Script SQL</a>
+## Insert de qualificações
+INSERT INTO qualificacao (nome_qualificacao)
+VALUES 
+  ('Microsoft Excel'),
+  ('Microsoft Word'),
+  ('Microsoft PowerPoint'),
+  ('Microsoft Outlook'),
+  ('Google Sheets'),
+  ('Google Docs'),
+  ('Google Slides'),
+  ('AutoCAD'),
+  ('SolidWorks'),
+  ('Adobe Photoshop'),
+  ('Adobe Illustrator'),
+  ('Adobe Premiere'),
+  ('CorelDRAW'),
+  ('SketchUp'),
+  ('Figma'),
+  ('Canva'),
+  ('Visual Studio Code'),
+  ('Eclipse'),
+  ('NetBeans'),
+  ('Jira'),
+  ('Trello'),
+  ('Slack'),
+  ('Notion'),
+  ('SAP ERP'),
+  ('TOTVS Protheus'),
+  ('Oracle Database'),
+  ('MySQL'),
+  ('PostgreSQL'),
+  ('MongoDB'),
+  ('Power BI'),
+  ('Tableau'),
+  ('Python'),
+  ('Java'),
+  ('JavaScript'),
+  ('HTML'),
+  ('CSS'),
+  ('PHP'),
+  ('C#'),
+  ('R'),
+  ('Node.js'),
+  ('React'),
+  ('Angular'),
+  ('Git'),
+  ('GitHub'),
+  ('Linux'),
+  ('Windows Server'),
+  ('AWS'),
+  ('Microsoft Azure'),
+  ('Docker'),
+  ('Kubernetes'),
+  ('Salesforce');
+
 
  ### POR ULTIMO É SÓ RODAR O BANCO DE DADOS E O BACK END EM SEGUIDA
 
