@@ -24,7 +24,6 @@ class SelectAspiApplicationTests {
     @Autowired
     private LocalizacaoService service;
 
-
     @Autowired
     private SecretKeyRepository secretKeyRepository;
 

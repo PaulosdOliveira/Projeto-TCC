@@ -46,12 +46,15 @@ public class EmpresaService {
 
     public String getAccessToken(DadosLoginEmpresaDTO dadosLogin) {
         LoginEmpresaDTO loginDTO = buscarPorEmailOuNnpj(dadosLogin.getLogin());
-        if (encoder.matches(dadosLogin.getSenha(), loginDTO.getSenha())) {
-            String token = jwtService.getAccessToken(loginDTO.getId().toString(), loginDTO.getEmail(), loginDTO.getNome(), "empresa");
-            System.out.println("TOKEN: " + token);
-            return token;
+        if (loginDTO != null) {
+            if (encoder.matches(dadosLogin.getSenha(), loginDTO.getSenha())) {
+                String token = jwtService.getAccessToken(loginDTO.getId().toString(), loginDTO.getEmail(), loginDTO.getNome(), "empresa");
+                System.out.println("TOKEN: " + token);
+                return token;
+            }
+            throw new UsernameNotFoundException("Usuário e/ou senha incorretos");
         }
-        throw new UsernameNotFoundException("Usuário e/ou senha incorretos");
+        throw new UsernameNotFoundException("Usuário não encontrado");
     }
 
     public LoginEmpresaDTO buscarPorEmailOuNnpj(String emailOuCpnj) {
