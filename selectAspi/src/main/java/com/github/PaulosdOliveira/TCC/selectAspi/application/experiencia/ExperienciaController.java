@@ -21,7 +21,7 @@ public class ExperienciaController {
     private ExperienciaService service;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('candidato')")
+      @PreAuthorize("hasRole('candidato')")
     @PostMapping()
     public void cadastrarExperiencia(@RequestBody List<CadastroExperienciaDTO> experiencias) {
         service.cadastrarExperiencia(experiencias, new Candidato(getIdCandidatoLogado()));
