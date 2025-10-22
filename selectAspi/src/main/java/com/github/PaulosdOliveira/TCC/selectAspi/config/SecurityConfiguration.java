@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,7 +32,7 @@ public class SecurityConfiguration {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configure(http))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers( "/candidato/**").permitAll();
+                    auth.requestMatchers("/candidato/**").permitAll();
                     auth.requestMatchers(HttpMethod.POST, "/empresa").permitAll();
                     auth.requestMatchers("/empresa/login").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/empresa/**").permitAll();
@@ -40,12 +41,25 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/utils/estados", "/utils/cidades/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/vaga/buscar", "/vaga?idEmpresa=**").permitAll();
                     auth.requestMatchers("/conect").permitAll();
+                    auth.requestMatchers("/swagger-ui").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().requestMatchers(
+                "/v2/api-docs/**",
+                "/v3/api-docs/**",
+                "swagger-resource/**",
+                "swagger-ui.html",
+                "swagger-ui/**",
+                "/webjars/**",
+                "/actuator/**"
+        );
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

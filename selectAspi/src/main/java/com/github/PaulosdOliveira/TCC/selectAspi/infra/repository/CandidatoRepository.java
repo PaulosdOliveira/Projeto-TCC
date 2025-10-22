@@ -41,7 +41,7 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long>, Jpa
 
     @Query("Select new com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.EdicaoCandidatoDTO(c.nome, c.dataNascimento, c.descricao, " +
            " c.tel, c.pcd, c.trabalhando, c.sexo, c.cidade.id, c.estado.id) from Candidato c where c.id = :id")
-    EdicaoCandidatoDTO buscarDadosSalvos(Long id);
+    Optional<EdicaoCandidatoDTO> buscarDadosSalvos(Long id);
 
     @Query("Select c.curriculo from Candidato c where c.id = :id")
     byte[] buscarCurriculoCandidato(@Param("id") Long id);

@@ -1,5 +1,6 @@
-package com.github.PaulosdOliveira.TCC.selectAspi.application.ex;
+package com.github.PaulosdOliveira.TCC.selectAspi.exception.ex;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import com.github.PaulosdOliveira.TCC.selectAspi.exception.*;
@@ -12,7 +13,8 @@ import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService
 import java.util.HashMap;
 import java.util.Map;
 
-@RestControllerAdvice
+@Hidden
+@RestControllerAdvice()
 public class ControllerException {
 
 
@@ -30,12 +32,6 @@ public class ControllerException {
     @ExceptionHandler(CPFDuplicadoExcepton.class)
     public Map<String, Object> handlerCPFDuplicadoExcepton(CPFDuplicadoExcepton e) {
         return getMap("Erro", e.getMessage());
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CepInvalidoException.class)
-    public Map<String, Object> handlerCepInvalidoException(CepInvalidoException e) {
-        return getMap("Erro",e.getMessage());
     }
 
 
@@ -92,7 +88,7 @@ public class ControllerException {
         return getMap("Erro",e.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(IdadeBaixaException.class)
     public Map<String, Object> handlerIdadeBaixaException(IdadeBaixaException e) {
         return getMap("Erro",e.getMessage());

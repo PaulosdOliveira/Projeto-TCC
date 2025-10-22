@@ -169,6 +169,19 @@ foreign key (empresa_id) references empresa(id)
 );
 
 
+INSERT INTO qualificacao (nome_qualificacao) VALUES
+('Microsoft Excel'), ('Microsoft Word'), ('Microsoft PowerPoint'),
+('Microsoft Outlook'), ('Google Sheets'), ('Google Docs'), ('Google Slides'),
+('AutoCAD'), ('SolidWorks'), ('Adobe Photoshop'), ('Adobe Illustrator'),
+('Adobe Premiere'), ('CorelDRAW'), ('SketchUp'), ('Figma'), ('Canva'), ('Visual Studio Code'),
+('Eclipse'), ('NetBeans'), ('Jira'), ('Trello'), ('Slack'), ('Notion'),
+('SAP ERP'), ('TOTVS Protheus'), ('Oracle Database'), ('MySQL'), ('PostgreSQL'),
+('MongoDB'), ('Power BI'), ('Tableau'), ('Python'), ('Java'), ('JavaScript'),
+('HTML'), ('CSS'), ('PHP'), ('C#'), ('R'), ('Node.js'), ('React'), ('Angular'),
+('Git'), ('GitHub'), ('Linux'), ('Windows Server'), ('AWS'), ('Microsoft Azure'),
+('Docker'), ('Kubernetes'), ('Salesforce');
+
+
 insert into estado (sigla) values
 ('AC'),('AL'),('AP'),('AM'),('BA'),('CE'),
 ('DF'),('ES'),('GO'),('MA'),('MT'),('MS'),

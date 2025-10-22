@@ -52,7 +52,8 @@ public class JwtFilter extends OncePerRequestFilter {
         boolean pular = (metodo.equals(HttpMethod.POST.name()) && path.contains("/login") || path.contains("/vaga/buscar"))
                         || (!metodo.equals(HttpMethod.PUT.name()) && path.contains("/foto") || path.contains("/capa"))
                         || (metodo.equals(HttpMethod.GET.name()) && path.contains("/vaga/buscar") || path.contains("/vaga?idEmpresa="))
-                        || path.contains("conect") || (path.equals("/candidato") && metodo.equals(HttpMethod.POST.name()));
+                        || path.contains("conect") || (path.equals("/candidato") && metodo.equals(HttpMethod.POST.name()))
+                        || path.contains("/v3/api-docs") || path.contains("/swagger");
         System.out.println(pular);
         return pular;
     }
@@ -74,10 +75,8 @@ public class JwtFilter extends OncePerRequestFilter {
             DadosToken dadosToken = service.getDadosToken(token);
             AuthSocket authSocket;
             if (dadosToken.getPerfil().equals("candidato")) {
-                System.out.println("Candidato ################");
                 authSocket = candidatoService.getCandidatoUserDetails(dadosToken.getEmail());
             } else {
-                System.out.println("Empresa ###################################");
                 System.out.println(dadosToken.getEmail() + " " + dadosToken.getPerfil());
                 authSocket = empresaService.getEmpresaUserDetails(dadosToken.getEmail());
             }

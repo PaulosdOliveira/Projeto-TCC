@@ -2,10 +2,12 @@ spring:
   application:
     name: selectAspi
 
-
   datasource:
     url: jdbc:mysql://localhost:3306/plataforma
     username: root
     password:
   jpa:
     show-sql: true
+
+
+

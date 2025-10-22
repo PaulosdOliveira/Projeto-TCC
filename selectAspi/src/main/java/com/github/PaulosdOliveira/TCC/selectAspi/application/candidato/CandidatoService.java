@@ -49,9 +49,7 @@ public class CandidatoService {
         enderecoValidator.validar(dadosCadastrais.getIdEstado(), dadosCadastrais.getIdCidade());
         dadosCadastrais.setSenha(encoder.encode(dadosCadastrais.getSenha()));
         Candidato candidato = new Candidato(dadosCadastrais);
-        System.out.println(dadosCadastrais);
         repository.save(candidato);
-        System.out.println(dadosCadastrais.getFormacoes());
         formacaoService.salvarFormacoes(dadosCadastrais.getFormacoes(), candidato);
         experienciaService.cadastrarExperiencia(dadosCadastrais.getExperiencias(), candidato);
         cursoService.cadastrarCursos(dadosCadastrais.getCursos(), candidato);
@@ -79,14 +77,15 @@ public class CandidatoService {
     }
 
     public String getCandidatoAccessToken(DadosLoginCandidatoDTO dadosLogin) {
-        System.out.println(dadosLogin.getLogin() + "Email informado");
         LoginCandidatoDTO candidatoEnontrado = buscarPorEmailOuCpf(dadosLogin.getLogin());
         if (candidatoEnontrado != null) {
-            if (encoder.matches(dadosLogin.getSenha(), candidatoEnontrado.getSenha()))
+            if (encoder.matches(dadosLogin.getSenha(), candidatoEnontrado.getSenha())) {
                 return jwtService.getAccessToken(candidatoEnontrado.getId().toString(),
                         candidatoEnontrado.getEmail(), candidatoEnontrado.getNome(), "candidato");
+            }
+            throw new UsernameNotFoundException("Usuário e/ou senha incorretos");
         }
-        throw new UsernameNotFoundException("Usuário e/ou senha incorretos");
+        throw new UsernameNotFoundException("Usuário não encontrado");
     }
 
     public LoginCandidatoDTO buscarPorEmailOuCpf(String login) {
@@ -114,10 +113,10 @@ public class CandidatoService {
         return new AuthSocket(userDetails, loginDTO.getId().toString());
     }
 
-    public Page<Candidato> findByQualificacao(DadosConsultaCandidatoDTO dadosConsulta)  {
+    public Page<Candidato> findByQualificacao(DadosConsultaCandidatoDTO dadosConsulta) {
         try {
-        Thread.sleep(4000);
-        }catch (InterruptedException e){
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
             System.out.println(e);
         }
         return repository.findCandidatoByQualificacao(dadosConsulta.getQualificacoes(), dadosConsulta.getIdEstado(), dadosConsulta.getIdCidade(),
@@ -148,8 +147,7 @@ public class CandidatoService {
 
     public EdicaoCandidatoDTO buscarDadosSalvos() {
         Long id = getIdCandidatoLogado();
-        var dados = repository.buscarDadosSalvos(id);
-        return dados;
+        return repository.buscarDadosSalvos(id).orElseThrow(UsuarioNaoEncontradoException::new);
     }
 
 

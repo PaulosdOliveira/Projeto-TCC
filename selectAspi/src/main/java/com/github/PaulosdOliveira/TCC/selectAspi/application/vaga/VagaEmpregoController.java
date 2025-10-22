@@ -1,7 +1,6 @@
 package com.github.PaulosdOliveira.TCC.selectAspi.application.vaga;
 
 import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Candidato;
-import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.ConsultaCandidatoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.*;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidatoCadastradoDTO;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.candidato.CandidaturaCandidato;
