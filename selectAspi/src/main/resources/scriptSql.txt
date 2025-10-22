@@ -35,17 +35,28 @@ foreign key (estado_id) references estado(id),
 foreign key (cidade_id) references cidade(id)
 );
 
-
  create table formacao(
  id binary(16) primary key,
  candidato_id bigint,
  instituicao varchar(150) not null,
  curso varchar(150) not null,
  nivel enum("TECNICO", "TECNOLOGO", "GRADUACAO","POS_GRADUACAO", "MESTRADO","DOUTORADO") not null,
- inicio date not null,
- fim date not null,
+situacao enum('EM_ANDAMENTO','CONCLUIDO') not null,
  foreign key (candidato_id) references candidatos(id)
  );
+
+
+
+create table cursos(
+ id binary(16) primary key,
+ candidato_id bigint,
+ instituicao varchar(150) not null,
+ curso varchar(100) not null,
+ carga_horaria int not null,
+ foreign key (candidato_id) references candidatos(id)
+);
+
+
 
 create table experiencia(
  id binary(16) primary key,
@@ -53,21 +64,9 @@ create table experiencia(
  empresa varchar(150) not null,
  cargo varchar(100) not null,
  descricao text not null,
- inicio date not null,
- fim date not null,
+duracao varchar(30) not null,
  foreign key (candidato_id) references candidatos(id)
 );
-
-
- create table cursos(
-  id binary(16) primary key,
-  candidato_id bigint,
-  instituicao varchar(150),
-  curso varchar(100) not null,
-  carga_horaria int not null,
-  foreign key (candidato_id) references candidatos(id)
- );
-
 
 
 create table qualificacao(
@@ -100,10 +99,9 @@ nome text not null unique,
 email varchar(180) not null unique,
 senha varchar(300) not null,
 descricao text,
-foto longblob,
+foto longblob ,
 capa longblob
 );
-
 
 
 create table vaga_emprego (
@@ -121,13 +119,12 @@ data_hora_publicacao datetime not null,
 data_hora_encerramento datetime,
 empresa_id binary(16),
 salario decimal(10,2) not null,
-nivel enum('ESTAGIARIO','JUNIOR', 'PLENO', 'SENIOR', 'ESPECIALISTA', 'GERENTE', 'INDEFINIDO'),
+nivel enum('ESTAGIARIO','JUNIOR', 'PLENO', 'SENIOR', 'ESPECIALISTA', 'GERENTE', 'INDEFINIDO') not null,
 estado_id int ,
 cidade_id int ,
-modelo enum('PRESENCIAL', 'HIBRIDO', 'REMOTO'),
+modelo enum('PRESENCIAL', 'HIBRIDO', 'REMOTO') not null,
 vaga_ativa boolean,
-tipo_contrato enum('CLT', 'PJ', 'ESTAGIO', 'TEMPORARIO'),
-experiencia_previa boolean,
+tipo_contrato enum('CLT', 'PJ', 'ESTAGIO', 'TEMPORARIO') not null,
 exclusivo_para_pcd boolean default false,
 exclusivo_para_sexo enum('MASCULINO', 'FEMININO', 'TODOS') default 'TODOS',
 foreign key (empresa_id) references empresa(id),
@@ -135,16 +132,20 @@ foreign key (estado_id) references estado(id),
 foreign key (cidade_id) references cidade(id)
 );
 
+desc vaga_emprego;
+
 
 create table candidato_a_vaga(
 candidato_id bigint ,
 vaga_emprego_id bigint,
 data_candidatura datetime not null,
-status enum('EM_ANALISE', 'SELECIONADO', 'DISPENSADO') not null,
+status enum('EM_ANALISE', 'SELECIONADO', 'DISPENSADO') default 'EM_ANALISE',
 primary key(candidato_id, vaga_emprego_id),
 foreign key (candidato_id) references candidatos(id),
 foreign key (vaga_emprego_id) references vaga_emprego(id)
 );
+
+
 
 
 create table mensagem(
@@ -168,6 +169,8 @@ descricao text not null,
 foreign key (empresa_id) references empresa(id)
 );
 
+
+<!-INSERT PADRÃO PARA ALGUMAS TABELAS-!>
 
 INSERT INTO qualificacao (nome_qualificacao) VALUES
 ('Microsoft Excel'), ('Microsoft Word'), ('Microsoft PowerPoint'),

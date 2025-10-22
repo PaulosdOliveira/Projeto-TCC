@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -47,16 +48,22 @@ public class CandidatoController {
     })
     @PreAuthorize("hasRole('candidato')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping("/foto")
+    @PutMapping(value = "/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void salvarFotoCandidato(@RequestParam MultipartFile foto) throws IOException {
         service.salvarFotoCandidato(foto.getBytes());
     }
 
-    @ApiResponse(responseCode = "200")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404", description = "Nenhuma foto encontrada"),
+    })
     @GetMapping("/foto/{idCandidato}")
-    public ResponseEntity<byte[]> buscarFotoCandidato(@PathVariable Long idCandidato) {
+    public ResponseEntity<?> buscarFotoCandidato(@PathVariable Long idCandidato) {
         byte[] foto = service.buscarFotoCandidato(idCandidato);
-        return utils.renderizarFoto(foto);
+        if (foto != null) {
+            return utils.renderizarFoto(foto);
+        }
+        return new ResponseEntity<String>("Nenhuma foto encotrada", HttpStatus.NOT_FOUND);
     }
 
     @ApiResponses({
