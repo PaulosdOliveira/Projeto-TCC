@@ -49,9 +49,9 @@ public class JwtFilter extends OncePerRequestFilter {
         var metodo = request.getMethod();
         System.out.println(path + "----------------------------------");
         System.out.println(request.getRequestURL() + "@@@@@@@@@@@@@@");
-        boolean pular = (metodo.equals(HttpMethod.POST.name()) && path.contains("/login") || path.contains("/vaga/buscar"))
+        boolean pular = (metodo.equals(HttpMethod.POST.name()) && path.contains("/login"))
                         || (!metodo.equals(HttpMethod.PUT.name()) && path.contains("/foto") || path.contains("/capa"))
-                        || (metodo.equals(HttpMethod.GET.name()) && path.contains("/vaga/buscar") || path.contains("/vaga?idEmpresa="))
+                        || (metodo.equals(HttpMethod.GET.name()) && path.contains("/vaga?id=") || path.contains("/vaga?idEmpresa="))
                         || path.contains("conect") || (path.equals("/candidato") && metodo.equals(HttpMethod.POST.name()))
                         || path.contains("/v3/api-docs") || path.contains("/swagger");
         System.out.println(pular);

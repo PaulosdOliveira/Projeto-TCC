@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.PaulosdOliveira.TCC</groupId>
-    <artifactId>selectAspi</artifactId>
+    <artifactId>safira</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>selectAspi</name>
     <description>Plataforma para mercado de trabalho para o TCC do curso de informática</description>

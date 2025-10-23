@@ -4,7 +4,6 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.candidato.Sexo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Modelo;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.Nivel;
 import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.TipoContrato;
-import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -41,8 +40,6 @@ public class ConsultaVagaDTO {
     private Sexo exclusivoParaSexo;
     private Boolean exclusivoParaPcd;
     private TipoContrato tipoContrato;
-    private boolean jaCandidatou;
-
 
     // CONSTRUTOR USADO NO REPOSITORY
     public ConsultaVagaDTO(VagaEmprego vaga) {
@@ -53,8 +50,7 @@ public class ConsultaVagaDTO {
         this.estado = vaga.getEstado().getSigla();
         this.diasEmAberto = dataHoraEncerramento != null?
                 ChronoUnit.DAYS.between(dataHoraPublicacao, dataHoraEncerramento) : 0;
-        System.out.println(vaga.getPrincipais_atividades());
-        System.out.println(this.principais_atividades);
+
     }
 
 

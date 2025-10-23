@@ -118,6 +118,7 @@ public class VagaEmpregoService {
             throw new VagaEncerradaException();
         }
     }
+
     // VERIFICANDO SE CANDIDATO ESTÁ ÁPTO À SE CANDIDATAR
     private boolean candidatoNaoEnquadra(boolean vagaExclusivaParaPcd, Sexo exclusividadeDeSexo) {
         var dadosCandidatoLogado = candidatoService.buscarFiltroVaga();
@@ -140,15 +141,7 @@ public class VagaEmpregoService {
 
     // CARREGANDO DADOS QUE SERÃO EXIBIDOS NA PÁGINA DA VAGA
     public ConsultaVagaDTO carregarVaga(Long id) {
-        ConsultaVagaDTO vagaEncontrada = repository.carregarVaga(id).orElseThrow(VagaNaoEncontradaException::new);
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().contains("empresa"))
-            return vagaEncontrada;
-        Long idCandidatoLogado = candidatoService.getIdCandidatoLogado();
-        Candidato candidatoLogado = new Candidato(idCandidatoLogado);
-        VagaEmprego vaga = new VagaEmprego(id);
-        boolean jaCandidatou_se = candidatoVagaRepository.existsById(new CandidaturaPK(candidatoLogado, vaga));
-        vagaEncontrada.setJaCandidatou(jaCandidatou_se);
-        return vagaEncontrada;
+        return repository.carregarVaga(id).orElseThrow(VagaNaoEncontradaException::new);
     }
 
     // BUSCANDO DADOS CADASTRAIS DA VAGA PARA PREENCHER O FORMULÁRIO DE EDIÇÃO

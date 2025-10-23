@@ -36,10 +36,9 @@ public class SecurityConfiguration {
                     auth.requestMatchers(HttpMethod.POST, "/empresa").permitAll();
                     auth.requestMatchers("/empresa/login").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/empresa/**").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/vaga", "/vaga/buscar").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/qualificacao").permitAll();
                     auth.requestMatchers("/utils/estados", "/utils/cidades/**").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/vaga/buscar", "/vaga?idEmpresa=**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/vaga" ,"/vaga?id=", "/vaga?idEmpresa=**").permitAll();
                     auth.requestMatchers("/conect").permitAll();
                     auth.requestMatchers("/swagger-ui").permitAll();
                     auth.anyRequest().authenticated();

@@ -72,7 +72,7 @@ public class ControllerException {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(CandidaturaJaCadastradaException.class)
     public Map<String, Object> handlerCandidaturaJaCadastradaException(CandidaturaJaCadastradaException e) {
-        return getMap("Erro",e.getMessage());
+        return getMap("Resultado",e.getMessage());
     }
 
 

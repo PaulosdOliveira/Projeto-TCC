@@ -9,12 +9,13 @@ import com.github.PaulosdOliveira.TCC.selectAspi.model.vaga.enums.StatusCandidat
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import jakarta.validation.Valid;
-
+import static com.github.PaulosdOliveira.TCC.selectAspi.application.UtilsService.getMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,8 +50,10 @@ public class VagaEmpregoController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('candidato')")
     @PostMapping("/candidatar/{idVaga}")
-    public void cadastarCandidatura(@PathVariable Long idVaga) {
+    public ResponseEntity cadastarCandidatura(@PathVariable Long idVaga) {
         candidatoVagaService.cadastrarCandidatura(idVaga);
+
+        return ResponseEntity.ok().body(getMap("Resultado", "Candidatura realizada com sucesso"));
     }
 
 
@@ -96,8 +99,8 @@ public class VagaEmpregoController {
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "404", description = "Vaga não encontrada"),
     })
-    @GetMapping("/{idVaga}")
-    public ConsultaVagaDTO carregarVaga(@PathVariable("idVaga") Long id) {
+    @GetMapping(params = "id")
+    public ConsultaVagaDTO carregarVaga(@RequestParam() Long id) {
         return service.carregarVaga(id);
     }
 
